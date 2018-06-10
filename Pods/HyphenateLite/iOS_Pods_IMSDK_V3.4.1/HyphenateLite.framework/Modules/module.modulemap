@@ -1,0 +1,6 @@
+framework module HyphenateLite {
+  umbrella header "HyphenateLite.h"
+
+  export *
+  module * { export * }
+}

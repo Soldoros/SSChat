@@ -1,0 +1,6 @@
+framework module Pods_htcm {
+  umbrella header "Pods-htcm-umbrella.h"
+
+  export *
+  module * { export * }
+}
