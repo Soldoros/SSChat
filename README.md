@@ -1,5 +1,4 @@
-# SSChat
-SSChat是一个比较通用的ios聊天界面
+# SSChat 一个通用的聊天界面
 
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
