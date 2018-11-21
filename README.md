@@ -20,6 +20,6 @@
 
 ```
 _mInputView = [SSChatKeyBoardInputView new];
-    _mInputView.delegate = self;
-    [self.view addSubview:_mInputView]; 
+_mInputView.delegate = self;
+[self.view addSubview:_mInputView]; 
 ```
