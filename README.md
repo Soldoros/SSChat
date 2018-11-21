@@ -10,10 +10,11 @@
 
 <h2>一、键盘的使用</h2>
 
-  1.将 SSChatKeyBoard 文件夹拖入到工程
+1.将 SSChatKeyBoard 文件夹拖入到工程
 
-  2.plist文件需要设置权限 访问相机 麦克风 相册
+2.plist文件需要设置权限 访问相机 麦克风 相册
 
-   3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
+ 3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
-  4.初始化键盘对象
+4.初始化键盘对象
+  
