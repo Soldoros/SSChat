@@ -2,7 +2,7 @@
   <h1>一个比较通用的聊天界面 SSChat</h1> 
 </div>
 <br>
-<h4>SSChat参考目前比较主流的聊天系统做的布局，整体功能是比较通用的。每个模块都支持高度自定义，包括聊天气泡、头像、多媒体键盘的Emotion、键盘的功能拓展等，更新都挺方便。值得注意的是目前短视频播放采用的AVPlayerLayer不能在模拟器打开，大家可以用真机运行，后期更新后再行通知。SSChat的图片短视频缩放，键盘模块，消息数据模块和布局模块都单独封装，可以单独使用，也可以直接使用SSChat来对接环信或其他IM接口！</h4>
+<span>SSChat参考目前比较主流的聊天系统做的布局，整体功能是比较通用的。每个模块都支持高度自定义，包括聊天气泡、头像、多媒体键盘的Emotion、键盘的功能拓展等，更新都挺方便。值得注意的是目前短视频播放采用的AVPlayerLayer不能在模拟器打开，大家可以用真机运行，后期更新后再行通知。SSChat的图片短视频缩放，键盘模块，消息数据模块和布局模块都单独封装，可以单独使用，也可以直接使用SSChatController！</span>
 <br>
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
@@ -18,7 +18,7 @@
 
 3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
-4.声明对象
+4.声明对象来
 
 ```Objective-C
 //底部输入框 携带表情视图和多功能视图
