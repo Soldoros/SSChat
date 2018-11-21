@@ -141,11 +141,11 @@ _mInputView.delegate = self;
 }
 ```
 
-<h2>三、使用SSChat</h2>
+<h2>三、直接使用SSChat</h2>
 
 1.引用头文件#import "SSChatController.h"，有一部分的类别大家参考使用，可以改成自己封装的，后期完善后再更新上来。
 
-2.初始化聊天界面
+2.初始化聊天界面，sessionId为会话Id，对接后台时需要传递，这里在做时间5分钟间隔的时候用到了。chatType为会话类型，区分群里和单聊。群聊和单聊界面相似，后期会更新上来。
 
 ```Objective-C
 SSChatController *vc = [SSChatController new];
