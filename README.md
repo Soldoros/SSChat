@@ -66,7 +66,7 @@ _mInputView.delegate = self;
 }
 
 ```
-8.其它功能根据需求而定
+8.其它功能根据需求而定，文本消息在跟后台对接时只能使用字符串，布局是需要做图文混排处理，生成富文本。多功能视图简单处理了图片、视频和定位，大家可以自己拓展需要的功能，并在回调方法直接编写逻辑。
 
 ```Objective-C
 //发送文本信息
@@ -78,5 +78,10 @@ _mInputView.delegate = self;
 //多功能视图按钮点击回调
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index;
 ```
+
+<div align=center> 
+  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
+  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
+</div>
 
 
