@@ -17,7 +17,9 @@
  3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
 4.初始化键盘对象
-  
-'_mInputView = [SSChatKeyBoardInputView new];
+
+'''
+_mInputView = [SSChatKeyBoardInputView new];
     _mInputView.delegate = self;
-    [self.view addSubview:_mInputView]; '
+    [self.view addSubview:_mInputView]; 
+'''
