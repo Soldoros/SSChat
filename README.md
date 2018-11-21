@@ -1,5 +1,5 @@
 # SSChat 一个通用的聊天界面
-
+<br>
 
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
