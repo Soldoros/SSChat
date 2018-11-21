@@ -136,8 +136,24 @@ _mInputView.delegate = self;
         blockView = nil;
     };
     
+    //这一段是对聊天界面键盘回收的处理 单独使用媒体缩放功能可以不写
     [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
+```
+
+<h2>三、使用SSChat</h2>
+
+1.引用头文件#import "SSChatController.h"，有一部分的类别大家参考使用，可以改成自己封装的，后期完善后再更新上来。
+
+2.初始化聊天界面
+
+```Objective-C
+SSChatController *vc = [SSChatController new];
+vc.chatType = (SSChatConversationType)[_datas[indexPath.row][@"type"]integerValue];
+vc.sessionId = _datas[indexPath.row][@"sectionId"];
+vc.titleString = _datas[indexPath.row][@"title"];
+[self.navigationController pushViewController:vc animated:YES];
+
 ```
 
 
