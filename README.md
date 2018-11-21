@@ -5,3 +5,14 @@
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
 </div>
 
+
+##1、键盘的使用
+<h2 键盘的使用>
+
+1.将 SSChatKeyBoard 文件夹拖入到工程
+
+2.plist文件需要设置权限 访问相机 麦克风 相册
+
+3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
+
+4.初始化键盘对象
