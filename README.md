@@ -18,3 +18,6 @@
 
 4.初始化键盘对象
   
+、_mInputView = [SSChatKeyBoardInputView new];
+    _mInputView.delegate = self;
+    [self.view addSubview:_mInputView]; 、
