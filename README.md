@@ -1,4 +1,4 @@
-# SSChat 一个通用的聊天界面
+# 一个通用的聊天界面 SSChat
 <br>
 
 <div align=center> 
