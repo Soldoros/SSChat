@@ -14,9 +14,15 @@
 
 2.plist文件需要设置权限 访问相机 麦克风 相册
 
- 3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
+3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
-4.初始化键盘对象
+4.声明对象
+
+```Objective-C
+//底部输入框 携带表情视图和多功能视图
+@property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
+```
+5.初始化多媒体键盘
 
 ```Objective-C
 _mInputView = [SSChatKeyBoardInputView new];
