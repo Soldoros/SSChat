@@ -29,3 +29,16 @@ _mInputView = [SSChatKeyBoardInputView new];
 _mInputView.delegate = self;
 [self.view addSubview:_mInputView]; 
 ```
+6.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
+
+```Objective-C
+//视图归位
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [_mInputView SetSSChatKeyBoardInputViewEndEditing];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [_mInputView SetSSChatKeyBoardInputViewEndEditing];
+}
+
+```
