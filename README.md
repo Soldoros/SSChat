@@ -1,4 +1,4 @@
-# 一个比较通用的聊天界面 SSChat
+<h1>一个比较通用的聊天界面 SSChat</h1>
 <br>
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
@@ -6,8 +6,7 @@
 </div>
 
 
-##1、键盘的使用
-<h2 键盘的使用>
+<h3>1、键盘的使用</h3>
 
 1.将 SSChatKeyBoard 文件夹拖入到工程
 
