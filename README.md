@@ -78,10 +78,67 @@ _mInputView.delegate = self;
 //多功能视图按钮点击回调
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index;
 ```
-
+<br>
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/6.PNG" width="345"> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/10.PNG" width="345">
 </div>
+<br>
+
+<h2>二、图片和短视频缩放</h2>
+
+1.添加AVFoundation.framework系统库
+
+2.引用头文件#import "SSImageGroupView.h"
+
+3.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
+
+```Objective-C
+#pragma SSChatBaseCellDelegate 点击图片 点击短视频
+-(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
+    
+    NSInteger currentIndex = 0;
+    NSMutableArray *groupItems = [NSMutableArray new];
+    
+    for(int i=0;i<self.datas.count;++i){
+        
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+        SSChatBaseCell *cell = [_mTableView cellForRowAtIndexPath:ip];
+        SSChatMessagelLayout *mLayout = self.datas[i];
+        
+        SSImageGroupItem *item = [SSImageGroupItem new];
+        if(mLayout.message.messageType == SSChatMessageTypeImage){
+            item.imageType = SSImageGroupImage;
+            item.fromImgView = cell.mImgView;
+            item.fromImage = mLayout.message.image;
+        }
+        else if (mLayout.message.messageType == SSChatMessageTypeVideo){
+            item.imageType = SSImageGroupVideo;
+            item.videoPath = mLayout.message.videoLocalPath;
+            item.fromImgView = cell.mImgView;
+            item.fromImage = mLayout.message.videoImage;
+        }
+        else continue;
+        
+        item.contentMode = mLayout.message.contentMode;
+        item.itemTag = groupItems.count + 10;
+        if([mLayout isEqual:layout])currentIndex = groupItems.count;
+        [groupItems addObject:item];
+        
+    }
+    
+    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
+    [self.navigationController.view addSubview:imageGroupView];
+    
+    __block SSImageGroupView *blockView = imageGroupView;
+    blockView.dismissBlock = ^{
+        [blockView removeFromSuperview];
+        blockView = nil;
+    };
+    
+    [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
+}
+```
+
 
 
