@@ -1,4 +1,6 @@
-<h1>一个比较通用的聊天界面 SSChat</h1>
+<div align=center> 
+  <h1>一个比较通用的聊天界面 SSChat</h1> 
+</div>
 <br>
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
