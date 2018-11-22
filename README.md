@@ -7,7 +7,6 @@
 <span>有问题可以咨询我的邮箱76811172@qq.com   微信或钉钉号：13540033103 <br><br>
   简书：https://www.jianshu.com/p/fdda35fd2897 </span><br><br>
 
-<br><br>
 
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
