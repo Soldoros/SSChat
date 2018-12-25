@@ -1,5 +1,5 @@
 <div align=center> 
-  <h1>聊天界面 SSChat</h1> 
+  <h1>Chat interface SSChat</h1> 
 </div>
 <br>
 <span>SSChat refers to the current more mainstream chat system layout, the overall function is more general. Each module supports a high degree of customization, including chat bubbles, avatars, Emotion for multimedia keyboards, keyboard extensions, etc., which are easy to update. It is worth noting that the AVPlayerLayer used for short video playback at present cannot be opened in the simulator. You can use the real machine to run, and you will be notified after the later update. SSChat picture short video zoom, keyboard module, message data module and layout module are individually encapsulated, can be used alone, can also use SSChatController directly！</span><br><br>
