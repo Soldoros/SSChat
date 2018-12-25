@@ -2,11 +2,11 @@
   <h1>聊天界面 SSChat</h1> 
 </div>
 <br>
-<span>SSChat参考目前比较主流的聊天系统做的布局，整体功能是比较通用的。每个模块都支持高度自定义，包括聊天气泡、头像、多媒体键盘的Emotion、键盘的功能拓展等，更新都挺方便。值得注意的是目前短视频播放采用的AVPlayerLayer不能在模拟器打开，大家可以用真机运行，后期更新后再行通知。SSChat的图片短视频缩放，键盘模块，消息数据模块和布局模块都单独封装，可以单独使用，也可以直接使用SSChatController！</span><br><br>
+<span>SSChat refers to the current more mainstream chat system layout, the overall function is more general. Each module supports a high degree of customization, including chat bubbles, avatars, Emotion for multimedia keyboards, keyboard extensions, etc., which are easy to update. It is worth noting that the AVPlayerLayer used for short video playback at present cannot be opened in the simulator. You can use the real machine to run, and you will be notified after the later update. SSChat picture short video zoom, keyboard module, message data module and layout module are individually encapsulated, can be used alone, can also use SSChatController directly！</span><br><br>
 
-<span>邮箱：765970680@qq.com  <br>
-      微信或钉钉号：13540033103 <br>
-      简书：https://www.jianshu.com/p/fdda35fd2897 </span><br><br>
+<span>email：765970680@qq.com  <br>
+      dingTalk：13540033103 <br>
+      Jane's book：https://www.jianshu.com/p/fdda35fd2897 </span><br><br>
 
 
 <div align=center> 
@@ -15,31 +15,31 @@
 </div>
 
 
-<h2>一、键盘的使用</h2>
+<h2>一、Keyboard usage</h2>
 
-1.将 SSChatKeyBoard 文件夹拖入到工程
+1.Drag the SSChatKeyBoard folder into the project
 
-2.plist文件需要设置权限 访问相机 麦克风 相册
+2.The plist file needs to set permissions to access the camera microphone album
 
-3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
+3.In the need to use the keyboard controller header file reference # import "SSChatKeyBoardInputView. H" and set the proxy SSChatKeyBoardInputViewDelegate
 
-4.声明对象来
+4.A statement object
 
 ```Objective-C
-//底部输入框 携带表情视图和多功能视图
+//The input box at the bottom carries the expression view and the multifunctional view
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 ```
-5.初始化多媒体键盘
+5.初始化多媒体键盘Initializes the multimedia keyboard
 
 ```Objective-C
 _mInputView = [SSChatKeyBoardInputView new];
 _mInputView.delegate = self;
 [self.view addSubview:_mInputView]; 
 ```
-6.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
+6.The chat interface is usually a form UITableView, which requires a simple process to pop up the keyboard in the form by clicking back and scrolling back in the scroll view.
 
 ```Objective-C
-//键盘和列表视图归位
+//Keyboard and list view homing
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [_mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
@@ -49,11 +49,11 @@ _mInputView.delegate = self;
 }
 
 ```
-7.在键盘的回调方法中，改变输入框高度和键盘位置的方法回调中，需要处理当前表单的frame，具体frame调整需要针对界面的布局来定，这里只对UITableView和它的父视图做个简单调整。
+7.In the keyboard callback method, the method callback that changes the height of the input box and the keyboard position needs to deal with the frame of the current form. The specific frame adjustment needs to be specific to the layout of the interface. Here, only a simple adjustment is made to the UITableView and its parent view.
 
 ```Objective-C
-#pragma SSChatKeyBoardInputViewDelegate 底部输入框代理回调
-//点击按钮视图frame发生变化 调整当前列表frame
+#pragma SSChatKeyBoardInputViewDelegateThe bottom input box proxy callback
+//Click the button view frame to change the current list frame
 -(void)SSChatKeyBoardInputViewHeight:(CGFloat)keyBoardHeight changeTime:(CGFloat)changeTime{
  
     CGFloat height = _backViewH - keyBoardHeight;
@@ -69,16 +69,16 @@ _mInputView.delegate = self;
 }
 
 ```
-8.其它功能根据需求而定，文本消息在跟后台对接时只能使用字符串，布局是需要做图文混排处理，生成富文本。多功能视图简单处理了图片、视频和定位，大家可以自己拓展需要的功能，并在回调方法直接编写逻辑。
+8.Other functions depend on requirements, text messages can only use strings when docking with the background, layout is the need to do mixed processing of graphics and text, generate rich text. Multi-function view simple processing of images, video and positioning, you can extend the required function, and directly write logic in the callback method.
 
 ```Objective-C
-//发送文本信息
+//Send text messages
 -(void)SSChatKeyBoardInputViewBtnClick:(NSString *)string;
 
-//发送语音消息
+//Send voice messages
 - (void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view sendVoice:(NSData *)voice time:(NSInteger)second;
 
-//多功能视图按钮点击回调
+//Multi-function view button click callback
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index;
 ```
 <br>
@@ -88,16 +88,16 @@ _mInputView.delegate = self;
 </div>
 <br>
 
-<h2>二、图片和短视频缩放</h2>
+<h2>二、The image zooms in with the short video</h2>
 
-1.添加AVFoundation.framework系统库
+1.Add avfoundation.framework system library
 
-2.引用头文件#import "SSImageGroupView.h"
+2.Refer to header file #import "ssimagegroupview.h"
 
-3.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
+3.Click on the picture or short video when the image, short video array to do processing, there are some must pass parameters
 
 ```Objective-C
-#pragma SSChatBaseCellDelegate 点击图片 点击短视频
+#pragma SSChatBaseCellDelegate Click on the picture and click on the short video
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
     NSInteger currentIndex = 0;
@@ -139,16 +139,16 @@ _mInputView.delegate = self;
         blockView = nil;
     };
     
-    //这一段是对聊天界面键盘回收的处理 单独使用媒体缩放功能可以不写
+    //This section is the chat interface keyboard recovery process alone using the media zoom function can not be written
     [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
 ```
 
-<h2>三、直接使用SSChat</h2>
+<h2>三、Use SSChat directly</h2>
 
-1.引用头文件#import "SSChatController.h"，有一部分的类别大家参考使用，可以改成自己封装的，后期完善后再更新上来。
+1.Reference header file #import "sschatcontroller.h", there are some categories you refer to use, can be changed to their own packaging, later improved and then updated.
 
-2.初始化聊天界面，sessionId为会话Id，对接后台时需要传递，这里在做时间5分钟间隔的时候用到了。chatType为会话类型，区分群里和单聊。群聊和单聊界面相似，后期会更新上来。
+2.Initializes the chat interface. The sessionId is the sessionId and needs to be passed when docking with the background. ChatType - chatType is a session type that distinguishes a group chat from a single chat. Group chat and single chat interface is similar, later will be updated.
 
 ```Objective-C
 SSChatController *vc = [SSChatController new];
