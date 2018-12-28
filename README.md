@@ -1,13 +1,13 @@
 <div align=center> 
   <h1>SSChat（OC）</h1> 
 </div>
-<br><br>
+<br>
 
 <h3>欢迎大家支持</h3>
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
-      简书：https://www.jianshu.com/p/fdda35fd2897 </span><br><br>
+      简书：https://www.jianshu.com/p/fdda35fd2897 </span><br><br><br>
 
 
 <div align=center> 
