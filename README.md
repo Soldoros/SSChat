@@ -117,6 +117,11 @@ _mInputView.delegate = self;
             item.fromImgView = cell.mImgView;
             item.fromImage = mLayout.message.image;
         }
+        else if(mLayout.message.messageType == SSChatMessageTypeGif){
+            item.imageType = SSImageGroupGif;
+            item.fromImgView = cell.mImgView;
+            item.fromImages = mLayout.message.imageArr;
+        }
         else if (mLayout.message.messageType == SSChatMessageTypeVideo){
             item.imageType = SSImageGroupVideo;
             item.videoPath = mLayout.message.videoLocalPath;
