@@ -89,6 +89,8 @@
         return;
     }
     
+    
+    
     _imagePickerController = [[UIImagePickerController alloc] init];
     _imagePickerController.delegate = self;
     _imagePickerController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -167,7 +169,7 @@
 #pragma  mark UIImagePickerControllerDelegate协议的方法
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
-    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    NSString *mediaType = info[@"UIImagePickerControllerMediaType"];
     
     //获取到图片 判断是否裁剪
     if ([mediaType isEqualToString:( NSString *)kUTTypeImage]){
@@ -178,8 +180,15 @@
         }else{
          [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerOriginalImage]];
         }
-        
     }
+    
+    //获取到gif图
+    else if([mediaType isEqualToString:( NSString *)kUTTypeGIF]){
+        _modelType = SSImagePickerModelGif;
+        NSString *imgUrl = info[@"UIImagePickerControllerImageURL"];
+        _pickerBlock(_wayStyle,_modelType,imgUrl);
+    }
+    
     
     //获取到视频
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]){

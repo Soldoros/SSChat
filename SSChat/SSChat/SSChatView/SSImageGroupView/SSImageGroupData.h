@@ -16,10 +16,12 @@
  展示图类型
  
  - SSImageGroupImage: 图片
+ - SSImageGroupGif: Gif图片
  - SSImageGroupVideo: 短视频
  */
 typedef NS_ENUM(NSInteger, SSImageGroupType) {
     SSImageGroupImage = 1,
+    SSImageGroupGif = 2,
     SSImageGroupVideo,
 };
 
@@ -51,8 +53,9 @@ typedef NS_ENUM(NSInteger, SSImageShowType) {
 //图类型
 @property(nonatomic,assign)SSImageGroupType   imageType;
 
-//需要展示的图片 图片视图
+//需要展示的图片/gif图片数组 图片视图
 @property(nonatomic,strong)UIImage      *fromImage;
+@property(nonatomic,strong)NSArray      *fromImages;
 @property(nonatomic,strong)UIImageView  *fromImgView;
 
 //图片格式

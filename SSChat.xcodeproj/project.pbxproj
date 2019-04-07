@@ -190,6 +190,7 @@
 		AF804CBA21A3DDED00225FCE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CB921A3DDED00225FCE /* CoreMedia.framework */; };
 		AF804CBC21A3DDF400225FCE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CBB21A3DDF400225FCE /* CoreLocation.framework */; };
 		AF804CBE21A3DDFB00225FCE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CBD21A3DDFB00225FCE /* MapKit.framework */; };
+		AFE327EA22553E1E006128F9 /* image101.gif in Resources */ = {isa = PBXBuildFile; fileRef = AFE327E922553E1E006128F9 /* image101.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -411,6 +412,7 @@
 		AF804CB921A3DDED00225FCE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		AF804CBB21A3DDF400225FCE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AF804CBD21A3DDFB00225FCE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AFE327E922553E1E006128F9 /* image101.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = image101.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -471,22 +473,22 @@
 		AF804B2B21A3DCE000225FCE /* SSChatView */ = {
 			isa = PBXGroup;
 			children = (
-				AF804B2C21A3DCE000225FCE /* SSChatMessage.m */,
-				AF804B2D21A3DCE000225FCE /* SSChatViews.h */,
-				AF804B2E21A3DCE000225FCE /* SSChatMessagelLayout.h */,
-				AF804B2F21A3DCE000225FCE /* SSChatController.h */,
-				AF804B3021A3DCE000225FCE /* SSChatDatas.h */,
-				AF804B3121A3DCE000225FCE /* Other */,
-				AF804B3B21A3DCE000225FCE /* InsideController */,
-				AF804B4021A3DCE000225FCE /* image */,
-				AF804B4621A3DCE000225FCE /* SSChatMessage.h */,
-				AF804B4721A3DCE000225FCE /* SSChatCell */,
-				AF804B5421A3DCE000225FCE /* SSChatViews.m */,
-				AF804B5521A3DCE000225FCE /* SSChatKeyBoard */,
 				AF804BF421A3DCE100225FCE /* AddImg */,
-				AF804BF721A3DCE100225FCE /* SSChatDatas.m */,
+				AF804B4021A3DCE000225FCE /* image */,
+				AF804B3B21A3DCE000225FCE /* InsideController */,
+				AF804B3121A3DCE000225FCE /* Other */,
+				AF804B4721A3DCE000225FCE /* SSChatCell */,
+				AF804B2F21A3DCE000225FCE /* SSChatController.h */,
 				AF804BF821A3DCE100225FCE /* SSChatController.m */,
+				AF804B3021A3DCE000225FCE /* SSChatDatas.h */,
+				AF804BF721A3DCE100225FCE /* SSChatDatas.m */,
+				AF804B5521A3DCE000225FCE /* SSChatKeyBoard */,
+				AF804B4621A3DCE000225FCE /* SSChatMessage.h */,
+				AF804B2C21A3DCE000225FCE /* SSChatMessage.m */,
+				AF804B2E21A3DCE000225FCE /* SSChatMessagelLayout.h */,
 				AF804BF921A3DCE100225FCE /* SSChatMessagelLayout.m */,
+				AF804B2D21A3DCE000225FCE /* SSChatViews.h */,
+				AF804B5421A3DCE000225FCE /* SSChatViews.m */,
 				AF804BFA21A3DCE100225FCE /* SSImageGroupView */,
 			);
 			path = SSChatView;
@@ -495,15 +497,15 @@
 		AF804B3121A3DCE000225FCE /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				AF804B3221A3DCE000225FCE /* NSTimer+SSAdd.m */,
 				AF804B3321A3DCE000225FCE /* Define.h */,
-				AF804B3421A3DCE000225FCE /* SSDeviceDefault.h */,
-				AF804B3521A3DCE000225FCE /* UIImage+SSAdd.m */,
 				AF804B3621A3DCE000225FCE /* NSObject+SSAdd.h */,
-				AF804B3721A3DCE000225FCE /* NSTimer+SSAdd.h */,
 				AF804B3821A3DCE000225FCE /* NSObject+SSAdd.m */,
-				AF804B3921A3DCE000225FCE /* UIImage+SSAdd.h */,
+				AF804B3721A3DCE000225FCE /* NSTimer+SSAdd.h */,
+				AF804B3221A3DCE000225FCE /* NSTimer+SSAdd.m */,
+				AF804B3421A3DCE000225FCE /* SSDeviceDefault.h */,
 				AF804B3A21A3DCE000225FCE /* SSDeviceDefault.m */,
+				AF804B3921A3DCE000225FCE /* UIImage+SSAdd.h */,
+				AF804B3521A3DCE000225FCE /* UIImage+SSAdd.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -522,6 +524,7 @@
 		AF804B4021A3DCE000225FCE /* image */ = {
 			isa = PBXGroup;
 			children = (
+				AFE327E922553E1E006128F9 /* image101.gif */,
 				AF804B4121A3DCE000225FCE /* image1.JPEG */,
 				AF804B4221A3DCE000225FCE /* image4.JPEG */,
 				AF804B4321A3DCE000225FCE /* image2.JPEG */,
@@ -553,21 +556,21 @@
 		AF804B5521A3DCE000225FCE /* SSChatKeyBoard */ = {
 			isa = PBXGroup;
 			children = (
-				AF804B5621A3DCE000225FCE /* SSChatIMEmotionModel.h */,
-				AF804B5721A3DCE000225FCE /* SSChatKeyBoardInputView.h */,
-				AF804B5821A3DCE000225FCE /* SSChatKeyBoardDatas.m */,
-				AF804B5921A3DCE000225FCE /* SSChatKeyBordView.m */,
-				AF804B5A21A3DCE000225FCE /* ProgressHUD */,
-				AF804B5F21A3DCE000225FCE /* UIView+SSAdd.h */,
-				AF804B6021A3DCE000225FCE /* SSChatKeyBordFunctionView.h */,
-				AF804B6121A3DCE000225FCE /* SSChatKeyBordSymbolView.h */,
 				AF804B6221A3DCE000225FCE /* KerboardResource */,
-				AF804BED21A3DCE100225FCE /* SSChatKeyBoardDatas.h */,
+				AF804B5A21A3DCE000225FCE /* ProgressHUD */,
+				AF804B5621A3DCE000225FCE /* SSChatIMEmotionModel.h */,
 				AF804BEE21A3DCE100225FCE /* SSChatIMEmotionModel.m */,
+				AF804BED21A3DCE100225FCE /* SSChatKeyBoardDatas.h */,
+				AF804B5821A3DCE000225FCE /* SSChatKeyBoardDatas.m */,
+				AF804B5721A3DCE000225FCE /* SSChatKeyBoardInputView.h */,
 				AF804BEF21A3DCE100225FCE /* SSChatKeyBoardInputView.m */,
-				AF804BF021A3DCE100225FCE /* SSChatKeyBordView.h */,
-				AF804BF121A3DCE100225FCE /* SSChatKeyBordSymbolView.m */,
+				AF804B6021A3DCE000225FCE /* SSChatKeyBordFunctionView.h */,
 				AF804BF221A3DCE100225FCE /* SSChatKeyBordFunctionView.m */,
+				AF804B6121A3DCE000225FCE /* SSChatKeyBordSymbolView.h */,
+				AF804BF121A3DCE100225FCE /* SSChatKeyBordSymbolView.m */,
+				AF804BF021A3DCE100225FCE /* SSChatKeyBordView.h */,
+				AF804B5921A3DCE000225FCE /* SSChatKeyBordView.m */,
+				AF804B5F21A3DCE000225FCE /* UIView+SSAdd.h */,
 				AF804BF321A3DCE100225FCE /* UIView+SSAdd.m */,
 			);
 			path = SSChatKeyBoard;
@@ -899,6 +902,7 @@
 				AF804C4B21A3DCE100225FCE /* emotion_icons.plist in Resources */,
 				AF804C9221A3DCE100225FCE /* Expression_73@2x.png in Resources */,
 				AF804C4521A3DCE100225FCE /* Expression_78@2x.png in Resources */,
+				AFE327EA22553E1E006128F9 /* image101.gif in Resources */,
 				AF804C9121A3DCE100225FCE /* Expression_26@2x.png in Resources */,
 				AF804C7821A3DCE100225FCE /* Expression_94@2x.png in Resources */,
 				AF804C9C21A3DCE100225FCE /* DeleteEmoticonBtnHL@2x.png in Resources */,
@@ -1150,7 +1154,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PQSJ28CZ2Q;
+				DEVELOPMENT_TEAM = Y4XA7L47X3;
 				INFOPLIST_FILE = SSChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1169,7 +1173,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PQSJ28CZ2Q;
+				DEVELOPMENT_TEAM = Y4XA7L47X3;
 				INFOPLIST_FILE = SSChat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (

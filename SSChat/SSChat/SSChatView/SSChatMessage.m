@@ -33,21 +33,18 @@
 -(void)setTextString:(NSString *)textString{
     _textString = textString;
     self.attTextString = [[SSChartEmotionImages ShareSSChartEmotionImages]emotionImgsWithString:textString];
+   
+    //设置以字符为单位的换行和行高 间距 字号 颜色
+    NSMutableParagraphStyle *paragraphString = [[NSMutableParagraphStyle alloc] init];
+    paragraphString.lineBreakMode = NSLineBreakByCharWrapping;
+    [paragraphString setLineSpacing:SSChatTextLineSpacing];
+
+    [_attTextString addAttribute:NSParagraphStyleAttributeName value:paragraphString range:NSMakeRange(0, _attTextString.length)];
+    [_attTextString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:SSChatTextFont] range:NSMakeRange(0, _attTextString.length)];
+    [_attTextString addAttribute:NSForegroundColorAttributeName value:SSChatTextColor range:NSMakeRange(0, _attTextString.length)];
+ 
 }
 
-//可变文本消息
--(void)setAttTextString:(NSMutableAttributedString *)attTextString{
-    
-    NSMutableParagraphStyle *paragraphString = [[NSMutableParagraphStyle alloc] init];
-    [paragraphString setLineSpacing:SSChatTextLineSpacing];
-    
-    [attTextString addAttribute:NSParagraphStyleAttributeName value:paragraphString range:NSMakeRange(0, attTextString.length)];
-    [attTextString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:SSChatTextFont] range:NSMakeRange(0, attTextString.length)];
-    [attTextString addAttribute:NSForegroundColorAttributeName value:SSChatTextColor range:NSMakeRange(0, attTextString.length)];
-    
-    _attTextString = attTextString;
-    
-}
 
 
 @end

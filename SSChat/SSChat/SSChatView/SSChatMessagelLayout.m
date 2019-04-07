@@ -25,12 +25,13 @@
 -(void)setMessage:(SSChatMessage *)message{
     _message = message;
     
-    switch (_message.messageType ) {
+    switch (_message.messageType) {
             
         case SSChatMessageTypeText:
             [self setText];
             break;
         case SSChatMessageTypeImage:
+        case SSChatMessageTypeGif:
             [self setImage];
             break;
         case SSChatMessageTypeVoice:
@@ -60,13 +61,7 @@
 //显示文字消息 这个自适应计算有误差 用sizeToFit就比较完美 有好办法告诉我
 -(void)setText{
     
-    UITextView *mTextView = [UITextView new];
-    mTextView.bounds = CGRectMake(0, 0, SSChatTextInitWidth, 100);
-    mTextView.attributedText = _message.attTextString;
-    mTextView.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    [mTextView sizeToFit];
-    
-    _textLabRect = mTextView.bounds;// [NSObject getRectWith:_message.attTextString width:SSChatTextInitWidth];
+    _textLabRect = [NSObject getRectWith:_message.attTextString width:SSChatTextInitWidth];
     
     CGFloat textWidth  = _textLabRect.size.width;
     CGFloat textHeight = _textLabRect.size.height;
@@ -98,7 +93,7 @@
     
     if(_message.showTime==YES){
 
-        _timeLabRect = CGRectMake(SCREEN_Width/2-100, SSChatTimeTop, 200, SSChatTimeHeight);
+       [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -152,7 +147,7 @@
     
     if(_message.showTime==YES){
         
-        _timeLabRect = CGRectMake(SCREEN_Width/2-100, SSChatTimeTop, 200, SSChatTimeHeight);
+       [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -206,7 +201,7 @@
     
     if(_message.showTime==YES){
         
-        _timeLabRect = CGRectMake(SCREEN_Width/2-100, SSChatTimeTop, 200, SSChatTimeHeight);
+       [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -244,7 +239,7 @@
     
     if(_message.showTime==YES){
         
-        _timeLabRect = CGRectMake(SCREEN_Width/2-100, SSChatTimeTop, 200, SSChatTimeHeight);
+        [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -290,7 +285,7 @@
     
     if(_message.showTime==YES){
         
-        _timeLabRect = CGRectMake(SCREEN_Width/2-100, SSChatTimeTop, 200, SSChatTimeHeight);
+        [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -332,6 +327,14 @@
 }
 
 
+
+
+//获取时间的frame值
+-(void)getTimeLabRect{
+    CGRect timeRect = [NSObject getRectWith:_message.messageTime width:SSChatTimeWidth font:[UIFont systemFontOfSize:SSChatTimeFont] spacing:0 Row:0];
+    CGFloat timeWidth = timeRect.size.width+20;
+    _timeLabRect = CGRectMake((SCREEN_Width - timeWidth)/2, SSChatTimeTop, timeWidth, SSChatTimeHeight);
+}
 
 
 @end

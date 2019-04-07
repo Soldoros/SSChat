@@ -35,9 +35,19 @@
         _mImageView = [[UIImageView alloc]init];
         _mImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mImageView];
-        _mImageView.image = _item.fromImage; 
         _mImageView.userInteractionEnabled = YES;
         _mImageView.contentMode = _item.contentMode;
+        
+        //普通图片
+        if(_item.imageType == SSImageGroupImage){
+            _mImageView.image = _item.fromImage;
+        }
+        //gif图
+        else{
+            _mImageView.animationImages = _item.fromImages;
+            _mImageView.animationDuration = _item.fromImages.count * 0.1;
+            [_mImageView startAnimating];
+        }
         
         UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(GestureRecognizerPressed:)];
         gesture.numberOfTapsRequired = 1;
@@ -155,6 +165,22 @@
                     imageCell.imageCellFrame = CGRectMake(i*_mScrollView.width, 0, _mScrollView.width, _mScrollView.height);
                 }
             }
+            
+            else if(item.imageType == SSImageGroupGif){
+                SSImageGroupCell *imageCell = [[SSImageGroupCell alloc]initWithItem:item];
+                imageCell.imageCelldelegate = self;
+                [_mScrollView addSubview:imageCell];
+                
+                if(i==_currentIndex){
+                    _fromImgView = item.fromImgView;
+                    _fristImgView = item.fromImgView;
+                    imageCell.imageCellFrame =  [_mScrollView convertRect:_fromImgView.frame fromView:_fromImgView.superview];
+                    _fromImgView.hidden = YES;
+                }else{
+                    imageCell.imageCellFrame = CGRectMake(i*_mScrollView.width, 0, _mScrollView.width, _mScrollView.height);
+                }
+            }
+            
             else{
                 
                 SSVideoView *videoView = [[SSVideoView alloc]initWithItem:item];
@@ -182,7 +208,8 @@
     
     [UIView animateWithDuration:0.3 animations:^{
         self.backView.alpha = 1;
-        if(self.currentItem.imageType == SSImageGroupImage){
+        if(self.currentItem.imageType == SSImageGroupImage ||
+           self.currentItem.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = self.mScrollView.subviews[self.currentIndex];
             imageCell.imageCellFrame = self.mScrollView.bounds;
         }else{
@@ -265,7 +292,8 @@
     _currentPage = offset.x / sizeWidth;
     
     if(_currentPage!=_currentIndex){
-        if(_currentItem.imageType == SSImageGroupImage){
+        if(_currentItem.imageType == SSImageGroupImage ||
+           _currentItem.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = _mScrollView.subviews[_currentIndex];
             if (imageCell.zoomScale>1)[imageCell setZoomScale:1 animated:YES];
         }
@@ -335,7 +363,8 @@
         self.mScrollView.frame = self.bounds;
         [self setScrollerViewLandscape];
         
-        if(self.currentItem.imageType == SSImageGroupImage){
+        if(self.currentItem.imageType == SSImageGroupImage ||
+           self.currentItem.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = self.mScrollView.subviews[self.currentIndex];
             if (imageCell.zoomScale>1)[imageCell setZoomScale:1 animated:NO];
         }
@@ -355,7 +384,8 @@
         self.mScrollView.frame = CGRectMake(0, 0, self.width, self.height);
         [self setScrollerViewLandscape];
         
-        if(self.currentItem.imageType == SSImageGroupImage){
+        if(self.currentItem.imageType == SSImageGroupImage ||
+           self.currentItem.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = self.mScrollView.subviews[self.currentIndex];
             if (imageCell.zoomScale>1)[imageCell setZoomScale:1 animated:NO];
         }
@@ -375,7 +405,8 @@
         self.mScrollView.frame = self.bounds;
         [self setScrollerViewRestore];
         
-        if(self.currentItem.imageType == SSImageGroupImage){
+        if(self.currentItem.imageType == SSImageGroupImage ||
+           self.currentItem.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = self.mScrollView.subviews[self.currentIndex];
             if (imageCell.zoomScale>1)[imageCell setZoomScale:1 animated:NO];
         }
@@ -393,7 +424,8 @@
     _mScrollView.contentOffset = CGPointMake(_mScrollView.height * _currentIndex, 0);
     for(int i=0;i<_mScrollView.subviews.count;++i){
         SSImageGroupItem *item = _groupItems[i];
-        if(item.imageType == SSImageGroupImage){
+        if(item.imageType == SSImageGroupImage ||
+           item.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = _mScrollView.subviews[i];
             imageCell.imageCellFrame = CGRectMake(i*_mScrollView.height, 0, _mScrollView.height, _mScrollView.width);
         }
@@ -412,7 +444,8 @@
     _mScrollView.contentOffset = CGPointMake(_mScrollView.width * _currentIndex, 0);
     for(int i=0;i<_mScrollView.subviews.count;++i){
         SSImageGroupItem *item = _groupItems[i];
-        if(item.imageType == SSImageGroupImage){
+        if(item.imageType == SSImageGroupImage ||
+           item.imageType == SSImageGroupGif){
             SSImageGroupCell *imageCell = _mScrollView.subviews[i];
             imageCell.imageCellFrame = CGRectMake(i*_mScrollView.width, 0, _mScrollView.width, _mScrollView.height);
         }

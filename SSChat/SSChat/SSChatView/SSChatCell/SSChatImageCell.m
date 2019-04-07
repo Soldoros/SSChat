@@ -32,11 +32,21 @@
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
+    //普通图片
+    if(layout.message.messageType == SSChatMessageTypeImage){
+        self.mImgView.frame = self.mBackImgButton.bounds;
+        self.mImgView.image = self.layout.message.image;
+        self.mImgView.contentMode = self.layout.message.contentMode;
+    }
     
-    self.mImgView.frame = self.mBackImgButton.bounds;
-    self.mImgView.image = self.layout.message.image;
-    self.mImgView.contentMode = self.layout.message.contentMode;
-    
+    //gif图片
+    else{
+        self.mImgView.frame = self.mBackImgButton.bounds;
+        self.mImgView.contentMode = self.layout.message.contentMode;
+        self.mImgView.animationImages = self.layout.message.imageArr;
+        self.mImgView.animationDuration = self.layout.message.imageArr.count * 0.1;
+        [self.mImgView startAnimating];
+    }
     
     //给图片设置一个描边 描边跟背景按钮的气泡图片一样
     UIImageView *btnImgView = [[UIImageView alloc]initWithImage:image];

@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger,SSImagePickerWayStyle) {
  */
 typedef NS_ENUM(NSInteger,SSImagePickerModelType) {
     SSImagePickerModelImage=1,
+    SSImagePickerModelGif=2,
     SSImagePickerModelVideo,
     SSImagePickerModelAll,
 };

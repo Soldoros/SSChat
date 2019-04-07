@@ -60,4 +60,41 @@
 }
 
 
+//根据gif图片路径返回图片数组
++ (NSArray *)getImagesWithGif:(NSURL *)fileUrl {
+    
+    CGImageSourceRef gifSource = CGImageSourceCreateWithURL((CFURLRef)fileUrl, NULL);
+    size_t gifCount = CGImageSourceGetCount(gifSource);
+    NSMutableArray *frames = [[NSMutableArray alloc]init];
+    for (size_t i = 0; i< gifCount; i++) {
+        CGImageRef imageRef = CGImageSourceCreateImageAtIndex(gifSource, i, NULL);
+        UIImage *image = [UIImage imageWithCGImage:imageRef];
+        
+        //压缩尺寸
+        UIImage *image2 = [self scaleToSize:CGSizeMake(image.size.width/2, image.size.height/2) img:image];
+       
+        [frames addObject:image2];
+        CGImageRelease(imageRef);
+    }
+    return frames;
+}
+
+
+
+//压缩图片
++ (UIImage*) scaleToSize:(CGSize)size img:(UIImage *)img{
+    
+    UIGraphicsBeginImageContextWithOptions(size, NO, 2.0);
+    
+    [img drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return scaledImage;
+}
+
+
+
 @end

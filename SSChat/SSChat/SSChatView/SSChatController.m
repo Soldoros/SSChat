@@ -29,6 +29,9 @@
 @property(nonatomic,strong)UITableView *mTableView;
 @property(nonatomic,strong)NSMutableArray *datas;
 
+//刷新
+@property(nonatomic,strong)UIRefreshControl *refreshControl;
+
 //底部输入框 携带表情视图和多功能视图
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 
@@ -104,8 +107,36 @@
     }
     
     [_mTableView reloadData];
+    
+    _refreshControl = [UIRefreshControl new];
+    _refreshControl.tintColor = [UIColor grayColor];
+    [_refreshControl addTarget:self action:@selector(refreshTabView) forControlEvents:UIControlEventValueChanged];
+    if (@available(iOS 10.0, *)) {
+        [_mTableView addSubview:_refreshControl];
+    } else {
+
+    }
 }
 
+-(void)refreshTabView{
+    
+    [self performSelector:@selector(refreshEnd) withObject:nil afterDelay:1];
+}
+
+-(void)refreshEnd{
+    
+    if (@available(iOS 10.0, *)) {
+        if ([self.refreshControl isRefreshing]) {
+            [self.refreshControl endRefreshing];
+        }
+    }
+    
+    NSInteger index = random() % (_datas.count-1);
+    SSChatMessagelLayout *layout = _datas[index];
+    [_datas insertObject:layout atIndex:0];
+    [_mTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _datas.count==0?0:1;
@@ -191,11 +222,19 @@
 
         [_mAddImage getImagePickerWithAlertController:self modelType:SSImagePickerModelImage + index-10 pickerBlock:^(SSImagePickerWayStyle wayStyle, SSImagePickerModelType modelType, id object) {
             
+            //发送图片和gif图
             if(index==10){
-                UIImage *image = (UIImage *)object;
-                NSLog(@"%@",image);
-                NSDictionary *dic = @{@"image":image};
-                [self sendMessage:dic messageType:SSChatMessageTypeImage];
+                if(modelType == SSImagePickerModelImage){
+                    UIImage *image = (UIImage *)object;
+                    NSLog(@"%@",image);
+                    NSDictionary *dic = @{@"image":image};
+                    [self sendMessage:dic messageType:SSChatMessageTypeImage];
+                }
+                else{
+                    NSURL *imgUrl = [NSURL URLWithString:object];
+                    NSDictionary *dic = @{@"imageLocalPath":imgUrl};
+                    [self sendMessage:dic messageType:SSChatMessageTypeGif];
+                }
             }
             
             else{
@@ -248,6 +287,11 @@
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
             item.fromImage = mLayout.message.image;
+        }
+        else if(mLayout.message.messageType == SSChatMessageTypeGif){
+            item.imageType = SSImageGroupGif;
+            item.fromImgView = cell.mImgView;
+            item.fromImages = mLayout.message.imageArr;
         }
         else if (mLayout.message.messageType == SSChatMessageTypeVideo){
             item.imageType = SSImageGroupVideo;

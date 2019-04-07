@@ -77,12 +77,7 @@
     
     _mMessageTimeLab.hidden = !layout.message.showTime;
     _mMessageTimeLab.text = layout.message.messageTime;
-    [_mMessageTimeLab sizeToFit];
-    _mMessageTimeLab.height = SSChatTimeHeight;
-    _mMessageTimeLab.width += 20;
-    _mMessageTimeLab.centerX = SCREEN_Width*0.5;
-    _mMessageTimeLab.top = SSChatTimeTop;
-    
+    _mMessageTimeLab.frame = layout.timeLabRect;
     
     self.mHeaderImgBtn.frame = layout.headerImgRect;
     [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxaing2"] forState:UIControlStateNormal];

@@ -17,6 +17,7 @@
     self.mTextView.backgroundColor = [UIColor clearColor];
     self.mTextView.editable = NO;
     self.mTextView.scrollEnabled = NO;
+    self.mTextView.textContainer.lineFragmentPadding = 0;
     self.mTextView.layoutManager.allowsNonContiguousLayout = NO;
     self.mTextView.dataDetectorTypes = UIDataDetectorTypeAll;
     self.mTextView.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -34,8 +35,6 @@
 
     self.mTextView.frame = self.layout.textLabRect;
     self.mTextView.attributedText = layout.message.attTextString;
-    
-    
     
 }
 

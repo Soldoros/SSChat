@@ -39,7 +39,7 @@
 #define SSChatTextLRB           20           //文本左右长距离
 
 //显示时间
-#define SSChatTimeWidth         180          //时间宽度
+#define SSChatTimeWidth         250          //时间宽度
 #define SSChatTimeHeight        20           //时间高度
 #define SSChatTimeTop           15           //时间距离顶部
 #define SSChatTimeBottom        20           //时间距离底部
@@ -118,6 +118,7 @@ typedef NS_ENUM(NSInteger, SSChatMessageFrom) {
  判断发送消息所属的类型
  - SSChatMessageTypeText:        发送文本消息
  - SSChatMessageTypeImage:       发送图片消息
+ - SSChatMessageTypeGif:         发送Gif图片消息
  - SSChatMessageTypeVoice:       发送语音消息
  - SSChatMessageTypeMap:         发送地图定位
  - SSChatMessageTypeVideo:       发送小视频
@@ -127,15 +128,16 @@ typedef NS_ENUM(NSInteger, SSChatMessageFrom) {
  - SSChatMessageTypeDelete:      删除的消息
  */
 typedef NS_ENUM(NSInteger, SSChatMessageType) {
-    SSChatMessageTypeText =1,
-    SSChatMessageTypeImage,
-    SSChatMessageTypeVoice,
-    SSChatMessageTypeMap,
-    SSChatMessageTypeVideo,
-    SSChatMessageTypeRedEnvelope,
+    SSChatMessageTypeText = 1,
+    SSChatMessageTypeImage = 2,
+    SSChatMessageTypeGif = 3,
+    SSChatMessageTypeVoice = 4,
+    SSChatMessageTypeMap = 5,
+    SSChatMessageTypeVideo = 6,
+    SSChatMessageTypeRedEnvelope = 7,
     
-    SSChatMessageTypeUndo,
-    SSChatMessageTypeDelete,
+    SSChatMessageTypeUndo = 50,
+    SSChatMessageTypeDelete = 51,
 };
 
 
@@ -186,6 +188,10 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, strong) NSString    *imageString;
 @property (nonatomic, strong) UIImage     *image;
 @property (nonatomic, assign) UIViewContentMode contentMode;
+
+//gif图片本地地址  图片的第一张图
+@property (nonatomic, strong) NSString    *imageLocalPath;
+@property (nonatomic, strong) NSArray     *imageArr;
 
 //音频时长(单位：秒) 展示时长  音频网络路径  本地路径  音频
 @property (nonatomic, assign) NSInteger   voiceDuration;

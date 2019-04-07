@@ -23,6 +23,12 @@
 //获取本地视频的第一帧 返回图片
 +(UIImage *)getImage:(NSString *)videoURL;
 
+//根据gif图片路径返回图片数组
++ (NSArray *)getImagesWithGif:(NSURL *)fileUrl;
+
+//压缩图片
++ (UIImage*) scaleToSize:(CGSize)size img:(UIImage *)img;
+
 @end
 
 

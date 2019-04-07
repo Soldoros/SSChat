@@ -132,7 +132,7 @@ static SSChartEmotionImages *emotion = nil;
  
     NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:string];
     
-
+    
     //正则匹配要替换的文字的范围
     NSString * pattern = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
     NSError *error = nil;
@@ -173,7 +173,6 @@ static SSChartEmotionImages *emotion = nil;
                 [attStr addAttribute:NSParagraphStyleAttributeName value:paragraphString range:NSMakeRange(0, attStr.length)];
                 
             }
-            
             
             else{
 

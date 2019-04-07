@@ -56,10 +56,10 @@
     NSDictionary *dic5 = @{@"date":@"2018-11-09 09:15:26",
                            @"from":@"1",
                            @"messageId":@"20181109091427",
-                           @"type":@"2",
+                           @"type":@"3",
                            @"sessionId":sessionId,
                            @"headerImg":headerImg2,
-                           @"image":[UIImage imageNamed:@"image2.JPEG"]
+                           @"imageLocalPath":[[NSBundle mainBundle] URLForResource:@"image101" withExtension:@"gif"]
                            };
     NSDictionary *dic6 = @{@"text":@"恩，这是我的语音消息，请查收！我们的网址www.baidu.com",
                            @"date":@"2018-10-10 10:33:15",
@@ -88,7 +88,7 @@
     NSDictionary *dic9 = @{@"date":@"2018-11-09 11:19:26",
                            @"from":@"1",
                            @"messageId":@"20181109091421",
-                           @"type":@"5",
+                           @"type":@"6",
                            @"sessionId":sessionId,
                            @"headerImg":headerImg1,
                            @"videoLocalPath":[[NSBundle mainBundle] pathForResource:@"chengdu"ofType:@"mp4"]
@@ -164,11 +164,12 @@
         }
     }
 
-    //判断消息类型
+    //判断消息类型 文本消息生成的时候直接生成了可变文本
     if(message.messageType == SSChatMessageTypeText){
         
         message.cellString   = SSChatTextCellId;
         message.textString = dic[@"text"];
+        
     }else if (message.messageType == SSChatMessageTypeImage){
         message.cellString   = SSChatImageCellId;
         
@@ -177,6 +178,12 @@
         }else{
             message.image = dic[@"image"];
         }
+    }else if(message.messageType == SSChatMessageTypeGif){
+        message.cellString   = SSChatImageCellId;
+        message.imageLocalPath = dic[@"imageLocalPath"];
+        message.imageArr = [UIImage getImagesWithGif:dic[@"imageLocalPath"]];
+        message.image = message.imageArr[0];
+        NSLog(@"%@",message.imageArr);
     }else if (message.messageType == SSChatMessageTypeVoice){
         
         message.cellString   = SSChatVoiceCellId;
@@ -241,6 +248,15 @@
         }
             break;
         case SSChatMessageTypeImage:{
+            [messageDic setObject:@"1" forKey:@"from"];
+            [messageDic setValue:time forKey:@"date"];
+            [messageDic setValue:@(messageType) forKey:@"type"];
+            [messageDic setValue:messageId forKey:@"messageId"];
+            [messageDic setValue:sessionId forKey:@"sessionId"];
+            [messageDic setValue:headerImg1 forKey:@"headerImg"];
+        }
+            break;
+        case SSChatMessageTypeGif:{
             [messageDic setObject:@"1" forKey:@"from"];
             [messageDic setValue:time forKey:@"date"];
             [messageDic setValue:@(messageType) forKey:@"type"];
