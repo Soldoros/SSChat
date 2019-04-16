@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Define.h"
-#import "UIView+SSAdd.h"
 
 
 /**

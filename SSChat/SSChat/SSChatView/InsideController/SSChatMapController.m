@@ -9,7 +9,6 @@
 #import "SSChatMapController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "Define.h"
 
 
 @interface SSChatMapController ()<CLLocationManagerDelegate,MKMapViewDelegate>

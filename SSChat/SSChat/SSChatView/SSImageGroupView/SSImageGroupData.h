@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Define.h"
-#import "UIView+SSAdd.h"
-#import "UIImage+SSAdd.h"
+
 
 
 /**

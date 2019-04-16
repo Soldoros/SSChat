@@ -7,7 +7,7 @@
 //
 
 #import "UUProgressHUD.h"
-#import "Define.h"
+
 
 @interface UUProgressHUD ()
 {

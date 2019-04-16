@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Define.h"
 #import "SSDeviceDefault.h"
 #import <AVFoundation/AVFoundation.h>
 #import "UUProgressHUD.h"

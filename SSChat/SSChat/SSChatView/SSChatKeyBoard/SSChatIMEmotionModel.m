@@ -82,9 +82,12 @@ static SSChartEmotionImages *emotion = nil;
 
 -(NSMutableArray *)dealWithArray:(NSMutableArray *)arr1 arr2:(NSMutableArray *)arr2{
     NSMutableArray *arr = [NSMutableArray new];
-    [arr addObjectsFromArray:arr1];
-    [arr addObjectsFromArray:arr2];
-
+    if(arr1.count>0){
+        [arr addObjectsFromArray:arr1];
+    }
+    if(arr2.count>0){
+        [arr addObjectsFromArray:arr2];
+    }
     
     NSInteger k = 1;
     NSInteger number = SSChatEmojiRow * SSChatEmojiLine;

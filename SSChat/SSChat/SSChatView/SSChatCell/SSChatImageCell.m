@@ -35,8 +35,9 @@
     //普通图片
     if(layout.message.messageType == SSChatMessageTypeImage){
         self.mImgView.frame = self.mBackImgButton.bounds;
-        self.mImgView.image = self.layout.message.image;
         self.mImgView.contentMode = self.layout.message.contentMode;
+        NSURL *url = [NSURL URLWithString:self.layout.message.thumbnailRemotePath];
+        [self.mImgView setImageWithURL:url placeholder:[UIImage imageNamed:@""]];
     }
     
     //gif图片
