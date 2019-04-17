@@ -35,11 +35,12 @@
     [Privacy - Photo Library Usage Description 系统需要访问您的相册]
 
 ```
-2.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
-
-3.声明对象来
+2.在需要用键盘的控制器引用头文件并设置代理,声明多媒体键盘全局对象
 
 ```Objective-C
+   #import "SSChatKeyBoardInputView.h" 
+   <SSChatKeyBoardInputViewDelegate>
+
 //多媒体键盘
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 ```
