@@ -24,34 +24,34 @@
 1.plist文件需要设置权限 https配置 访问相机 麦克风 相册  <br>
 ```Objective-C
 
-    [App Transport Security Settings -> Allow Arbitrary Loads + YES ]
-    [App Transport Security Settings -> Allow Arbitrary Loads in Web Content + YES]
-    
-    [Privacy - Camera Usage Description 是否允许此App使用你的相机]
-    [Privacy - Location Always and When In Use Usage Description 系统想要访问您的位置]
-    [Privacy - Location When In Use Usage Description 系统想要访问您的位置]
-    [Privacy - Microphone Usage Description 系统想要访问您的麦克风]
-    [Privacy - Photo Library Additions Usage Description 系统需要访问您的相册]
-    [Privacy - Photo Library Usage Description 系统需要访问您的相册]
+[App Transport Security Settings -> Allow Arbitrary Loads + YES ]
+[App Transport Security Settings -> Allow Arbitrary Loads in Web Content + YES]
+
+[Privacy - Camera Usage Description 是否允许此App使用你的相机]
+[Privacy - Location Always and When In Use Usage Description 系统想要访问您的位置]
+[Privacy - Location When In Use Usage Description 系统想要访问您的位置]
+[Privacy - Microphone Usage Description 系统想要访问您的麦克风]
+[Privacy - Photo Library Additions Usage Description 系统需要访问您的相册]
+[Privacy - Photo Library Usage Description 系统需要访问您的相册]
 
 ```
 2.在需要用键盘的控制器引用头文件并设置代理,声明多媒体键盘全局对象
 
 ```Objective-C
-   #import "SSChatKeyBoardInputView.h" 
-   <SSChatKeyBoardInputViewDelegate>
+#import "SSChatKeyBoardInputView.h" 
+<SSChatKeyBoardInputViewDelegate>
 
 //多媒体键盘
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 ```
-4.初始化多媒体键盘
+3.初始化多媒体键盘
 
 ```Objective-C
 _mInputView = [SSChatKeyBoardInputView new];
 _mInputView.delegate = self;
 [self.view addSubview:_mInputView]; 
 ```
-5.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
+4.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
 
 ```Objective-C
 //Keyboard and list view homing
@@ -64,7 +64,7 @@ _mInputView.delegate = self;
 }
 
 ```
-7.在键盘的回调方法中，改变输入框高度和键盘位置的方法回调中，需要处理当前表单的frame，具体frame调整需要针对界面的布局来定，这里只对UITableView和它的父视图做个简单调整。
+5.在键盘的回调方法中，改变输入框高度和键盘位置的方法回调中，需要处理当前表单的frame，具体frame调整需要针对界面的布局来定，这里只对UITableView和它的父视图做个简单调整。
 
 ```Objective-C
 #pragma SSChatKeyBoardInputViewDelegate 底部输入框代理回调
@@ -90,7 +90,7 @@ _mInputView.delegate = self;
 }
 
 ```
-8.其它功能根据需求而定，文本消息在跟后台对接时只能使用字符串，布局是需要做图文混排处理，生成富文本。多功能视图简单处理了图片、视频和定位，大家可以自己拓展需要的功能，并在回调方法直接编写逻辑。
+6.其它功能根据需求而定，文本消息在跟后台对接时只能使用字符串，布局是需要做图文混排处理，生成富文本。多功能视图简单处理了图片、视频和定位，大家可以自己拓展需要的功能，并在回调方法直接编写逻辑。
 
 ```Objective-C
 //Send text messages
@@ -111,11 +111,9 @@ _mInputView.delegate = self;
 
 <h2>二、图片和短视频缩放</h2>
 
-1.添加AVFoundation.framework系统库
+1.添加AVFoundation.framework系统库,引用头文件#import "SSImageGroupView.h"
 
-2.引用头文件#import "SSImageGroupView.h"
-
-3.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
+2.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
 
 ```Objective-C
 #pragma SSChatBaseCellDelegate Click on the picture and click on the short video
@@ -178,9 +176,9 @@ _mInputView.delegate = self;
 
 ```Objective-C
 SSChatController *vc = [SSChatController new];
-vc.chatType = (SSChatConversationType)[_datas[indexPath.row][@"type"]integerValue];
-vc.sessionId = _datas[indexPath.row][@"sectionId"];
-vc.titleString = _datas[indexPath.row][@"title"];
+vc.hidesBottomBarWhenPushed = YES;
+vc.chatType = SSChatConversationTypeChat;
+vc.sessionId = @"";
 [self.navigationController pushViewController:vc animated:YES];
 
 ```
