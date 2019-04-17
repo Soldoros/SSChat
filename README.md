@@ -19,28 +19,26 @@
 </div>
 
 
-<h2>一、键盘的使用</h2>
+<h2>一、使用键盘</h2>
 
-1.将 SSChatKeyBoard 文件夹拖入到工程
+1.plist文件需要设置权限 访问相机 麦克风 相册
 
-2.plist文件需要设置权限 访问相机 麦克风 相册
+2.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
-3.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
-
-4.声明对象来
+3.声明对象来
 
 ```Objective-C
 //The input box at the bottom carries the expression view and the multifunctional view
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 ```
-5.初始化多媒体键盘
+4.初始化多媒体键盘
 
 ```Objective-C
 _mInputView = [SSChatKeyBoardInputView new];
 _mInputView.delegate = self;
 [self.view addSubview:_mInputView]; 
 ```
-6.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
+5.聊天界面通常是一个表单UITableView，这个时候需要在表单点击回调和滚动视图的滚动回调里面对键盘弹出收起做一个简单处理。
 
 ```Objective-C
 //Keyboard and list view homing
@@ -56,20 +54,26 @@ _mInputView.delegate = self;
 7.在键盘的回调方法中，改变输入框高度和键盘位置的方法回调中，需要处理当前表单的frame，具体frame调整需要针对界面的布局来定，这里只对UITableView和它的父视图做个简单调整。
 
 ```Objective-C
-#pragma SSChatKeyBoardInputViewDelegateThe bottom input box proxy callback
-//Click the button view frame to change the current list frame
+#pragma SSChatKeyBoardInputViewDelegate 底部输入框代理回调
+//点击按钮视图frame发生变化 调整当前列表frame
 -(void)SSChatKeyBoardInputViewHeight:(CGFloat)keyBoardHeight changeTime:(CGFloat)changeTime{
  
     CGFloat height = _backViewH - keyBoardHeight;
     [UIView animateWithDuration:changeTime animations:^{
         self.mBackView.frame = CGRectMake(0, SafeAreaTop_Height, SCREEN_Width, height);
         self.mTableView.frame = self.mBackView.bounds;
-        NSIndexPath *indexPath = [NSIndexPath     indexPathForRow:self.datas.count-1 inSection:0];
-        [self.mTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self updateTableView:YES];
     } completion:^(BOOL finished) {
         
     }];
-    
+}
+
+-(void)updateTableView:(BOOL)animation{
+    [self.mTableView reloadData];
+    if(self.datas.count>0){
+        NSIndexPath *indexPath = [NSIndexPath     indexPathForRow:self.datas.count-1 inSection:0];
+        [self.mTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:animation];
+    }
 }
 
 ```
