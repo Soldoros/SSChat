@@ -1,5 +1,5 @@
 <div align=center> 
-  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/Hello.PNG" width="380"> 
+  <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="380"> 
 </div>
 <br>
 
