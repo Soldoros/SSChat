@@ -6,10 +6,12 @@
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
-      简书：https://www.jianshu.com/p/576128ed69e1 </span><br><br><br>
-      
+      简书：https://www.jianshu.com/p/576128ed69e1 </span><br>
+  
+<span>测试账号1：13540033101  aaaa1111  <br>
+      测试账号2：13540033102  aaaa1111 <br></span><br>
 
-
+<br><br>
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
