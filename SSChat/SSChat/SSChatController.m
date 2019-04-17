@@ -26,7 +26,7 @@
 @property (assign, nonatomic) CGFloat   backViewH;
 @property(nonatomic,strong)UITableView *mTableView;
 @property(nonatomic,strong)NSMutableArray *datas;
-//多媒体输入框
+//多媒体键盘
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 //访问相册+摄像头
 @property(nonatomic,strong)SSAddImage *mAddImage;
@@ -200,7 +200,6 @@
     } completion:^(BOOL finished) {
         
     }];
-    
 }
 
 
