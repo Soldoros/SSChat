@@ -9,21 +9,6 @@
 #import <Foundation/Foundation.h>
 
 
-
-/**
- 搜索的类型
-
- - PBSearchDoctorType: 搜索医生
- - PBSearchDepartmentType: 搜索科室
- - PBSearchDiseaseType: 搜索疾病
- */
-typedef NS_ENUM(NSInteger,PBSearchType) {
-    PBSearchDoctorType=1,
-    PBSearchDepartmentType,
-    PBSearchDiseaseType,
-};
-
-
 /**
  搜索类型
  
@@ -41,6 +26,3 @@ typedef NS_ENUM(NSInteger,PBSearchAllType) {
 
 
 
-@interface PBSearchData : NSObject
-
-@end

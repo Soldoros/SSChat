@@ -1,29 +1,33 @@
 //
-//  SSRootManagement.m
+//  SSRootManager.m
 //  SSChat
 //
-//  Created by soldoros on 2019/4/13.
+//  Created by soldoros on 2019/4/17.
 //  Copyright © 2019 soldoros. All rights reserved.
 //
 
-#import "SSRootManagement.h"
+#import "SSRootManager.h"
 #import "AccountLoginController.h"
 #import "ConversationController.h"
 #import "ContactController.h"
 #import "MineController.h"
 
-static SSRootManagement *manager = nil;
+#import "SSHelloManager.h"
+#import "SSNotificationManager.h"
 
-@implementation SSRootManagement
 
-+(SSRootManagement *)shareRootManagement{
+static SSRootManager *manager = nil;
+
+@implementation SSRootManager
+
++(SSRootManager *)shareRootManager{
     
     static dispatch_once_t once;
     dispatch_once(&once,^{
-        manager = [[SSRootManagement alloc]init];
+        manager = [[SSRootManager alloc]init];
         manager.user = [NSUserDefaults standardUserDefaults];
-        [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(loginStateChange:) name:NotiLoginStatusChange object:nil];
-        
+        [manager registerNitification];
+       
         if([manager.user valueForKey:USER_Name] == nil){
             [manager.user setBool:NO forKey:USER_Login];
             [manager.user setValue:@"" forKey:USER_Name];
@@ -31,9 +35,16 @@ static SSRootManagement *manager = nil;
             [manager.user setValue:@"" forKey:USER_Password];
             [manager.user setBool:YES forKey:USER_AddVerification];
         }
+        
         [manager initalizeManagement:[manager.user boolForKey:USER_Login]];
     });
     return manager;
+}
+
+-(void)registerNitification{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(loginStateChange:) name:NotiLoginStatusChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(didNotificationsUnreadCountUpdate:) name:NotiUnreadCount object:nil];
 }
 
 -(void)loginStateChange:(NSNotification *)noti{
@@ -44,8 +55,15 @@ static SSRootManagement *manager = nil;
 }
 
 -(void)initalizeManagement:(BOOL)isLogin{
-    if(isLogin == NO) [manager initalizeLoginController];
-    else [manager initalizeUserInterface];
+    if(isLogin == NO) {
+        [manager initalizeLoginController];
+        
+    }else{
+        
+        [manager initalizeUserInterface];
+        [SSHelloManager shareHelloManager];
+        [SSNotificationManager shareSSNotificationManager];
+    }
 }
 
 -(void)initalizeLoginController{
@@ -78,6 +96,19 @@ static SSRootManagement *manager = nil;
 }
 
 
+//消息未读展示红点
+-(void)didNotificationsUnreadCountUpdate:(NSNotification *)noti{
+    
+    NSInteger count = [(NSString *)noti.object integerValue];
+    
+    UITabBarController *tabBarController = (UITabBarController *)[AppDelegate sharedAppDelegate].window.rootViewController;
+    UINavigationController *nav = tabBarController.viewControllers[1];
+    if(count>0){
+        nav.tabBarItem.badgeValue = makeStrWithInt(count);
+    }else{
+        nav.tabBarItem.badgeValue = nil;
+    }
+}
 
 
 @end

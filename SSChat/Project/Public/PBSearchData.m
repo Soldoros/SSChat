@@ -8,6 +8,6 @@
 
 #import "PBSearchData.h"
 
-@implementation PBSearchData
 
-@end
+
+

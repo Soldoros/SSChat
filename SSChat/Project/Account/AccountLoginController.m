@@ -208,7 +208,7 @@
             makeUserPassWord(passWorld);
             makeUserNickName(@"");
             [[EMClient sharedClient].options setIsAutoLogin:YES];
-             [[NSNotificationCenter defaultCenter] postNotificationName:NotiLoginStatusChange object:@YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotiLoginStatusChange object:@YES];
         }
         else {
             cout(aError.errorDescription);

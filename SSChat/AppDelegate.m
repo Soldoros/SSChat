@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "SSHelloManagement.h"
-#import "SSRootManagement.h"
+#import "SSRootManager.h"
+#import "SSHelloManager.h"
 
 @interface AppDelegate ()
 
@@ -23,9 +23,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    [SSRootManagement shareRootManagement];
-    [SSHelloManagement shareHelloManagement];
-    
+    EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
+    [[EMClient sharedClient] initializeSDKWithOptions:options];
+
+    [SSRootManager shareRootManager];
+   
     return YES;
     
 }

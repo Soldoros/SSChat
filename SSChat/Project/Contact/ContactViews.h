@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SSNotificationManager.H"
 
 @protocol ContactViewsDelegate <NSObject>
 
@@ -30,6 +31,9 @@
 @property(nonatomic,strong)UIImageView *mLeftImgView;
 @property(nonatomic,strong)UILabel *mTitleLab;
 
+//红色数字提示
+@property(nonatomic,strong)UILabel *mRedLab;
+
 
 @end
 
@@ -44,7 +48,7 @@
 @property(nonatomic,assign)id<ContactViewsDelegate>delegate;
 
 @property(nonatomic,strong)NSIndexPath  *indexPath;
-@property(nonatomic,strong)NSDictionary *dataDic;
+@property(nonatomic,strong)SSNotificationModel *model;
 
 //时间 背景图
 @property(nonatomic,strong)UILabel     *mTimeLab;
@@ -53,10 +57,12 @@
 @property(nonatomic,strong)UIImageView *mLeftImgView; 
 @property(nonatomic,strong)UILabel     *mTitleLab;
 @property(nonatomic,strong)UILabel     *mMessageLab;
-@property(nonatomic,strong)UIView      *mLine;
+@property(nonatomic,strong)UIView      *mLine1;
+@property(nonatomic,strong)UIView      *mLine2;
 //拒绝 同意
 @property(nonatomic,strong)UIButton    *mButton1;
 @property(nonatomic,strong)UIButton    *mButton2;
-
+//处理后的提示
+@property(nonatomic,strong)UILabel     *mBottomLab;
 
 @end

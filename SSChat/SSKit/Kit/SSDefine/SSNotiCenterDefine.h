@@ -27,6 +27,11 @@
 //个人信息发生变化
 #define NotiMinePersonalChange        @"NotiMinePersonalChange"
 
+//消息未读通知
+#define NotiUnreadCount               @"NotiUnreadCount"
+//数据归档后通知
+#define NotiDataPersistence           @"NotiDataPersistence"
+
 
 
 

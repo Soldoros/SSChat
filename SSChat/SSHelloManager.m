@@ -1,21 +1,22 @@
 //
-//  SSHelloManagement.m
+//  SSHelloManager.m
 //  SSChat
 //
-//  Created by soldoros on 2019/4/13.
+//  Created by soldoros on 2019/4/17.
 //  Copyright © 2019 soldoros. All rights reserved.
 //
 
-#import "SSHelloManagement.h"
+#import "SSHelloManager.h"
 
-static SSHelloManagement *hello = nil;
 
-@implementation SSHelloManagement
+static SSHelloManager *hello = nil;
 
-+(SSHelloManagement *)shareHelloManagement{
+@implementation SSHelloManager
+
++(SSHelloManager *)shareHelloManager{
     static dispatch_once_t once;
     dispatch_once(&once,^{
-        hello = [[SSHelloManagement alloc]init];
+        hello = [[SSHelloManager alloc]init];
         [hello initalizeRegister];
     });
     return hello;
@@ -23,14 +24,8 @@ static SSHelloManagement *hello = nil;
 
 -(void)initalizeRegister{
     
-    EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
-    [[EMClient sharedClient] initializeSDKWithOptions:options];
-    
-    //登录回调
     [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
-    //注册消息回调
     [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    //注册好友申请/删除回调
     [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
     
 }
@@ -45,7 +40,7 @@ static SSHelloManagement *hello = nil;
 -(void)autoLoginDidCompleteWithError:(EMError *)aError{
     if (aError) {
         [SSAlert pressentAlertControllerWithTitle:nil message:@"自动登陆失败，请重新登陆!" okButton:@"确定" cancelButton:nil alertBlock:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotiLoginStatusChange object:@NO]; 
+        [[NSNotificationCenter defaultCenter] postNotificationName:NotiLoginStatusChange object:@NO];
     }
     else{
         cout(@"自动登录成功!");
@@ -84,7 +79,7 @@ static SSHelloManagement *hello = nil;
 //用户A发送加用户B为好友的申请，用户B会收到这个回调
 - (void)friendRequestDidReceiveFromUser:(NSString *)aUsername message:(NSString *)aMessage{
     cout(@"收到好友请求的回调");
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotiGetAddContacts object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotiGetAddContacts object:@[aUsername,aMessage]];
 }
 
 //用户A发送加用户B为好友的申请，用户B同意后，用户A会收到这个回调
@@ -112,8 +107,9 @@ static SSHelloManagement *hello = nil;
 //接收一条及以上的透传消息
 -(void)cmdMessagesDidReceive:(NSArray *)aCmdMessages{
     cout(@"透传来消息了");
-     [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:aCmdMessages];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:aCmdMessages];
 }
 
 
 @end
+

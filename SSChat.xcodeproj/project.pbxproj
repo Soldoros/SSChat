@@ -46,6 +46,9 @@
 		AFA76A2B2265AA32001D7C9F /* MineBlackListController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA76A2A2265AA32001D7C9F /* MineBlackListController.m */; };
 		AFA76A312265D58B001D7C9F /* AccountForgotPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA76A302265D58B001D7C9F /* AccountForgotPasswordController.m */; };
 		AFA76A362265E713001D7C9F /* ContactFriendRequestsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFA76A352265E713001D7C9F /* ContactFriendRequestsController.m */; };
+		AFAAA76E22675DC90067A4E2 /* SSNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAAA76D22675DC90067A4E2 /* SSNotificationManager.m */; };
+		AFAAA77122675DD60067A4E2 /* SSHelloManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAAA77022675DD60067A4E2 /* SSHelloManager.m */; };
+		AFAAA77422675DE50067A4E2 /* SSRootManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAAA77322675DE50067A4E2 /* SSRootManager.m */; };
 		AFAE1EE3225D8AB800E239D8 /* MineViews.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAE1EE2225D8AB800E239D8 /* MineViews.m */; };
 		AFAE1EE6225D8AC200E239D8 /* MineData.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAE1EE5225D8AC200E239D8 /* MineData.m */; };
 		AFAE1EED225D9D1200E239D8 /* MineScanningController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFAE1EE8225D9D1200E239D8 /* MineScanningController.m */; };
@@ -55,12 +58,11 @@
 		AFC971AF22621566007D370E /* ConversationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971AE22621566007D370E /* ConversationController.m */; };
 		AFC971B222621575007D370E /* ConversationViews.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971B122621575007D370E /* ConversationViews.m */; };
 		AFC971B522621581007D370E /* ConversationData.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971B422621581007D370E /* ConversationData.m */; };
-		AFC971B82262194B007D370E /* SSRootManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971B72262194B007D370E /* SSRootManagement.m */; };
-		AFC971BB226223F8007D370E /* SSHelloManagement.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971BA226223F8007D370E /* SSHelloManagement.m */; };
 		AFC971C722625CCE007D370E /* SSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971C622625CCE007D370E /* SSAlert.m */; };
 		AFCFD0F0225C95E30004C74E /* ContactViews.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCFD0EF225C95E30004C74E /* ContactViews.m */; };
 		AFCFD0FC225C98930004C74E /* SSRequestLoadingStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCFD0F5225C98930004C74E /* SSRequestLoadingStatus.m */; };
 		AFCFD0FE225C98930004C74E /* SSRequestStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCFD0F8225C98930004C74E /* SSRequestStatus.m */; };
+		AFD2ED7222671B8300948B78 /* ContactData.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD2ED7122671B8300948B78 /* ContactData.m */; };
 		AFD7368E225C2CE300A3328C /* SSAddImgView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73636225C2CE300A3328C /* SSAddImgView.m */; };
 		AFD7368F225C2CE300A3328C /* SSSMSView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73637225C2CE300A3328C /* SSSMSView.m */; };
 		AFD73690225C2CE300A3328C /* SSChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73638225C2CE300A3328C /* SSChoiceView.m */; };
@@ -186,6 +188,12 @@
 		AFA76A302265D58B001D7C9F /* AccountForgotPasswordController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountForgotPasswordController.m; sourceTree = "<group>"; };
 		AFA76A342265E713001D7C9F /* ContactFriendRequestsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactFriendRequestsController.h; sourceTree = "<group>"; };
 		AFA76A352265E713001D7C9F /* ContactFriendRequestsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactFriendRequestsController.m; sourceTree = "<group>"; };
+		AFAAA76C22675DC90067A4E2 /* SSNotificationManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSNotificationManager.h; sourceTree = "<group>"; };
+		AFAAA76D22675DC90067A4E2 /* SSNotificationManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSNotificationManager.m; sourceTree = "<group>"; };
+		AFAAA76F22675DD60067A4E2 /* SSHelloManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHelloManager.h; sourceTree = "<group>"; };
+		AFAAA77022675DD60067A4E2 /* SSHelloManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHelloManager.m; sourceTree = "<group>"; };
+		AFAAA77222675DE50067A4E2 /* SSRootManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSRootManager.h; sourceTree = "<group>"; };
+		AFAAA77322675DE50067A4E2 /* SSRootManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSRootManager.m; sourceTree = "<group>"; };
 		AFAE1EE1225D8AB800E239D8 /* MineViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineViews.h; sourceTree = "<group>"; };
 		AFAE1EE2225D8AB800E239D8 /* MineViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineViews.m; sourceTree = "<group>"; };
 		AFAE1EE4225D8AC200E239D8 /* MineData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineData.h; sourceTree = "<group>"; };
@@ -201,10 +209,6 @@
 		AFC971B122621575007D370E /* ConversationViews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationViews.m; sourceTree = "<group>"; };
 		AFC971B322621581007D370E /* ConversationData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationData.h; sourceTree = "<group>"; };
 		AFC971B422621581007D370E /* ConversationData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationData.m; sourceTree = "<group>"; };
-		AFC971B62262194B007D370E /* SSRootManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSRootManagement.h; sourceTree = "<group>"; };
-		AFC971B72262194B007D370E /* SSRootManagement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSRootManagement.m; sourceTree = "<group>"; };
-		AFC971B9226223F8007D370E /* SSHelloManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSHelloManagement.h; sourceTree = "<group>"; };
-		AFC971BA226223F8007D370E /* SSHelloManagement.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSHelloManagement.m; sourceTree = "<group>"; };
 		AFC971C522625CCE007D370E /* SSAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSAlert.h; sourceTree = "<group>"; };
 		AFC971C622625CCE007D370E /* SSAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSAlert.m; sourceTree = "<group>"; };
 		AFCFD0EE225C95E30004C74E /* ContactViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactViews.h; sourceTree = "<group>"; };
@@ -213,6 +217,8 @@
 		AFCFD0F5225C98930004C74E /* SSRequestLoadingStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSRequestLoadingStatus.m; sourceTree = "<group>"; };
 		AFCFD0F8225C98930004C74E /* SSRequestStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSRequestStatus.m; sourceTree = "<group>"; };
 		AFCFD0FA225C98930004C74E /* SSRequestLoadingStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSRequestLoadingStatus.h; sourceTree = "<group>"; };
+		AFD2ED7022671B8300948B78 /* ContactData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactData.h; sourceTree = "<group>"; };
+		AFD2ED7122671B8300948B78 /* ContactData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactData.m; sourceTree = "<group>"; };
 		AFD73633225C2CE300A3328C /* SSKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKit.h; sourceTree = "<group>"; };
 		AFD73636225C2CE300A3328C /* SSAddImgView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSAddImgView.m; sourceTree = "<group>"; };
 		AFD73637225C2CE300A3328C /* SSSMSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSSMSView.m; sourceTree = "<group>"; };
@@ -375,10 +381,12 @@
 				AFD73632225C2CE300A3328C /* SSKit */,
 				AF804B1121A3DC7F00225FCE /* AppDelegate.h */,
 				AF804B1221A3DC7F00225FCE /* AppDelegate.m */,
-				AFC971B62262194B007D370E /* SSRootManagement.h */,
-				AFC971B72262194B007D370E /* SSRootManagement.m */,
-				AFC971B9226223F8007D370E /* SSHelloManagement.h */,
-				AFC971BA226223F8007D370E /* SSHelloManagement.m */,
+				AFAAA76C22675DC90067A4E2 /* SSNotificationManager.h */,
+				AFAAA76D22675DC90067A4E2 /* SSNotificationManager.m */,
+				AFAAA76F22675DD60067A4E2 /* SSHelloManager.h */,
+				AFAAA77022675DD60067A4E2 /* SSHelloManager.m */,
+				AFAAA77222675DE50067A4E2 /* SSRootManager.h */,
+				AFAAA77322675DE50067A4E2 /* SSRootManager.m */,
 				AF804CB421A3DCF800225FCE /* Assets.xcassets */,
 				AFD736B8225C2DAC00A3328C /* SSProject.pch */,
 				AF804B2A21A3DCE000225FCE /* SSChat */,
@@ -746,6 +754,8 @@
 				AFD736C1225C436B00A3328C /* ContactController.m */,
 				AFCFD0EE225C95E30004C74E /* ContactViews.h */,
 				AFCFD0EF225C95E30004C74E /* ContactViews.m */,
+				AFD2ED7022671B8300948B78 /* ContactData.h */,
+				AFD2ED7122671B8300948B78 /* ContactData.m */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -959,10 +969,12 @@
 				AF804C0B21A3DCE100225FCE /* SSChatMapController.m in Sources */,
 				AFD736D3225C4AB900A3328C /* SSChatDatas.m in Sources */,
 				AFD73696225C2CE300A3328C /* SSImageAnimationView.m in Sources */,
+				AFAAA77422675DE50067A4E2 /* SSRootManager.m in Sources */,
 				AFD736D9225C4ADB00A3328C /* SSChatMessagelLayout.m in Sources */,
 				AF804C1521A3DCE100225FCE /* SSChatVoiceCell.m in Sources */,
 				AFC971B522621581007D370E /* ConversationData.m in Sources */,
 				AFD736B1225C2CE300A3328C /* BaseTableViewController.m in Sources */,
+				AFD2ED7222671B8300948B78 /* ContactData.m in Sources */,
 				AF804C1421A3DCE100225FCE /* SSChatMapCell.m in Sources */,
 				AF804C1B21A3DCE100225FCE /* UUProgressHUD.m in Sources */,
 				AFD736B4225C2CE300A3328C /* BaseCollectionViewController.m in Sources */,
@@ -973,7 +985,6 @@
 				AF804CA721A3DCE100225FCE /* SSChatKeyBordSymbolView.m in Sources */,
 				AF804C1621A3DCE100225FCE /* SSChatVideoCell.m in Sources */,
 				AFA76A2422657653001D7C9F /* SSChatTime.m in Sources */,
-				AFC971B82262194B007D370E /* SSRootManagement.m in Sources */,
 				AFD73693225C2CE300A3328C /* SSMake.m in Sources */,
 				AFC971AF22621566007D370E /* ConversationController.m in Sources */,
 				AFD736AE225C2CE300A3328C /* BaseModel.m in Sources */,
@@ -1004,10 +1015,10 @@
 				AFD736A9225C2CE300A3328C /* UITableView+SSAdd.m in Sources */,
 				AFA76A2B2265AA32001D7C9F /* MineBlackListController.m in Sources */,
 				AFCFD0F0225C95E30004C74E /* ContactViews.m in Sources */,
-				AFC971BB226223F8007D370E /* SSHelloManagement.m in Sources */,
 				AFA76A312265D58B001D7C9F /* AccountForgotPasswordController.m in Sources */,
 				AF187C6C2264D64400152931 /* MinePersonalController.m in Sources */,
 				AFD7368F225C2CE300A3328C /* SSSMSView.m in Sources */,
+				AFAAA77122675DD60067A4E2 /* SSHelloManager.m in Sources */,
 				AFAE1EE6225D8AC200E239D8 /* MineData.m in Sources */,
 				AFFA3BC5225ED7FF002AE49A /* PBSearchData.m in Sources */,
 				AF804C1121A3DCE100225FCE /* SSChatBaseCell.m in Sources */,
@@ -1034,6 +1045,7 @@
 				AFD736D8225C4ADB00A3328C /* SSChatMessage.m in Sources */,
 				AFCFD0FC225C98930004C74E /* SSRequestLoadingStatus.m in Sources */,
 				AF804CAF21A3DCE100225FCE /* SSImageGroupData.m in Sources */,
+				AFAAA76E22675DC90067A4E2 /* SSNotificationManager.m in Sources */,
 				AFD7369F225C2CE300A3328C /* SSDeviceDefault.m in Sources */,
 				AFD736AD225C2CE300A3328C /* BaseController.m in Sources */,
 				AFD736C5225C437600A3328C /* MineController.m in Sources */,

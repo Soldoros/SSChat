@@ -27,33 +27,13 @@
 }
 
 -(void)registerNoti{
-    
-    //收到有人添加我为好友
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAddContacts:) name:NotiGetAddContacts object:nil];
+   
     //好友添加/删除后的回调
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactChange) name:NotiContactChange object:nil];
+    //未读通知
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didNotificationsUnreadCountUpdate:) name:NotiUnreadCount object:nil];
 }
 
--(void)getAddContacts:(NSNotification *)noti{
-    NSString *name = noti.object;
-    
-    [SSAlert pressentAlertControllerWithTitle:@"添加好友" message:nil okButton:@"同意" cancelButton:@"拒绝" alertBlock:^(UIAlertAction *action) {
-        if([action.title isEqualToString:@"同意"]){
-            EMError *error = [[EMClient sharedClient].contactManager acceptInvitationForUsername:name];
-            if (!error) {
-                NSLog(@"发送同意成功");
-                [self sendNotifCation:NotiContactChange];
-            }
-        }
-        else{
-            EMError *error = [[EMClient sharedClient].contactManager declineInvitationForUsername:name];
-            if (!error) {
-                NSLog(@"发送拒绝成功");
-            }
-        }
-    }];
-    
-}
 
 -(void)contactChange{
     [self.datas removeAllObjects];
@@ -168,7 +148,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
-        EMError *error = [[EMClient sharedClient].contactManager deleteContact:self.datas[indexPath.row] isDeleteConversation:YES];
+        EMError *error = [[EMClient sharedClient].contactManager deleteContact:self.datas[indexPath.section][indexPath.row][@"title"] isDeleteConversation:YES];
         if (!error) {
             NSLog(@"删除成功");
         }
@@ -185,6 +165,9 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-
+//显示未读消息
+- (void)didNotificationsUnreadCountUpdate:(NSInteger)aUnreadCount{
+     [self.mTableView reloadData];
+}
 
 @end
