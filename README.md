@@ -1,11 +1,22 @@
 <div align=center> 
-  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/Hello.PNG" width="380"> 
+  <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
+</div>
+
+<span>Hello是基于环信和SSChat框架开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信，真的很棒。感谢为此Demo提出宝贵的意见和建议！ </span>
+
+<span>邮箱：765970680@qq.com  <br>
+      钉钉：13540033103 <br>
+      简书：https://www.jianshu.com/p/576128ed69e1 </span><br>
+  
+<span>测试账号1：13540033101 &nbsp;&nbsp;&nbsp; aaaa1111  <br>
+      测试账号2：13540033102 &nbsp;&nbsp;&nbsp; qqqq1111 <br></span><br>
+
+<br><br>
+<div align=center> 
+  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
+  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
 </div>
 <br>
-
-<h2>Demo简介</h2>
-
-<span>Hello是基于环信和SSChat框架开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信，真的很棒。感谢为此Demo提出宝贵的意见和建议！ </span><br>
 
 <h2>使用到的第三方工具</h2>
 
@@ -15,19 +26,6 @@ pod 'MJRefresh'
 pod 'YYKit'
 pod 'HyphenateLite'
 ```
-
-<br>
-<span>邮箱：765970680@qq.com  <br>
-      钉钉：13540033103 <br>
-      简书：https://www.jianshu.com/p/576128ed69e1 </span><br><br><br>
-      
-
-
-<div align=center> 
-  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
-  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
-</div>
-
 
 <h2>一、使用键盘</h2>
 
