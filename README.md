@@ -1,17 +1,20 @@
 <div align=center> 
-  <h1>SSChat（OC）</h1> 
+  <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/Hello.PNG" width="380"> 
 </div>
 <br>
 
+<span>Hello是基于环信和SSChat框架开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信，真的很棒。也希望在以后与广大开发人员一起共勉，感谢为此系统提出宝贵的意见和建议！ </span>
+
+
+<br><br>
+<span>邮箱：765970680@qq.com  <br>
+      钉钉：13540033103 <br>
+      简书：https://www.jianshu.com/p/576128ed69e1 </span><br><br><br>
 
 <div align=center> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/1.PNG" width="345"> 
   <img src= "https://raw.githubusercontent.com/Soldoros/SSChat/master/datu/4.PNG" width="345">
 </div>
-
-<span>邮箱：765970680@qq.com  <br>
-      钉钉：13540033103 <br>
-      简书：https://www.jianshu.com/p/576128ed69e1 </span><br><br><br>
 
 
 <h2>一、键盘的使用</h2>
@@ -162,6 +165,5 @@ vc.titleString = _datas[indexPath.row][@"title"];
 [self.navigationController pushViewController:vc animated:YES];
 
 ```
-
 
 
