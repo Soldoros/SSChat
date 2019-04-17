@@ -22,6 +22,8 @@
 <h2>一、使用键盘</h2>
 
 1.plist文件需要设置权限 https配置 访问相机 麦克风 相册  <br>
+```Objective-C
+
     [App Transport Security Settings -> Allow Arbitrary Loads + YES ]<br>
     [App Transport Security Settings -> Allow Arbitrary Loads in Web Content + YES]<br>
     [Privacy - Camera Usage Description 是否允许此App使用你的相机]<br>
@@ -31,6 +33,7 @@
     [Privacy - Photo Library Additions Usage Description 系统需要访问您的相册]<br>
     [Privacy - Photo Library Usage Description 系统需要访问您的相册]<br>
 
+```Objective-C
 2.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
 3.声明对象来
