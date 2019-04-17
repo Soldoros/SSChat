@@ -28,7 +28,7 @@
 3.声明对象来
 
 ```Objective-C
-//The input box at the bottom carries the expression view and the multifunctional view
+//多媒体键盘
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 ```
 4.初始化多媒体键盘
