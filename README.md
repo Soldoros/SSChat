@@ -21,15 +21,15 @@
 
 <h2>一、使用键盘</h2>
 
-1.plist文件需要设置权限 https配置 访问相机 麦克风 相册  
-    [App Transport Security Settings -> Allow Arbitrary Loads + YES ]
-    [App Transport Security Settings -> Allow Arbitrary Loads in Web Content + YES]
-    [Privacy - Camera Usage Description 是否允许此App使用你的相机]
-    [Privacy - Location Always and When In Use Usage Description 系统想要访问您的位置]
-    [Privacy - Location When In Use Usage Description 系统想要访问您的位置]
-    [Privacy - Microphone Usage Description 系统想要访问您的麦克风]
-    [Privacy - Photo Library Additions Usage Description 系统需要访问您的相册]
-    [Privacy - Photo Library Usage Description 系统需要访问您的相册]
+1.plist文件需要设置权限 https配置 访问相机 麦克风 相册  <br>
+    [App Transport Security Settings -> Allow Arbitrary Loads + YES ]<br>
+    [App Transport Security Settings -> Allow Arbitrary Loads in Web Content + YES]<br>
+    [Privacy - Camera Usage Description 是否允许此App使用你的相机]<br>
+    [Privacy - Location Always and When In Use Usage Description 系统想要访问您的位置]<br>
+    [Privacy - Location When In Use Usage Description 系统想要访问您的位置]<br>
+    [Privacy - Microphone Usage Description 系统想要访问您的麦克风]<br>
+    [Privacy - Photo Library Additions Usage Description 系统需要访问您的相册]<br>
+    [Privacy - Photo Library Usage Description 系统需要访问您的相册]<br>
 
 2.在需要用键盘的控制器引用头文件 #import "SSChatKeyBoardInputView.h" 并设置代理 SSChatKeyBoardInputViewDelegate
 
