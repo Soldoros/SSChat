@@ -100,7 +100,7 @@ static SSNotificationManager *manager = nil;
     }
     
     if (manager.isCheckUnreadCount) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotiUnreadCount object:makeStrWithInt(manager.unreadCount)];
+        [self didNotificationsUnreadCountUpdate];
     }
 }
 
@@ -127,7 +127,7 @@ static SSNotificationManager *manager = nil;
         
         manager.unreadCount = 0;
         if (manager.isCheckUnreadCount) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiUnreadCount object:makeStrWithInt(0)];
+            [self didNotificationsUnreadCountUpdate];
         }
     }
 }
@@ -178,13 +178,28 @@ static SSNotificationManager *manager = nil;
         aModel.isRead = YES;
     } else {
         ++manager.unreadCount;
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotiUnreadCount object:makeStrWithInt(manager.unreadCount)];
+        [self didNotificationsUnreadCountUpdate];
     }
     
     [manager.notificationList insertObject:aModel atIndex:0];
     [self dataLocalPersistence];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:NotiDataPersistence object:nil];
+}
+
+
+//消息未读展示红点
+-(void)didNotificationsUnreadCountUpdate{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotiUnreadCount object:makeStrWithInt(manager.unreadCount)];
+    
+    UITabBarController *tabBarController = (UITabBarController *)[AppDelegate sharedAppDelegate].window.rootViewController;
+    UINavigationController *nav = tabBarController.viewControllers[1];
+    if( manager.unreadCount>0){
+        nav.tabBarItem.badgeValue = makeStrWithInt( manager.unreadCount);
+    }else{
+        nav.tabBarItem.badgeValue = nil;
+    }
 }
 
 

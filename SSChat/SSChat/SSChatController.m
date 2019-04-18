@@ -37,6 +37,9 @@
 //数据模型
 @property(nonatomic,strong)SSChatDatas *chatData;
 
+//开始翻页的messageId
+@property(nonatomic,strong)NSString *startMsgId;
+
 @end
 
 @implementation SSChatController
@@ -46,6 +49,7 @@
         _chatType = SSChatConversationTypeChat;
         _datas = [NSMutableArray new];
         _chatData = [SSChatDatas new];
+        _startMsgId = @"";
     }
     return self;
 }
@@ -135,18 +139,41 @@
     [_mTableView registerClass:NSClassFromString(@"SSChatMapCell") forCellReuseIdentifier:SSChatMapCellId];
     [_mTableView registerClass:NSClassFromString(@"SSChatVideoCell") forCellReuseIdentifier:SSChatVideoCellId];
     
+    
+    self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+        [[EMClient sharedClient].chatManager asyncFetchHistoryMessagesFromServer:self.conversation.conversationId conversationType:self.conversation.type startMessageId:self.startMsgId pageSize:10 completion:^(EMCursorResult *aResult, EMError *aError) {
+            
+            [self.mTableView.mj_header endRefreshing];
+            
+            cout(aResult.list);
+            
+            EMMessage *message = aResult.list.firstObject;
+            self.startMsgId = message.messageId;
+            NSArray *layouts = [self.chatData getLayoutsWithMessages:aResult.list];
+            
+             [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
+            [self.mTableView reloadData];
+        }];
+        
+        
+    }];
+
     [self netWorking:NO];
     
 }
 
 -(void)netWorking:(BOOL)animation{
     
-    [_conversation loadMessagesStartFromId:nil count:100 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        
+    [_conversation loadMessagesStartFromId:self.startMsgId count:10 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        EMMessage *message = aMessages[0];
+        self.startMsgId = message.messageId;
         NSArray *layouts = [self.chatData getLayoutsWithMessages:aMessages];
-        [self.datas addObjectsFromArray:layouts];
-        [self updateTableView:animation];
+        
+        [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
+        [self updateTableView:NO];
     }];
+    
 }
 
 -(void)updateTableView:(BOOL)animation{

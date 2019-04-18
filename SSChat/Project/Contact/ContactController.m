@@ -146,6 +146,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         
         EMError *error = [[EMClient sharedClient].contactManager deleteContact:self.datas[indexPath.section][indexPath.row][@"title"] isDeleteConversation:YES];

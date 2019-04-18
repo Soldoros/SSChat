@@ -26,7 +26,8 @@ static SSRootManager *manager = nil;
     dispatch_once(&once,^{
         manager = [[SSRootManager alloc]init];
         manager.user = [NSUserDefaults standardUserDefaults];
-        [manager registerNitification];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(loginStateChange:) name:NotiLoginStatusChange object:nil];
        
         if([manager.user valueForKey:USER_Name] == nil){
             [manager.user setBool:NO forKey:USER_Login];
@@ -41,11 +42,6 @@ static SSRootManager *manager = nil;
     return manager;
 }
 
--(void)registerNitification{
-    
-    [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(loginStateChange:) name:NotiLoginStatusChange object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(didNotificationsUnreadCountUpdate:) name:NotiUnreadCount object:nil];
-}
 
 -(void)loginStateChange:(NSNotification *)noti{
     
@@ -93,21 +89,6 @@ static SSRootManager *manager = nil;
     [vc setItemImg1:img1 img2:img2 title:title color1:TabBarTintDefaultColor color2:TabBarTintSelectColor];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
     return nav;
-}
-
-
-//消息未读展示红点
--(void)didNotificationsUnreadCountUpdate:(NSNotification *)noti{
-    
-    NSInteger count = [(NSString *)noti.object integerValue];
-    
-    UITabBarController *tabBarController = (UITabBarController *)[AppDelegate sharedAppDelegate].window.rootViewController;
-    UINavigationController *nav = tabBarController.viewControllers[1];
-    if(count>0){
-        nav.tabBarItem.badgeValue = makeStrWithInt(count);
-    }else{
-        nav.tabBarItem.badgeValue = nil;
-    }
 }
 
 

@@ -28,6 +28,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiMessageChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiReceiveMessages object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiContactChange object:nil];
 }
 
 -(void)messageChange{
@@ -105,6 +106,20 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        EMConversation *conversation = [self.datas objectAtIndex:indexPath.row];
+        [[EMClient sharedClient].chatManager deleteConversation:conversation.conversationId isDeleteMessages:YES completion:nil];
+        [self.datas removeObjectAtIndex:indexPath.row];
+        [self.mTableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
 
 
 
