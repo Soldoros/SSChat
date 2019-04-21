@@ -12,7 +12,6 @@
 #import "ContactController.h"
 #import "MineController.h"
 
-#import "SSHelloManager.h"
 #import "SSNotificationManager.h"
 
 
@@ -57,8 +56,7 @@ static SSRootManager *manager = nil;
     }else{
         
         [manager initalizeUserInterface];
-        [SSHelloManager shareHelloManager];
-        [SSNotificationManager shareSSNotificationManager];
+        [[SSNotificationManager shareSSNotificationManager] didNotificationsUnreadCountUpdate];
     }
 }
 
@@ -90,6 +88,9 @@ static SSRootManager *manager = nil;
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
     return nav;
 }
+
+
+
 
 
 @end

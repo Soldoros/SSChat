@@ -15,7 +15,7 @@
 //单聊 群聊
 @property(nonatomic,assign)SSChatConversationType chatType;
 
-//会话id
-@property (nonatomic, strong) NSString    *sessionId;
+//环信会话
+@property(nonatomic,strong)EMConversation *conversation;
 
 @end

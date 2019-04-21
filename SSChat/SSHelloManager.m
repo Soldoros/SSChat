@@ -7,6 +7,7 @@
 //
 
 #import "SSHelloManager.h"
+#import "SSNotificationManager.h"
 
 
 static SSHelloManager *hello = nil;
@@ -17,17 +18,15 @@ static SSHelloManager *hello = nil;
     static dispatch_once_t once;
     dispatch_once(&once,^{
         hello = [[SSHelloManager alloc]init];
-        [hello initalizeRegister];
+       
+        EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
+        [[EMClient sharedClient] initializeSDKWithOptions:options];
+        [[EMClient sharedClient] addDelegate:hello delegateQueue:nil];
+        [[EMClient sharedClient].chatManager addDelegate:hello delegateQueue:nil];
+        [[EMClient sharedClient].contactManager addDelegate:hello delegateQueue:nil];
+        
     });
     return hello;
-}
-
--(void)initalizeRegister{
-    
-    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
-    [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
-    
 }
 
 

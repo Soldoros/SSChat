@@ -30,8 +30,6 @@
 @property(nonatomic,strong)SSChatKeyBoardInputView *mInputView;
 //访问相册+摄像头
 @property(nonatomic,strong)SSAddImage *mAddImage;
-//环信会话
-@property(nonatomic,strong)EMConversation *conversation;
 //当前用户
 @property(nonatomic,strong)NSString *currentUser;
 //数据模型
@@ -49,22 +47,9 @@
         _chatType = SSChatConversationTypeChat;
         _datas = [NSMutableArray new];
         _chatData = [SSChatDatas new];
-        _startMsgId = @"";
+        _currentUser = [[EMClient sharedClient] currentUsername];
     }
     return self;
-}
-
-//根据_sessionId获取会话
--(void)setSessionId:(NSString *)sessionId{
-    _sessionId = sessionId;
-    
-    _currentUser = [[EMClient sharedClient] currentUsername];
-    if(_chatType == SSChatConversationTypeChat){
-        _conversation = [[EMClient sharedClient].chatManager getConversation:_sessionId type:EMConversationTypeChat createIfNotExist:YES];
-    }
-    else if(_chatType == SSChatConversationTypeGroupChat){
-        _conversation = [[EMClient sharedClient].chatManager getConversation:_sessionId type:EMConversationTypeGroupChat createIfNotExist:YES];
-    }
 }
 
 //不采用系统的旋转
@@ -101,7 +86,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerNoti];
-    self.navigationItem.title = _sessionId;
+    self.navigationItem.title = _currentUser;
     self.view.backgroundColor = [UIColor whiteColor];
     
     
@@ -138,43 +123,38 @@
     [_mTableView registerClass:NSClassFromString(@"SSChatVoiceCell") forCellReuseIdentifier:SSChatVoiceCellId];
     [_mTableView registerClass:NSClassFromString(@"SSChatMapCell") forCellReuseIdentifier:SSChatMapCellId];
     [_mTableView registerClass:NSClassFromString(@"SSChatVideoCell") forCellReuseIdentifier:SSChatVideoCellId];
+
     
-    
+    [self fristNetWorking:NO];
     self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [self fristNetWorking:YES];
+    }];
+}
+
+
+-(void)fristNetWorking:(BOOL)animation{
+    
+    [_conversation loadMessagesStartFromId:self.startMsgId count:36 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
         
-        [[EMClient sharedClient].chatManager asyncFetchHistoryMessagesFromServer:self.conversation.conversationId conversationType:self.conversation.type startMessageId:self.startMsgId pageSize:10 completion:^(EMCursorResult *aResult, EMError *aError) {
-            
-            [self.mTableView.mj_header endRefreshing];
-            
-            cout(aResult.list);
-            
-            EMMessage *message = aResult.list.firstObject;
+        [self.mTableView.mj_header endRefreshing];
+        
+        if(aMessages.count > 0){
+            EMMessage *message = aMessages[0];
             self.startMsgId = message.messageId;
-            NSArray *layouts = [self.chatData getLayoutsWithMessages:aResult.list];
-            
-             [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
-            [self.mTableView reloadData];
-        }];
-        
-        
-    }];
-
-    [self netWorking:NO];
-    
-}
-
--(void)netWorking:(BOOL)animation{
-    
-    [_conversation loadMessagesStartFromId:self.startMsgId count:10 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
-        EMMessage *message = aMessages[0];
-        self.startMsgId = message.messageId;
+        }
         NSArray *layouts = [self.chatData getLayoutsWithMessages:aMessages];
-        
         [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
-        [self updateTableView:NO];
+        if(animation == NO){
+            [self updateTableView:NO];
+        }else{
+            [self.mTableView reloadData];
+            NSIndexPath *indexPath = [NSIndexPath     indexPathForRow:aMessages.count inSection:0];
+            [self.mTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
     }];
     
 }
+
 
 -(void)updateTableView:(BOOL)animation{
     [self.mTableView reloadData];
@@ -301,7 +281,7 @@
 //发送消息
 -(void)sendMessage:(EMMessageBody *)body messageType:(EMChatType)messageType{
 
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:_sessionId from:_currentUser to:_sessionId body:body ext:nil];
+    EMMessage *message = [[EMMessage alloc] initWithConversationID:_conversation.conversationId from:_currentUser to:_conversation.conversationId body:body ext:nil];
     message.chatType = messageType;
     
     [[EMClient sharedClient].chatManager sendMessage:message progress:^(int progress) {

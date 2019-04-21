@@ -68,19 +68,25 @@ typedef NS_ENUM(NSInteger,SSNotificationStatus) {
 +(instancetype)shareSSNotificationManager;
 
 //数据持久化——归档
-- (void)dataLocalPersistence;
+-(void)setLocalDatas;
+
+//数据解档
+-(void)getLocalDatas;
 
 //全部已读
-- (void)markAllAsRead;
+- (void)setAllRead;
 
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+//刷新 tabBarItem
+-(void)didNotificationsUnreadCountUpdate;
 
+//归档解档文件名
 @property (nonatomic, strong) NSString *fileName;
+//时间
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+//模型数组
 @property (nonatomic, strong) NSMutableArray *notificationList;
-
-@property (nonatomic, assign) BOOL isCheckUnreadCount;
+//未读消息数量
 @property (nonatomic, assign) NSInteger unreadCount;
-
 
 @end
 

@@ -71,7 +71,6 @@ static SSNotificationManager *manager = nil;
     dispatch_once(&onceToken, ^{
         manager = [[SSNotificationManager alloc]init];
         
-        manager.isCheckUnreadCount = YES;
         manager.notificationList = [[NSMutableArray alloc] init];
         manager.dateFormatter = [[NSDateFormatter alloc] init];
         [manager.dateFormatter setDateFormat:@"YYYY-MM-DD hh:mm"];
@@ -79,61 +78,13 @@ static SSNotificationManager *manager = nil;
         
         [[NSNotificationCenter defaultCenter] addObserver:manager selector:@selector(receiveFriendRequest:) name:NotiGetAddContacts object:nil];
         
-        [manager getNotificationsFromLocal];
+        [manager getLocalDatas];
     });
     return manager;
 }
 
 
-//解档
-- (void)getNotificationsFromLocal{
-    
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:manager.fileName];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
-    [manager.notificationList removeAllObjects];
-    [manager.notificationList addObjectsFromArray:array];
-    
-    manager.unreadCount = 0;
-    for (SSNotificationModel *model in manager.notificationList) {
-        if (!model.isRead) ++ manager.unreadCount;
-        else continue;
-    }
-    
-    if (manager.isCheckUnreadCount) {
-        [self didNotificationsUnreadCountUpdate];
-    }
-}
-
-//保存数据
-- (void)dataLocalPersistence{
-    
-    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:manager.fileName];
-    [NSKeyedArchiver archiveRootObject:manager.notificationList toFile:file];
-}
-
-- (void)markAllAsRead{
-    
-    BOOL isArchive = NO;
-    for (SSNotificationModel *model in manager.notificationList) {
-        if (!model.isRead) {
-            model.isRead = YES;
-            isArchive = YES;
-        }
-    }
-    
-    if (isArchive) [self dataLocalPersistence];
-    
-    if (manager.unreadCount != 0) {
-        
-        manager.unreadCount = 0;
-        if (manager.isCheckUnreadCount) {
-            [self didNotificationsUnreadCountUpdate];
-        }
-    }
-}
-
-
-//收到好友请求回调
+//收到好友请求回调 如果是相同的好友申请 则删除之前的 留最新的
 - (void)receiveFriendRequest:(NSNotification *)noti{
     
     NSString *aUsername = noti.object[0];
@@ -143,18 +94,17 @@ static SSNotificationManager *manager = nil;
     if ([aMessage length] == 0) {
         aMessage = @"申请添加您为好友";
     }
-    SSNotificationModel *model = [[SSNotificationModel alloc] init];
-    model.sender = aUsername;
-    model.message = aMessage;
-    model.type = SSNotificationTypeContact;
-    model.status = SSNotificationDefault;
-    [self insertModel:model];
+    SSNotificationModel *aModel = [[SSNotificationModel alloc] init];
+    aModel.sender = aUsername;
+    aModel.message = aMessage;
+    aModel.type = SSNotificationTypeContact;
+    aModel.status = SSNotificationDefault;
     
+    [self insertModel:aModel];
 }
 
+//如果是相同的好友申请 则删除之前的 留最新的
 - (void)insertModel:(SSNotificationModel *)aModel{
-    
-    NSString *time = [manager.dateFormatter stringFromDate:[NSDate date]];
     
     for (SSNotificationModel *model in _notificationList) {
         if (model.type == aModel.type &&
@@ -167,26 +117,54 @@ static SSNotificationManager *manager = nil;
         }
     }
     
-    aModel.time = time;
-    if ([aModel.message length] == 0) {
-        if (aModel.type == SSNotificationTypeContact) {
-            aModel.message = @"申请添加您为好友";
-        }
-    }
+    NSString *time = [manager.dateFormatter stringFromDate:[NSDate date]];
     
-    if (!manager.isCheckUnreadCount) {
-        aModel.isRead = YES;
-    } else {
-        ++manager.unreadCount;
-        [self didNotificationsUnreadCountUpdate];
-    }
+    aModel.time = time;
+    aModel.message = @"申请添加您为好友";
+    aModel.isRead = NO;
+    ++manager.unreadCount;
     
     [manager.notificationList insertObject:aModel atIndex:0];
-    [self dataLocalPersistence];
     
+    [self setLocalDatas];
     [[NSNotificationCenter defaultCenter] postNotificationName:NotiDataPersistence object:nil];
 }
 
+
+
+//解档读取数据 刷新tabBarItem
+- (void)getLocalDatas{
+    
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:manager.fileName];
+    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
+    [manager.notificationList removeAllObjects];
+    [manager.notificationList addObjectsFromArray:array];
+    
+    manager.unreadCount = 0;
+    for (SSNotificationModel *model in manager.notificationList) {
+        if (model.isRead == NO){
+            ++ manager.unreadCount;
+        }
+    }
+}
+
+//归档保存数据 刷新tabBarItem
+- (void)setLocalDatas{
+    
+    NSString *file = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:manager.fileName];
+    [NSKeyedArchiver archiveRootObject:manager.notificationList toFile:file];
+    [self didNotificationsUnreadCountUpdate];
+}
+
+//设置全部已读并归档
+- (void)setAllRead{
+    
+    for (SSNotificationModel *model in manager.notificationList) {
+        model.isRead = YES;
+    }
+    manager.unreadCount = 0;
+    [self setLocalDatas];
+}
 
 //消息未读展示红点
 -(void)didNotificationsUnreadCountUpdate{
@@ -196,10 +174,20 @@ static SSNotificationManager *manager = nil;
     UITabBarController *tabBarController = (UITabBarController *)[AppDelegate sharedAppDelegate].window.rootViewController;
     UINavigationController *nav = tabBarController.viewControllers[1];
     if( manager.unreadCount>0){
-        nav.tabBarItem.badgeValue = makeStrWithInt( manager.unreadCount);
+        nav.tabBarItem.badgeValue = makeStrWithInt(manager.unreadCount);
     }else{
         nav.tabBarItem.badgeValue = nil;
     }
+    
+    
+    NSInteger count = 0;
+    NSArray *conversations = [[EMClient sharedClient].chatManager getAllConversations];
+
+    for(int i=0;i<conversations.count;++i){
+        EMConversation *conv = conversations[i];
+        count += conv.unreadMessagesCount;
+    }
+    [UIApplication sharedApplication].applicationIconBadgeNumber = count + manager.unreadCount;
 }
 
 

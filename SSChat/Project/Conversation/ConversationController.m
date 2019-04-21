@@ -9,6 +9,7 @@
 #import "ConversationController.h"
 #import "ConversationViews.h"
 #import "SSChatController.h"
+#import "SSNotificationManager.h"
 
 @interface ConversationController ()
 
@@ -29,6 +30,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiMessageChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiReceiveMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiContactChange object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiUnreadCount object:nil];
 }
 
 -(void)messageChange{
@@ -66,14 +68,12 @@
         EMConversation *conv = conversations[i];
         count += conv.unreadMessagesCount;
     }
-    if(count>0){
-        self.tabBarItem.badgeValue = makeStrWithInt(count);
-        [UIApplication sharedApplication].applicationIconBadgeNumber = count;
-    }else{
-        self.tabBarItem.badgeValue = nil;
-        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    }
-    
+    NSString *value = count==0?nil:makeStrWithInt(count);
+    NSInteger appCount = count +  [SSNotificationManager shareSSNotificationManager].unreadCount;
+
+     self.tabBarItem.badgeValue = value;
+     [UIApplication sharedApplication].applicationIconBadgeNumber = appCount;
+
     [self.mTableView.mj_header endRefreshing];
 }
 
@@ -102,7 +102,7 @@
     SSChatController *vc = [SSChatController new];
     vc.hidesBottomBarWhenPushed = YES;
     vc.chatType = SSChatConversationTypeChat;
-    vc.sessionId = conversation.conversationId;
+    vc.conversation = conversation;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

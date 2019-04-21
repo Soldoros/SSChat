@@ -129,10 +129,13 @@
     }
     
     else if(indexPath.section == 1){
+        NSString *user = self.datas[indexPath.section][indexPath.row][@"title"];
+         EMConversation *conversation =  [[EMClient sharedClient].chatManager getConversation:user type:EMConversationTypeChat createIfNotExist:YES];
+        
         SSChatController *vc = [SSChatController new];
         vc.hidesBottomBarWhenPushed = YES;
         vc.chatType = SSChatConversationTypeChat;
-        vc.sessionId = self.datas[indexPath.section][indexPath.row][@"title"];
+        vc.conversation = conversation;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

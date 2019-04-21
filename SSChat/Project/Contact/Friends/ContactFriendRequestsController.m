@@ -27,31 +27,9 @@
     return self;
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    [_manger markAllAsRead];
-    _manger.isCheckUnreadCount = NO;
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    _manger.isCheckUnreadCount = YES;
-}
-
-- (void)dealloc{
-    _manger.isCheckUnreadCount = YES;
-}
-
+//好友申请
 -(void)registerNoti{
-    //归档通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didNotificationsUpdate) name:NotiDataPersistence object:nil];
-}
-
-
--(void)didNotificationsUpdate{
-    
-    self.datas = _manger.notificationList;
-    [self.mTableView reloadData];
 }
 
 - (void)viewDidLoad {
@@ -64,6 +42,14 @@
     [self.mTableView registerClass:@"ContactFriendRequestsCell" andCellId:ContactFriendRequestsCellId];
     
     [self didNotificationsUpdate];
+}
+
+
+-(void)didNotificationsUpdate{
+    
+    [_manger setAllRead];
+    self.datas = _manger.notificationList;
+    [self.mTableView reloadData];
 }
 
 
@@ -102,7 +88,7 @@
                 if(!aError){
                     model.status = SSNotificationAgreed;
                     self.manger.notificationList[indexPath.row] = model;
-                    [self.manger dataLocalPersistence];
+                    [self.manger setLocalDatas];
                     [self.mTableView reloadData];
 
                     [[NSNotificationCenter defaultCenter] postNotificationName:NotiContactChange object:nil];
@@ -121,7 +107,7 @@
                 if(!aError){
                     model.status = SSNotificationDeclined;
                     self.manger.notificationList[indexPath.row] = model;
-                    [self.manger dataLocalPersistence];
+                    [self.manger setLocalDatas];
                     [self.mTableView reloadData];
                 }
                 else{

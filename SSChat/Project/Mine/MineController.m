@@ -134,10 +134,12 @@
     }
     //意见反馈
     else if(indexPath.section == 1 && indexPath.row == 1){
+        EMConversation *conversation =  [[EMClient sharedClient].chatManager getConversation:@"13540033103" type:EMConversationTypeChat createIfNotExist:YES];
+        
         SSChatController *vc = [SSChatController new];
         vc.hidesBottomBarWhenPushed = YES;
         vc.chatType = SSChatConversationTypeChat;
-        vc.sessionId = @"13540033103";
+        vc.conversation = conversation;
         [self.navigationController pushViewController:vc animated:YES];
     }
     //关于我们

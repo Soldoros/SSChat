@@ -23,11 +23,10 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
-    [[EMClient sharedClient] initializeSDKWithOptions:options];
-
+    [SSHelloManager shareHelloManager];
     [SSRootManager shareRootManager];
-   
+    
+    
     return YES;
     
 }
