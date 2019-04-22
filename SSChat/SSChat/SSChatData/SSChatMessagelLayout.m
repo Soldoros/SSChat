@@ -110,11 +110,21 @@
 }
 
 
+//接收方用下载的大图size
+//发送方用本地大图的size
 -(void)setImage{
     
-    //com.easemob.enterprise.demo.ui
-    CGFloat imgWidth = 200;// _message.thumbSizeWidth;
-    CGFloat imgHeight = 200;//_message.thumbSizeHeight;
+    
+    CGFloat imgWidth = _message.imageBody.size.width;
+    CGFloat imgHeight = _message.imageBody.size.height;
+    
+    if (_message.messageFrom == SSChatMessageFromMe) {
+        NSString *imgPath = _message.imageBody.localPath;
+        UIImage *img = [UIImage imageWithContentsOfFile:imgPath];
+        imgWidth = img.size.width;
+        imgHeight = img.size.height;
+    }
+
     CGFloat imgActualHeight = SSChatImageMaxSize;
     CGFloat imgActualWidth =  SSChatImageMaxSize * imgWidth/imgHeight;
     _message.contentMode =  UIViewContentModeScaleAspectFit;
@@ -166,18 +176,22 @@
 -(void)setVoice{
     
     //计算时间
-    CGRect rect = [NSObject getRectWith:_message.voiceTime width:150 font:[UIFont systemFontOfSize:SSChatVoiceTimeFont] spacing:0 Row:0];
+    NSString *time = makeStrWithInt(_message.voiceBody.duration);
+    CGRect rect = [NSObject getRectWith:makeString(time, @"\"") width:150 font:[UIFont systemFontOfSize:SSChatVoiceTimeFont] spacing:0 Row:0];
     CGFloat timeWidth  = rect.size.width;
     CGFloat timeHeight = rect.size.height;
     
     //根据时间设置按钮实际长度
     CGFloat timeLength = SSChatVoiceMaxWidth - SSChatVoiceMinWidth;
-    CGFloat changeLength = timeLength/60;
-    CGFloat currentLength = changeLength*_message.voiceDuration+SSChatVoiceMinWidth;
+    CGFloat changeLength = timeLength/30;
+    CGFloat currentLength = changeLength*_message.voiceBody.duration+SSChatVoiceMinWidth;
+    if(currentLength > SSChatVoiceMaxWidth){
+        currentLength = SSChatVoiceMaxWidth;
+    }
     
     if(_message.messageFrom == SSChatMessageFromOther){
         
-        _headerImgRect = CGRectMake(SSChatIcon_RX, SSChatCellTop, SSChatIconWH, SSChatIconWH);
+        _headerImgRect = CGRectMake(SSChatIconLeft, SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
         _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, currentLength, SSChatVoiceHeight);
         

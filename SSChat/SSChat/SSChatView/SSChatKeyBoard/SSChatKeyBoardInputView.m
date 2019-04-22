@@ -646,10 +646,10 @@
 #pragma mark - Mp3RecorderDelegate
 
 //回调录音资料
-- (void)endConvertWithData:(NSData *)voiceData
+- (void)endConvertWithVoicePath:(NSString *)voicePath
 {
-    if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBoardInputViewBtnClick:sendVoice:time:)]){
-        [self.delegate SSChatKeyBoardInputViewBtnClick:self sendVoice:voiceData time:_playTime+1];
+    if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBoardInputViewBtnClick:voicePath:time:)]){
+        [self.delegate SSChatKeyBoardInputViewBtnClick:self voicePath:voicePath time:(int)_playTime+1];
     }
     [UUProgressHUD dismissWithSuccess:@"Success"];
     
@@ -682,7 +682,7 @@
     NSError *err = nil;
     NSData *audioData = [NSData dataWithContentsOfFile:[url path] options:0 error:&err];
     if (audioData) {
-        [self endConvertWithData:audioData];
+        [self endConvertWithVoicePath:_docmentFilePath];
     }
 }
 

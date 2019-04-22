@@ -77,16 +77,21 @@
 
 -(void)receiveMessages:(NSNotification *)noti{
     
-    NSArray *layouts = [_chatData getLayoutsWithMessages:noti.object];
-    [_datas addObjectsFromArray:layouts];
-    [self updateTableView:YES];
+    dispatch_async(dispatch_queue_create(0, 0), ^{
+        NSArray *layouts = [self.chatData getLayoutsWithMessages:noti.object conversationId:self.conversation.conversationId];
+        [self.datas addObjectsFromArray:layouts];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+             [self updateTableView:YES];
+        });
+    });
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self registerNoti];
-    self.navigationItem.title = _currentUser;
+    self.navigationItem.title = _conversation.conversationId;
     self.view.backgroundColor = [UIColor whiteColor];
     
     
@@ -125,14 +130,14 @@
     [_mTableView registerClass:NSClassFromString(@"SSChatVideoCell") forCellReuseIdentifier:SSChatVideoCellId];
 
     
-    [self fristNetWorking:NO];
+    [self netWorking:NO];
     self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [self fristNetWorking:YES];
+        [self netWorking:YES];
     }];
 }
 
 
--(void)fristNetWorking:(BOOL)animation{
+-(void)netWorking:(BOOL)animation{
     
     [_conversation loadMessagesStartFromId:self.startMsgId count:36 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
         
@@ -142,7 +147,7 @@
             EMMessage *message = aMessages[0];
             self.startMsgId = message.messageId;
         }
-        NSArray *layouts = [self.chatData getLayoutsWithMessages:aMessages];
+        NSArray *layouts = [self.chatData getLayoutsWithMessages:aMessages conversationId:self.conversation.conversationId];
         [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
         if(animation == NO){
             [self updateTableView:NO];
@@ -218,14 +223,6 @@
 }
 
 
-//发送语音
--(void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view sendVoice:(NSData *)voice time:(NSInteger)second{
-
-    NSDictionary *dic = @{@"voice":voice,
-                          @"second":@(second)};
-}
-
-
 //多功能视图点击回调  图片10  视频11  位置12
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index{
     
@@ -270,12 +267,21 @@
 
 -(void)sendImageMessage:(UIImage *)image{
     
-    NSData *data = UIImagePNGRepresentation(image);
-    //压缩图片为0.6倍 并创建消息体
+    NSData *data = UIImageJPEGRepresentation(image, 1);
     EMImageMessageBody *body = [[EMImageMessageBody alloc] initWithData:data displayName:@"image"];
     body.compressionRatio = 0.6f;
     [self sendMessage:body messageType:EMChatTypeChat];
 }
+
+
+//发送语音
+-(void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view voicePath:(NSString *)voicePath time:(int)second{
+
+    EMVoiceMessageBody *body = [[EMVoiceMessageBody alloc] initWithLocalPath:voicePath displayName:@"voice"];
+    body.duration = second;
+    [self sendMessage:body messageType:EMChatTypeChat];
+}
+
 
 
 //发送消息
@@ -284,16 +290,15 @@
     EMMessage *message = [[EMMessage alloc] initWithConversationID:_conversation.conversationId from:_currentUser to:_conversation.conversationId body:body ext:nil];
     message.chatType = messageType;
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:@[message]];
+    
     [[EMClient sharedClient].chatManager sendMessage:message progress:^(int progress) {
         cout(@(progress));
     } completion:^(EMMessage *message, EMError *error) {
-        
+        [self.mTableView reloadData];
         [self sendNotifCation:NotiMessageChange];
-        SSChatMessagelLayout *layout = [self.chatData getLayoutWithMessage:message];
-        [self.datas addObject:layout];
-        [self updateTableView:YES];
-        
     }];
+
 }
 
 

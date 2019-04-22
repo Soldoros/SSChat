@@ -24,6 +24,8 @@
 }
 
 
+//发送方可以用本地路径展示大图
+//接收方先下载缩略图 点击展开用大图
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
@@ -36,8 +38,14 @@
     if(layout.message.messageType == SSChatMessageTypeImage){
         self.mImgView.frame = self.mBackImgButton.bounds;
         self.mImgView.contentMode = self.layout.message.contentMode;
-        NSURL *url = [NSURL URLWithString:self.layout.message.thumbnailRemotePath];
-        [self.mImgView setImageWithURL:url placeholder:[UIImage imageNamed:@""]];
+        
+        UIImage *image = [UIImage imageWithContentsOfFile:self.layout.message.imageBody.localPath];
+        if(image){
+            self.mImgView.image = image;
+        }else{
+            NSURL *url = [NSURL URLWithString:self.layout.message.imageBody.thumbnailRemotePath];
+            [self.mImgView setImageWithURL:url placeholder:[UIImage imageFromColor:BackGroundColor] options:YYWebImageOptionProgressive completion:nil];
+        }
     }
     
     //gif图片

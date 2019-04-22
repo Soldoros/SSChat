@@ -20,10 +20,14 @@ static SSHelloManager *hello = nil;
         hello = [[SSHelloManager alloc]init];
        
         EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
+        [EMClient sharedClient].options.isAutoTransferMessageAttachments = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:options];
+        
         [[EMClient sharedClient] addDelegate:hello delegateQueue:nil];
         [[EMClient sharedClient].chatManager addDelegate:hello delegateQueue:nil];
         [[EMClient sharedClient].contactManager addDelegate:hello delegateQueue:nil];
+        
+        
         
     });
     return hello;

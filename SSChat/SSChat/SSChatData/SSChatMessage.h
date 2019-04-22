@@ -68,8 +68,8 @@
 #define SSChatImageMaxSize    150
 
 //音频的最小宽度  最大宽度   高度
-#define SSChatVoiceMinWidth     100
-#define SSChatVoiceMaxWidth        SCREEN_Width*2/3-SSChatTextLRS-SSChatTextLRB
+#define SSChatVoiceMinWidth     60
+#define SSChatVoiceMaxWidth        SCREEN_Width * 0.6 - SSChatTextLRS - SSChatTextLRB
 #define SSChatVoiceHeight       45
 //音频时间字体
 #define SSChatVoiceTimeFont     14
@@ -175,40 +175,18 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, strong) UIColor     *textColor;
 @property (nonatomic, strong) NSMutableAttributedString  *attTextString;
 
-
-//大图的remote路径 locall路径
-@property (nonatomic, strong) NSString     *remotePath;
-@property (nonatomic, strong) NSString     *localPath;
-//使用下载方法后会生成的
-@property (nonatomic, strong) NSString     *secretKey;
-@property (nonatomic, assign) double       sizeWidth;
-@property (nonatomic, assign) double       sizeHeight;
-@property (nonatomic, assign) NSInteger    downloadStatus;
-//缩略图
-@property (nonatomic, strong) NSString     *thumbnailRemotePath;
-@property (nonatomic, strong) NSString     *thumbnailLocalPath;
-@property (nonatomic, strong) NSString     *thumbnailSecretKey;
-@property (nonatomic, assign) double       thumbSizeWidth;
-@property (nonatomic, assign) double       thumbSizeHeight;
-@property (nonatomic, assign) NSInteger    thumbnailDownloadStatus;
-//显示模式
-@property (nonatomic, assign)UIViewContentMode contentMode;
-
+//图片的body locall路径 显示模式
+@property (nonatomic, strong) EMImageMessageBody  *imageBody;
+@property (nonatomic, assign) UIViewContentMode   contentMode;
 
 //gif图片本地地址  图片的第一张图
 @property (nonatomic, strong) NSString    *imageLocalPath;
 @property (nonatomic, strong) NSArray     *imageArr;
 
-//音频时长(单位：秒) 展示时长  音频网络路径  本地路径  音频
-@property (nonatomic, assign) NSInteger   voiceDuration;
-@property (nonatomic, strong) NSString    *voiceTime;
-@property (nonatomic, strong) NSString    *voiceRemotePath;
-@property (nonatomic, strong) NSString    *voiceLocalPath;
-@property (nonatomic, strong) NSData      *voice;
-//语音波浪图标及数组
+//音频body 语音波浪图标及数组
+@property (nonatomic, strong) EMVoiceMessageBody *voiceBody;
 @property (nonatomic, strong) UIImage     *voiceImg;
 @property (nonatomic, strong) NSArray     *voiceImgs;
-
 
 //地理位置纬度  经度   详细地址
 @property (nonatomic, assign) double      latitude;

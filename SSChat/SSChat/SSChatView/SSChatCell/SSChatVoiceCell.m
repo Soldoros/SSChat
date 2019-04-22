@@ -49,10 +49,7 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
     
     //红外线感应监听
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(sensorStateChange:)
-                                                 name:UIDeviceProximityStateDidChangeNotification
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
 }
 
 
@@ -65,27 +62,27 @@
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
-    
     _mVoiceImg.image = layout.message.voiceImg;
     _mVoiceImg.animationImages = layout.message.voiceImgs;
     _mVoiceImg.frame = layout.voiceImgRect;
+    _mVoiceImg.animationDuration = layout.message.voiceBody.duration;
     
-    
-    _mTimeLab.text = layout.message.voiceTime;
+    NSString *time = makeStrWithInt(layout.message.voiceBody.duration);
+    _mTimeLab.text = makeString(time, @"\"");
     _mTimeLab.frame = layout.voiceTimeLabRect;
     
 }
 
-
 //播放音频 暂停音频
 -(void)buttonPressed:(UIButton *)sender{
     if(!_contentVoiceIsPlaying){
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
         _contentVoiceIsPlaying = YES;
         [_mVoiceImg startAnimating];
         _audio = [UUAVAudioPlayer sharedInstance];
         _audio.delegate = self;
-        [_audio playSongWithData:self.layout.message.voice];
+        [_audio playSongWithUrl:self.layout.message.voiceBody.remotePath];
     }else{
         [self UUAVAudioPlayerDidFinishPlay];
     }

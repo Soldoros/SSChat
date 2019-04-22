@@ -30,7 +30,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiMessageChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiReceiveMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiContactChange object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiUnreadCount object:nil];
 }
 
 -(void)messageChange{

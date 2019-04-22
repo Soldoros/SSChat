@@ -46,9 +46,10 @@
  加载所有的消息并转换成layout数组
  
  @param aMessages 传入获取的会话消息数组
+ @param conversationId 检测是否是当前会话id的数据
  @return 返回layout数组
  */
--(NSMutableArray *)getLayoutsWithMessages:(NSArray *)aMessages;
+-(NSMutableArray *)getLayoutsWithMessages:(NSArray *)aMessages conversationId:(NSString *)conversationId;
 
 
 

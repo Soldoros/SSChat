@@ -57,12 +57,22 @@
     if(message.direction == EMMessageDirectionSend){
         model.messageFrom = SSChatMessageFromMe;
         model.backImgString = @"icon_qipao1";
-        model.headerImgurl = @"";
+        
+        model.voiceImg = [UIImage imageNamed:@"chat_animation_white3"];
+        model.voiceImgs =
+        @[[UIImage imageNamed:@"chat_animation_white1"],
+          [UIImage imageNamed:@"chat_animation_white2"],
+          [UIImage imageNamed:@"chat_animation_white3"]];
     }
     else{
         model.messageFrom = SSChatMessageFromOther;
         model.backImgString = @"icon_qipao2";
-        model.headerImgurl = @"";
+        
+        model.voiceImg = [UIImage imageNamed:@"chat_animation3"];
+        model.voiceImgs =
+        @[[UIImage imageNamed:@"chat_animation1"],
+          [UIImage imageNamed:@"chat_animation2"],
+          [UIImage imageNamed:@"chat_animation3"]];
     }
     
     
@@ -83,30 +93,27 @@
             break;
         case EMMessageBodyTypeImage:
         {
-            // 得到一个图片消息body
-            EMImageMessageBody *body = ((EMImageMessageBody *)msgBody);
             
             model.cellString =  SSChatImageCellId;
             model.messageType = SSChatMessageTypeImage;
-            //大图路径
-            model.remotePath = body.remotePath;
-            model.localPath = body.localPath;
-            //下载之后生成
-            model.secretKey = body.secretKey;
-            model.sizeWidth = body.size.width;
-            model.sizeHeight = body.size.height;
-            model.downloadStatus = body.downloadStatus;
-            //缩略图自动生成
-            model.thumbnailRemotePath = body.thumbnailRemotePath;
-            model.thumbnailLocalPath = body.thumbnailLocalPath;
-            model.thumbnailSecretKey = body.thumbnailSecretKey;
-            model.thumbSizeWidth = body.thumbnailSize.width;
-            model.thumbSizeHeight = body.thumbnailSize.height;
-            model.thumbnailDownloadStatus = body.thumbnailDownloadStatus;
+            model.imageBody = (EMImageMessageBody *)message.body;
+          
+            // 得到一个图片消息body
+            EMImageMessageBody *body = ((EMImageMessageBody *)msgBody);
+            NSLog(@"大图remote路径 -- %@"   ,body.remotePath);
+            NSLog(@"大图local路径 -- %@"    ,body.localPath); // // 需要使用sdk提供的下载方法后才会存在
+            NSLog(@"大图的secret -- %@"    ,body.secretKey);
+            NSLog(@"大图的W -- %f ,大图的H -- %f",body.size.width,body.size.height);
+            NSLog(@"大图的下载状态 -- %lu",body.downloadStatus);
             
-            cout(model.remotePath);
-            cout(model.localPath);
-            cout(model.secretKey);
+            
+            // 缩略图sdk会自动下载
+            NSLog(@"小图remote路径 -- %@"   ,body.thumbnailRemotePath);
+            NSLog(@"小图local路径 -- %@"    ,body.thumbnailLocalPath);
+            NSLog(@"小图的secret -- %@"    ,body.thumbnailSecretKey);
+            NSLog(@"小图的W -- %f ,小图的H -- %f",body.thumbnailSize.width,body.thumbnailSize.height);
+            NSLog(@"小图的下载状态 -- %lu",body.thumbnailDownloadStatus);
+
         }
             break;
         case EMMessageBodyTypeLocation:
@@ -121,15 +128,16 @@
             break;
         case EMMessageBodyTypeVoice:
         {
-            // 音频sdk会自动下载
-            EMVoiceMessageBody *body = (EMVoiceMessageBody *)msgBody;
-            NSLog(@"音频remote路径 -- %@"      ,body.remotePath);
-            NSLog(@"音频local路径 -- %@"       ,body.localPath); // 需要使用sdk提供的下载方法后才会存在（音频会自动调用）
-            NSLog(@"音频的secret -- %@"        ,body.secretKey);
-            NSLog(@"音频文件大小 -- %lld"       ,body.fileLength);
-            NSLog(@"音频文件的下载状态 -- %lu"   ,body.downloadStatus);
-            NSLog(@"音频的时间长度 -- %lu"      ,body.duration);
-            
+//            // 音频sdk会自动下载
+//            EMVoiceMessageBody *body = (EMVoiceMessageBody *)msgBody;
+//            NSLog(@"音频remote路径 -- %@"      ,body.remotePath);
+//            NSLog(@"音频local路径 -- %@"       ,body.localPath); // 需要使用sdk提供的下载方法后才会存在（音频会自动调用）
+//            NSLog(@"音频的secret -- %@"        ,body.secretKey);
+//            NSLog(@"音频文件大小 -- %lld"       ,body.fileLength);
+//            NSLog(@"音频文件的下载状态 -- %lu"   ,body.downloadStatus);
+//            NSLog(@"音频的时间长度 -- %lu"      ,body.duration);
+            model.voiceBody = (EMVoiceMessageBody *)msgBody;
+            model.messageType = SSChatMessageTypeVoice;
             model.cellString =  SSChatVoiceCellId;
         }
             break;
@@ -178,18 +186,21 @@
 
 //将环信模型转换成 SSChatMessagelLayout
 -(SSChatMessagelLayout *)getLayoutWithMessage:(EMMessage *)message{
+    
     SSChatMessage *chatMessage = [self getModelWithMessage:message];
     return [[SSChatMessagelLayout alloc]initWithMessage:chatMessage];
 }
 
 
 //加载所有的消息并转换成layout数组
--(NSMutableArray *)getLayoutsWithMessages:(NSArray *)aMessages{
+-(NSMutableArray *)getLayoutsWithMessages:(NSArray *)aMessages conversationId:(NSString *)conversationId{
     
     NSMutableArray *array = [NSMutableArray new];
     for(EMMessage *message in aMessages){
-        SSChatMessagelLayout *layout = [self getLayoutWithMessage:message];
-        [array addObject:layout];
+        if([message.conversationId isEqualToString:conversationId]){
+            SSChatMessagelLayout *layout = [self getLayoutWithMessage:message];
+            [array addObject:layout];
+        }
     }
     return  array;
 }

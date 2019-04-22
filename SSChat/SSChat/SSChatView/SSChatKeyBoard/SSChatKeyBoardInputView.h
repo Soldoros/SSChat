@@ -53,7 +53,7 @@
 -(void)SSChatKeyBoardInputViewBtnClick:(NSString *)string;
 
 //发送语音消息
-- (void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view sendVoice:(NSData *)voice time:(NSInteger)second;
+- (void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view voicePath:(NSString *)voicePath time:(int)second;
 
 //多功能视图按钮点击回调
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index;
