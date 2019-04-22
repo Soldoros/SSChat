@@ -64,8 +64,11 @@
 //文本自适应限制宽度
 #define SSChatTextInitWidth    SCREEN_Width*0.7-SSChatTextLRS-SSChatTextLRB
 
-//图片最大尺寸(正方形)
-#define SSChatImageMaxSize    150
+//图片最大尺寸和最小尺寸
+#define SSChatImageMaxWidth    140
+#define SSChatImageMinWidth     70
+#define SSChatImageMaxHeight    280
+
 
 //音频的最小宽度  最大宽度   高度
 #define SSChatVoiceMinWidth     60

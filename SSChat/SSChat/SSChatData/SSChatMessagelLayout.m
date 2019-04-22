@@ -114,28 +114,30 @@
 //发送方用本地大图的size
 -(void)setImage{
     
+    _message.contentMode =  UIViewContentModeScaleAspectFill;
     
     CGFloat imgWidth = _message.imageBody.size.width;
     CGFloat imgHeight = _message.imageBody.size.height;
     
-    if (_message.messageFrom == SSChatMessageFromMe) {
-        NSString *imgPath = _message.imageBody.localPath;
+    NSString *imgPath = _message.imageBody.thumbnailLocalPath;
+    if (_message.messageFrom == SSChatMessageFromMe && imgPath.length == 0) {
+        imgPath = _message.imageBody.localPath;
         UIImage *img = [UIImage imageWithContentsOfFile:imgPath];
         imgWidth = img.size.width;
         imgHeight = img.size.height;
     }
-
-    CGFloat imgActualHeight = SSChatImageMaxSize;
-    CGFloat imgActualWidth =  SSChatImageMaxSize * imgWidth/imgHeight;
-    _message.contentMode =  UIViewContentModeScaleAspectFit;
     
-    if(imgActualWidth>SSChatImageMaxSize){
-        imgActualWidth = SSChatImageMaxSize;
-        imgActualHeight = imgActualWidth * imgHeight/imgWidth;
+    CGFloat imgActualWidth = imgWidth;
+    if(imgActualWidth > SSChatImageMaxWidth){
+        imgActualWidth = SSChatImageMaxWidth;
     }
-    if(imgActualWidth<SSChatImageMaxSize*0.25){
-        imgActualWidth = SSChatImageMaxSize * 0.25;
-        imgActualHeight = SSChatImageMaxSize * 0.8;
+    if(imgActualWidth < SSChatImageMinWidth){
+        imgActualWidth = SSChatImageMinWidth;
+    }
+
+    CGFloat imgActualHeight =  imgActualWidth * imgHeight/imgWidth;
+    if(imgActualHeight > SSChatImageMaxHeight){
+        imgActualHeight = SSChatImageMaxHeight;
         _message.contentMode =  UIViewContentModeScaleAspectFill;
     }
     
@@ -273,12 +275,17 @@
     
     CGFloat imgWidth  = CGImageGetWidth(_message.videoImage.CGImage);
     CGFloat imgHeight = CGImageGetHeight(_message.videoImage.CGImage);
-    CGFloat imgActualHeight = SSChatImageMaxSize;
-    CGFloat imgActualWidth =  SSChatImageMaxSize * imgWidth/imgHeight;
-    
-    if(imgActualWidth>SSChatImageMaxSize){
-        imgActualWidth = SSChatImageMaxSize;
-        imgActualHeight = imgActualWidth * imgHeight/imgWidth;
+
+    CGFloat imgActualWidth = imgWidth;
+    if(imgActualWidth > SSChatImageMaxWidth){
+        imgActualWidth = SSChatImageMaxWidth;
+    }
+    if(imgActualWidth < SSChatImageMinWidth){
+        imgActualWidth = SSChatImageMinWidth;
+    }
+    CGFloat imgActualHeight =  imgActualWidth * imgHeight/imgWidth;
+    if(imgActualHeight > SSChatImageMaxHeight){
+        imgActualHeight = SSChatImageMaxHeight;
     }
     
     if(_message.messageFrom == SSChatMessageFromOther){

@@ -17,8 +17,6 @@
     self.mImgView = [UIImageView new];
     self.mImgView.layer.cornerRadius = 5;
     self.mImgView.layer.masksToBounds  = YES;
-    self.mImgView.contentMode = UIViewContentModeScaleAspectFill;
-    self.mImgView.backgroundColor = [UIColor whiteColor];
     [self.mBackImgButton addSubview:self.mImgView];
     
 }
@@ -29,7 +27,7 @@
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
+    UIImage *image = [[UIImage imageNamed:layout.message.backImgString] imageWithColor:CellLineColor];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
@@ -44,7 +42,7 @@
             self.mImgView.image = image;
         }else{
             NSURL *url = [NSURL URLWithString:self.layout.message.imageBody.thumbnailRemotePath];
-            [self.mImgView setImageWithURL:url placeholder:[UIImage imageFromColor:BackGroundColor] options:YYWebImageOptionProgressive completion:nil];
+            [self.mImgView setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionProgressive completion:nil];
         }
     }
     

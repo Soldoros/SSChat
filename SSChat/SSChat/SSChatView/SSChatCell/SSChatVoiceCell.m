@@ -65,7 +65,7 @@
     _mVoiceImg.image = layout.message.voiceImg;
     _mVoiceImg.animationImages = layout.message.voiceImgs;
     _mVoiceImg.frame = layout.voiceImgRect;
-    _mVoiceImg.animationDuration = layout.message.voiceBody.duration;
+    
     
     NSString *time = makeStrWithInt(layout.message.voiceBody.duration);
     _mTimeLab.text = makeString(time, @"\"");
