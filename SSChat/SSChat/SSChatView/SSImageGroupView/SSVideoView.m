@@ -21,7 +21,7 @@
         
         _item = item;
         _currentTime = 0;
-        _totalTime = 0;
+        _totalTime = _item.message.videoBody.duration;
         
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(GestureRecognizerPressed:)];
         gesture.numberOfTapsRequired = 1;
@@ -133,10 +133,7 @@
     _currenTimeLab.right = _playSlider.left - 10;
     
     //视频的总时间
-    NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:_totalTime];
-    NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
-    [dateFormatter2 setDateFormat:@"mm:ss"];
-    _totalTimeLab.text =  [dateFormatter2 stringFromDate: detaildate2];
+    _totalTimeLab.text = makeStrWithInt(_totalTime);
     [_totalTimeLab sizeToFit];
     _totalTimeLab.centerY = _playLeftButton.centerY;
     _totalTimeLab.left = _playSlider.right + 10;
@@ -244,25 +241,31 @@
 -(instancetype)initWithItem:(SSImageGroupItem *)item{
     if(self = [super init]){
         self.frame = [UIScreen mainScreen].bounds;
+        self.backgroundColor = [UIColor redColor];
         _item = item;
         
-        NSLog(@"本地视频地址%@",_item.videoPath);
-    
+        NSString *path = _item.message.videoBody.localPath;
+        NSLog(@"视频地址：%@",path);
         
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:_item.videoPath]];
-        _player = [AVPlayer playerWithPlayerItem:playerItem];
-
+        NSURL *playUrl = [NSURL fileURLWithPath:path];
+        AVPlayerItem *it = [[AVPlayerItem alloc]initWithURL:playUrl];
+        self.player = [AVPlayer playerWithPlayerItem:it];
+        
         _playerLayer = [AVPlayerLayer new];
         _playerLayer.frame = CGRectMake(0, 0, SCREEN_Width, SCREEN_Height);
         [self.layer addSublayer:_playerLayer];
-        _playerLayer.player = _player;
-
+        _playerLayer.backgroundColor = [UIColor greenCGColor];
+        self.playerLayer.player = self.player;
+        
+//        [_player play];
+        
         //播放完成通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
         
         _mVideoImagelayer = [[SSVideoImageLayer alloc]initWithItem:_item];
         _mVideoImagelayer.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mVideoImagelayer];
+        _mVideoImagelayer.totalTime = _item.message.videoBody.duration;
         _mVideoImagelayer.image = _item.fromImage;
         _mVideoImagelayer.delegate = self;
         _mVideoImagelayer.image = nil;
@@ -277,7 +280,7 @@
     _videoViewFrame = videoViewFrame;
     self.frame = _videoViewFrame;
     _mVideoImagelayer.frame = self.bounds;
-    _playerLayer.frame = self.bounds;
+//    _playerLayer.frame = self.bounds;
     
     [_mVideoImagelayer setNewFrameWithDeviceoRientation];
 }
@@ -293,9 +296,11 @@
             break;
             //放大展示
         case SSImageShowValue2:{
-            [_player play];
+            cout(@"开始播放");
+            [self.player play];
             [self addPeriodicTime];
             self.mVideoImagelayer.status = SSVideoLayerValue3;
+            
         }
             break;
             //滚动展示
@@ -319,9 +324,9 @@
     
     __block SSVideoView *weakSelf = self;
     [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-        
+
         weakSelf.mVideoImagelayer.currentTime = CMTimeGetSeconds(time);
-        weakSelf.mVideoImagelayer.totalTime = CMTimeGetSeconds(weakSelf.player.currentItem.duration);
+        weakSelf.mVideoImagelayer.totalTime = weakSelf.item.message.videoBody.duration;
         [weakSelf.mVideoImagelayer setPeriodicTimeAndProgress];
     }];
 }

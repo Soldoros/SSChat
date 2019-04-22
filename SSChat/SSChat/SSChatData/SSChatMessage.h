@@ -178,6 +178,8 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, strong) UIColor     *textColor;
 @property (nonatomic, strong) NSMutableAttributedString  *attTextString;
 
+@property (nonatomic, strong) EMMessage  *message;
+
 //图片的body locall路径 显示模式
 @property (nonatomic, strong) EMImageMessageBody  *imageBody;
 @property (nonatomic, assign) UIViewContentMode   contentMode;
@@ -197,10 +199,7 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, strong) NSString    *addressString;
 
 //短视频缩略图网络路径 本地路径  视频图片 local路径
-@property (nonatomic, strong) NSString    *videoRemotePath;
-@property (nonatomic, strong) NSString    *videoLocalPath;
-@property (nonatomic, strong) UIImage     *videoImage;
-@property (nonatomic, assign) NSInteger   videodDration;
+@property (nonatomic, strong) EMVideoMessageBody *videoBody;
 
 
 //拓展消息

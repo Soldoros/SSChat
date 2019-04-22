@@ -11,6 +11,7 @@
 		AF187C6C2264D64400152931 /* MinePersonalController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF187C6B2264D64400152931 /* MinePersonalController.m */; };
 		AF187C6F2264D65C00152931 /* MineQrCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF187C6E2264D65C00152931 /* MineQrCodeController.m */; };
 		AF187C722264DC3100152931 /* MineAddressController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF187C712264DC3100152931 /* MineAddressController.m */; };
+		AF1C7F34226E288300870258 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF1C7F33226E288300870258 /* AssetsLibrary.framework */; };
 		AF804B1321A3DC7F00225FCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B1221A3DC7F00225FCE /* AppDelegate.m */; };
 		AF804B2121A3DC8000225FCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B2021A3DC8000225FCE /* main.m */; };
 		AF804C0A21A3DCE100225FCE /* SSChatLocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B3C21A3DCE000225FCE /* SSChatLocationController.m */; };
@@ -125,6 +126,7 @@
 		AF187C6E2264D65C00152931 /* MineQrCodeController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineQrCodeController.m; sourceTree = "<group>"; };
 		AF187C702264DC3100152931 /* MineAddressController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineAddressController.h; sourceTree = "<group>"; };
 		AF187C712264DC3100152931 /* MineAddressController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineAddressController.m; sourceTree = "<group>"; };
+		AF1C7F33226E288300870258 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		AF804B0E21A3DC7F00225FCE /* SSChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF804B1121A3DC7F00225FCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AF804B1221A3DC7F00225FCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF1C7F34226E288300870258 /* AssetsLibrary.framework in Frameworks */,
 				AF804CBE21A3DDFB00225FCE /* MapKit.framework in Frameworks */,
 				AF804CBC21A3DDF400225FCE /* CoreLocation.framework in Frameworks */,
 				AF804CBA21A3DDED00225FCE /* CoreMedia.framework in Frameworks */,
@@ -484,13 +487,13 @@
 		AF804BFA21A3DCE100225FCE /* SSImageGroupView */ = {
 			isa = PBXGroup;
 			children = (
+				AF804C0121A3DCE100225FCE /* icon */,
 				AF804BFB21A3DCE100225FCE /* SSImageGroupData.h */,
-				AF804BFC21A3DCE100225FCE /* SSImageGroupView.h */,
-				AF804BFD21A3DCE100225FCE /* SSVideoView.m */,
 				AF804BFE21A3DCE100225FCE /* SSImageGroupData.m */,
+				AF804BFC21A3DCE100225FCE /* SSImageGroupView.h */,
 				AF804BFF21A3DCE100225FCE /* SSImageGroupView.m */,
 				AF804C0021A3DCE100225FCE /* SSVideoView.h */,
-				AF804C0121A3DCE100225FCE /* icon */,
+				AF804BFD21A3DCE100225FCE /* SSVideoView.m */,
 			);
 			path = SSImageGroupView;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 		AF804CB621A3DDE600225FCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF1C7F33226E288300870258 /* AssetsLibrary.framework */,
 				AF804CBD21A3DDFB00225FCE /* MapKit.framework */,
 				AF804CBB21A3DDF400225FCE /* CoreLocation.framework */,
 				AF804CB921A3DDED00225FCE /* CoreMedia.framework */,

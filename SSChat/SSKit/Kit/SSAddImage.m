@@ -201,17 +201,10 @@
         NSURL *url=[info objectForKey:UIImagePickerControllerMediaURL];
         NSString *urlPath=[url path];
         
-        //保存视频到相簿，注意也可以使用ALAssetsLibrary来保存
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(urlPath)) {
-            if(_modelType != SSImagePickerWayFormIpc && _modelType != SSImagePickerWayGallery){
-                UISaveVideoAtPathToSavedPhotosAlbum(urlPath,self,@selector(video:didFinishSavingWithError:contextInfo:),nil);
-            }else{
-                if(_pickerBlock){
-                    _pickerBlock(_wayStyle,_modelType,urlPath);
-                }else{
-                    _pickerBlock = nil;
-                }
-            }
+        if(_pickerBlock){
+            _pickerBlock(_wayStyle,_modelType,urlPath);
+        }else{
+            _pickerBlock = nil;
         }
 
     }

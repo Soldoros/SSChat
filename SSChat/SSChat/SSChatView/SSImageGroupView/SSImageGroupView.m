@@ -40,7 +40,8 @@
         
         //普通图片
         if(_item.imageType == SSImageGroupImage){
-            _mImageView.image = _item.fromImage;
+            NSURL *url = [NSURL URLWithString:_item.message.imageBody.thumbnailRemotePath];
+            [_mImageView setImageWithURL:url placeholder:[UIImage imageFromColor:BackGroundColor]];
         }
         //gif图
         else{

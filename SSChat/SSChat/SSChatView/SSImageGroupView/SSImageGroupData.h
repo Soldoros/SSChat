@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "SSChatMessage.h"
 
 
 /**
@@ -48,6 +48,11 @@ typedef NS_ENUM(NSInteger, SSImageShowType) {
  */
 @interface SSImageGroupItem : NSObject
 
+//消息模型
+@property(nonatomic,strong)SSChatMessage *message;
+
+@property(nonatomic,strong)EMMessage *msg;
+
 //图类型
 @property(nonatomic,assign)SSImageGroupType   imageType;
 
@@ -58,9 +63,6 @@ typedef NS_ENUM(NSInteger, SSImageShowType) {
 
 //图片格式
 @property (nonatomic, assign) UIViewContentMode contentMode;
-
-//短视频路径
-@property(nonatomic,strong)NSString      *videoPath;
 
 //标签
 @property(nonatomic,assign)NSInteger  itemTag;

@@ -273,9 +273,27 @@
 //短视频
 -(void)setVideo{
     
-    CGFloat imgWidth  = CGImageGetWidth(_message.videoImage.CGImage);
-    CGFloat imgHeight = CGImageGetHeight(_message.videoImage.CGImage);
+    EMVideoMessageBody *body = _message.videoBody;
+    
+    NSLog(@"视频remote路径 -- %@"      ,body.remotePath);
+    NSLog(@"视频local路径 -- %@"       ,body.localPath); // 需要使用sdk提供的下载方法后才会存在
+    NSLog(@"视频的secret -- %@"        ,body.secretKey);
+    NSLog(@"视频文件大小 -- %lld"       ,body.fileLength);
+    NSLog(@"视频文件的下载状态 -- %lu"   ,body.downloadStatus);
+    NSLog(@"视频的时间长度 -- %lu"      ,body.duration);
+    NSLog(@"视频的W -- %f ,视频的H -- %f", body.thumbnailSize.width, body.thumbnailSize.height);
+    // 缩略图sdk会自动下载
+    NSLog(@"缩略图的remote路径 -- %@"     ,body.thumbnailRemotePath);
+    NSLog(@"缩略图的local路径 -- %@"      ,body.thumbnailLocalPath);
+    NSLog(@"缩略图的secret -- %@"        ,body.thumbnailSecretKey);
+    NSLog(@"缩略图的下载状态 -- %lu"      ,body.thumbnailDownloadStatus);
+    
+    _message.contentMode =  UIViewContentModeScaleAspectFill;
+    
+    CGFloat imgWidth = _message.videoBody.thumbnailSize.width;
+    CGFloat imgHeight = _message.videoBody.thumbnailSize.height;
 
+   
     CGFloat imgActualWidth = imgWidth;
     if(imgActualWidth > SSChatImageMaxWidth){
         imgActualWidth = SSChatImageMaxWidth;
@@ -283,15 +301,19 @@
     if(imgActualWidth < SSChatImageMinWidth){
         imgActualWidth = SSChatImageMinWidth;
     }
+    
     CGFloat imgActualHeight =  imgActualWidth * imgHeight/imgWidth;
     if(imgActualHeight > SSChatImageMaxHeight){
         imgActualHeight = SSChatImageMaxHeight;
     }
     
+    cout(@(imgActualWidth));
+    cout(@(imgActualHeight));
+    
     if(_message.messageFrom == SSChatMessageFromOther){
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-         _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, imgActualHeight, imgActualWidth);
+         _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, imgActualWidth, imgActualHeight);
   
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         

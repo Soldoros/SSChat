@@ -76,13 +76,14 @@
 //播放音频 暂停音频
 -(void)buttonPressed:(UIButton *)sender{
     if(!_contentVoiceIsPlaying){
-
         [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
         _contentVoiceIsPlaying = YES;
         [_mVoiceImg startAnimating];
         _audio = [UUAVAudioPlayer sharedInstance];
         _audio.delegate = self;
+        
         [_audio playSongWithUrl:self.layout.message.voiceBody.remotePath];
+  
     }else{
         [self UUAVAudioPlayerDidFinishPlay];
     }
@@ -112,6 +113,7 @@
 
 //处理监听触发事件
 -(void)sensorStateChange:(NSNotificationCenter *)notification{
+    
     if ([[UIDevice currentDevice] proximityState] == YES){
         NSLog(@"Device is close to user");
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];

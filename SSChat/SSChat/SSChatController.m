@@ -214,21 +214,12 @@
     }];
 }
 
-
-//发送文本 列表滚动至底部
--(void)SSChatKeyBoardInputViewBtnClick:(NSString *)string{
-    
-    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:string];
-    [self sendMessage:body messageType:EMChatTypeChat];
-}
-
-
 //多功能视图点击回调  图片10  视频11  位置12
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index{
     
     if(index==10 || index==11){
+        
         if(!_mAddImage) _mAddImage = [[SSAddImage alloc]init];
-
         [_mAddImage getImagePickerWithAlertController:self modelType:SSImagePickerModelImage + index-10 pickerBlock:^(SSImagePickerWayStyle wayStyle, SSImagePickerModelType modelType, id object) {
             
             //发送图片和gif图
@@ -238,18 +229,12 @@
                 }
                 else{
                     NSURL *imgUrl = (NSURL *)object;
-                    NSDictionary *dic = @{@"imageLocalPath":imgUrl};
-                   
-                    
                 }
             }
-            
+            //发送视频
             else{
                 NSString *localPath = (NSString *)object;
-                NSLog(@"%@",localPath);
-                NSDictionary *dic = @{@"videoLocalPath":localPath};
-                
-                
+                [self sendVideoMessage:localPath];
             }
         }];
         
@@ -265,6 +250,15 @@
 }
 
 
+
+//发送文本 列表滚动至底部
+-(void)SSChatKeyBoardInputViewBtnClick:(NSString *)string{
+    
+    EMTextMessageBody *body = [[EMTextMessageBody alloc] initWithText:string];
+    [self sendMessage:body messageType:EMChatTypeChat];
+}
+
+//发送普通图片
 -(void)sendImageMessage:(UIImage *)image{
     
     NSData *data = UIImageJPEGRepresentation(image, 1);
@@ -273,6 +267,12 @@
     [self sendMessage:body messageType:EMChatTypeChat];
 }
 
+//发送视频
+-(void)sendVideoMessage:(NSString *)videoPath{
+    
+    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:videoPath displayName:@"video"];
+    [self sendMessage:body messageType:EMChatTypeChat];
+}
 
 //发送语音
 -(void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view voicePath:(NSString *)voicePath time:(int)second{
@@ -281,7 +281,6 @@
     body.duration = second;
     [self sendMessage:body messageType:EMChatTypeChat];
 }
-
 
 
 //发送消息
@@ -305,6 +304,8 @@
 #pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
+    
+    
     NSInteger currentIndex = 0;
     NSMutableArray *groupItems = [NSMutableArray new];
     
@@ -319,6 +320,7 @@
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
             item.fromImage = nil;
+            item.message = mLayout.message;
         }
         else if(mLayout.message.messageType == SSChatMessageTypeGif){
             item.imageType = SSImageGroupGif;
@@ -326,10 +328,30 @@
             item.fromImages = mLayout.message.imageArr;
         }
         else if (mLayout.message.messageType == SSChatMessageTypeVideo){
-            item.imageType = SSImageGroupVideo;
-            item.videoPath = mLayout.message.videoLocalPath;
-            item.fromImgView = cell.mImgView;
-            item.fromImage = mLayout.message.videoImage;
+            
+            [[EMClient sharedClient].chatManager downloadMessageAttachment:mLayout.message.message progress:nil completion:^(EMMessage *message, EMError *error) {
+                
+                EMVideoMessageBody *body = (EMVideoMessageBody *)message.body;
+                NSURL *videoURL = [NSURL fileURLWithPath:body.localPath];
+                AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+                playerViewController.player = [[AVPlayer alloc]initWithURL:videoURL];
+                playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
+                playerViewController.showsPlaybackControls = YES;
+                [self presentViewController:playerViewController animated:YES completion:^{
+                    [playerViewController.player play];
+                }];
+                
+                
+            }];
+           
+            break;
+         
+//            item.imageType = SSImageGroupVideo;
+//            item.fromImgView = cell.mImgView;
+//            UIImage *videoImage = [UIImage imageWithContentsOfFile:mLayout.message.videoBody.localPath];
+//            item.fromImage = videoImage;
+//            item.message = mLayout.message;
+
         }
         else continue;
         
@@ -340,14 +362,14 @@
         
     }
     
-    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
-    [self.navigationController.view addSubview:imageGroupView];
-    
-    __block SSImageGroupView *blockView = imageGroupView;
-    blockView.dismissBlock = ^{
-        [blockView removeFromSuperview];
-        blockView = nil;
-    };
+//    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
+//    [self.navigationController.view addSubview:imageGroupView];
+//
+//    __block SSImageGroupView *blockView = imageGroupView;
+//    blockView.dismissBlock = ^{
+//        [blockView removeFromSuperview];
+//        blockView = nil;
+//    };
     
     [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
