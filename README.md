@@ -6,7 +6,7 @@
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
-      简书：https://www.jianshu.com/p/576128ed69e1 </span><br>
+      简书：https://www.jianshu.com/p/a65905cb3072 </span><br>
   
 <span>测试账号1：13540033101 &nbsp;&nbsp;&nbsp; aaaa1111  <br>
       测试账号2：13540033102 &nbsp;&nbsp;&nbsp; qqqq1111 <br></span><br>
@@ -190,5 +190,4 @@ vc.sessionId = @"";
 [self.navigationController pushViewController:vc animated:YES];
 
 ```
-
 
