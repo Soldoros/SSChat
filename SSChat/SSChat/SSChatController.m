@@ -38,6 +38,8 @@
 //开始翻页的messageId
 @property(nonatomic,strong)NSString *startMsgId;
 
+@property(nonatomic,strong)NSString *video;
+
 @end
 
 @implementation SSChatController
@@ -180,7 +182,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SSChatMessagelLayout *layout = _datas[indexPath.row];
-    SSChatBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:layout.message.cellString];
+    SSChatBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:layout.chatMessage.cellString];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.delegate = self;
     cell.indexPath = indexPath;
@@ -233,7 +235,9 @@
             }
             //发送视频
             else{
+                
                 NSString *localPath = (NSString *)object;
+                self.video = localPath;
                 [self sendVideoMessage:localPath];
             }
         }];
@@ -270,7 +274,7 @@
 //发送视频
 -(void)sendVideoMessage:(NSString *)videoPath{
     
-    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:videoPath displayName:@"video"];
+    EMVideoMessageBody *body = [[EMVideoMessageBody alloc] initWithLocalPath:videoPath displayName:@"video.mp4"];
     [self sendMessage:body messageType:EMChatTypeChat];
 }
 
@@ -316,60 +320,39 @@
         SSChatMessagelLayout *mLayout = self.datas[i];
         
         SSImageGroupItem *item = [SSImageGroupItem new];
-        if(mLayout.message.messageType == SSChatMessageTypeImage){
+        if(mLayout.chatMessage.messageType == SSChatMessageTypeImage){
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
             item.fromImage = nil;
-            item.message = mLayout.message;
+            item.chatMessage = mLayout.chatMessage;
         }
-        else if(mLayout.message.messageType == SSChatMessageTypeGif){
+        else if(mLayout.chatMessage.messageType == SSChatMessageTypeGif){
             item.imageType = SSImageGroupGif;
             item.fromImgView = cell.mImgView;
-            item.fromImages = mLayout.message.imageArr;
+            item.fromImages = mLayout.chatMessage.imageArr;
         }
-        else if (mLayout.message.messageType == SSChatMessageTypeVideo){
-            
-            [[EMClient sharedClient].chatManager downloadMessageAttachment:mLayout.message.message progress:nil completion:^(EMMessage *message, EMError *error) {
-                
-                EMVideoMessageBody *body = (EMVideoMessageBody *)message.body;
-                NSURL *videoURL = [NSURL fileURLWithPath:body.localPath];
-                AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
-                playerViewController.player = [[AVPlayer alloc]initWithURL:videoURL];
-                playerViewController.videoGravity = AVLayerVideoGravityResizeAspect;
-                playerViewController.showsPlaybackControls = YES;
-                [self presentViewController:playerViewController animated:YES completion:^{
-                    [playerViewController.player play];
-                }];
-                
-                
-            }];
+        else if (mLayout.chatMessage.messageType == SSChatMessageTypeVideo){
            
-            break;
-         
-//            item.imageType = SSImageGroupVideo;
-//            item.fromImgView = cell.mImgView;
-//            UIImage *videoImage = [UIImage imageWithContentsOfFile:mLayout.message.videoBody.localPath];
-//            item.fromImage = videoImage;
-//            item.message = mLayout.message;
-
+            item.imageType = SSImageGroupVideo;
+            item.fromImgView = cell.mImgView;
+            item.chatMessage = mLayout.chatMessage;
         }
         else continue;
         
-        item.contentMode = mLayout.message.contentMode;
+        item.contentMode = mLayout.chatMessage.contentMode;
         item.itemTag = groupItems.count + 10;
         if([mLayout isEqual:layout])currentIndex = groupItems.count;
         [groupItems addObject:item];
-        
     }
     
-//    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
-//    [self.navigationController.view addSubview:imageGroupView];
-//
-//    __block SSImageGroupView *blockView = imageGroupView;
-//    blockView.dismissBlock = ^{
-//        [blockView removeFromSuperview];
-//        blockView = nil;
-//    };
+    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
+    [self.navigationController.view addSubview:imageGroupView];
+
+    __block SSImageGroupView *blockView = imageGroupView;
+    blockView.dismissBlock = ^{
+        [blockView removeFromSuperview];
+        blockView = nil;
+    };
     
     [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
@@ -378,8 +361,8 @@
 -(void)SSChatMapCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
     SSChatMapController *vc = [SSChatMapController new];
-    vc.latitude = layout.message.latitude;
-    vc.longitude = layout.message.longitude;
+    vc.latitude = layout.chatMessage.latitude;
+    vc.longitude = layout.chatMessage.longitude;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

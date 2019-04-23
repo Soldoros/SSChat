@@ -63,6 +63,7 @@ typedef void (^SSImageDismissBlock)(void);
 @property(nonatomic,assign)NSInteger         currentIndex;
 @property(nonatomic,assign)SSImageGroupItem  *currentItem;
 @property(nonatomic,strong)UIImageView       *fromImgView;
+
 //分页控制器
 @property(nonatomic,assign)NSInteger         currentPage;
 @property(nonatomic,strong)UIPageControl     *mPageController;

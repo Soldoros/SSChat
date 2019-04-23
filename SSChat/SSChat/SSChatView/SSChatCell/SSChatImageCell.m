@@ -27,21 +27,21 @@
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    UIImage *image = [[UIImage imageNamed:layout.message.backImgString] imageWithColor:CellLineColor];
+    UIImage *image = [[UIImage imageNamed:layout.chatMessage.backImgString] imageWithColor:CellLineColor];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
     //普通图片
-    if(layout.message.messageType == SSChatMessageTypeImage){
+    if(layout.chatMessage.messageType == SSChatMessageTypeImage){
         self.mImgView.frame = self.mBackImgButton.bounds;
-        self.mImgView.contentMode = self.layout.message.contentMode;
+        self.mImgView.contentMode = self.layout.chatMessage.contentMode;
         
-        UIImage *image = [UIImage imageWithContentsOfFile:self.layout.message.imageBody.localPath];
+        UIImage *image = [UIImage imageWithContentsOfFile:self.layout.chatMessage.imageBody.localPath];
         if(image){
             self.mImgView.image = image;
         }else{
-            NSURL *url = [NSURL URLWithString:self.layout.message.imageBody.thumbnailRemotePath];
+            NSURL *url = [NSURL URLWithString:self.layout.chatMessage.imageBody.thumbnailRemotePath];
             [self.mImgView setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionProgressive completion:nil];
         }
     }
@@ -49,9 +49,9 @@
     //gif图片
     else{
         self.mImgView.frame = self.mBackImgButton.bounds;
-        self.mImgView.contentMode = self.layout.message.contentMode;
-        self.mImgView.animationImages = self.layout.message.imageArr;
-        self.mImgView.animationDuration = self.layout.message.imageArr.count * 0.1;
+        self.mImgView.contentMode = self.layout.chatMessage.contentMode;
+        self.mImgView.animationImages = self.layout.chatMessage.imageArr;
+        self.mImgView.animationDuration = self.layout.chatMessage.imageArr.count * 0.1;
         [self.mImgView startAnimating];
     }
     

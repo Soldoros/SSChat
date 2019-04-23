@@ -86,9 +86,9 @@ typedef NS_ENUM(NSInteger, SSVideoLayerStatus) {
 @property(nonatomic,strong)UISlider *playSlider;
 
 //当前播放时间
-@property(nonatomic,assign)NSTimeInterval currentTime;
+@property(nonatomic,assign)float currentTime;
 //总时间
-@property(nonatomic,assign)NSTimeInterval totalTime;
+@property(nonatomic,assign)float totalTime;
 //根据时间设置显示和进度条状态
 -(void)setPeriodicTimeAndProgress;
 

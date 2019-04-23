@@ -49,9 +49,7 @@ typedef NS_ENUM(NSInteger, SSImageShowType) {
 @interface SSImageGroupItem : NSObject
 
 //消息模型
-@property(nonatomic,strong)SSChatMessage *message;
-
-@property(nonatomic,strong)EMMessage *msg;
+@property(nonatomic,strong)SSChatMessage *chatMessage;
 
 //图类型
 @property(nonatomic,assign)SSImageGroupType   imageType;

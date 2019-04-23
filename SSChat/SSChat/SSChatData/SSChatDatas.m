@@ -49,34 +49,33 @@
 //将环信的消息模型转换成本地模型
 -(SSChatMessage *)getModelWithMessage:(EMMessage *)message{
     
-    SSChatMessage *model = [SSChatMessage new];
-    model.conversationId = message.messageId;
-    model.timestamp = message.timestamp;
-    [self dealTimeWithMessageModel:model];
+    SSChatMessage *chatMessage = [SSChatMessage new];
+    chatMessage.conversationId = message.messageId;
+    chatMessage.timestamp = message.timestamp;
+    [self dealTimeWithMessageModel:chatMessage];
     
     if(message.direction == EMMessageDirectionSend){
-        model.messageFrom = SSChatMessageFromMe;
-        model.backImgString = @"icon_qipao1";
+        chatMessage.messageFrom = SSChatMessageFromMe;
+        chatMessage.backImgString = @"icon_qipao1";
         
-        model.voiceImg = [UIImage imageNamed:@"chat_animation_white3"];
-        model.voiceImgs =
+        chatMessage.voiceImg = [UIImage imageNamed:@"chat_animation_white3"];
+        chatMessage.voiceImgs =
         @[[UIImage imageNamed:@"chat_animation_white1"],
           [UIImage imageNamed:@"chat_animation_white2"],
           [UIImage imageNamed:@"chat_animation_white3"]];
     }
     else{
-        model.messageFrom = SSChatMessageFromOther;
-        model.backImgString = @"icon_qipao2";
+        chatMessage.messageFrom = SSChatMessageFromOther;
+        chatMessage.backImgString = @"icon_qipao2";
         
-        model.voiceImg = [UIImage imageNamed:@"chat_animation3"];
-        model.voiceImgs =
+        chatMessage.voiceImg = [UIImage imageNamed:@"chat_animation3"];
+        chatMessage.voiceImgs =
         @[[UIImage imageNamed:@"chat_animation1"],
           [UIImage imageNamed:@"chat_animation2"],
           [UIImage imageNamed:@"chat_animation3"]];
     }
     
-    model.message = message;
-    
+    chatMessage.message = message;
     EMMessageBody *msgBody = message.body;
     
     //其他消息
@@ -85,18 +84,18 @@
 
             EMTextMessageBody *textBody = (EMTextMessageBody *)msgBody;
             
-            model.textColor   = SSChatTextColor;
-            model.cellString  =  SSChatTextCellId;
-            model.messageType = SSChatMessageTypeText;
-            model.textString  = textBody.text;
+            chatMessage.textColor   = SSChatTextColor;
+            chatMessage.cellString  =  SSChatTextCellId;
+            chatMessage.messageType = SSChatMessageTypeText;
+            chatMessage.textString  = textBody.text;
             
         }
             break;
         case EMMessageBodyTypeImage:{
             
-            model.cellString =  SSChatImageCellId;
-            model.messageType = SSChatMessageTypeImage;
-            model.imageBody = (EMImageMessageBody *)message.body;
+            chatMessage.cellString =  SSChatImageCellId;
+            chatMessage.messageType = SSChatMessageTypeImage;
+            chatMessage.imageBody = (EMImageMessageBody *)message.body;
         }
             break;
         case EMMessageBodyTypeLocation:
@@ -106,22 +105,21 @@
             NSLog(@"经度-- %f",body.longitude);
             NSLog(@"地址-- %@",body.address);
             
-            model.cellString =  SSChatMapCellId;
+            chatMessage.cellString =  SSChatMapCellId;
         }
             break;
         case EMMessageBodyTypeVoice:        {
 
-            model.voiceBody = (EMVoiceMessageBody *)msgBody;
-            model.messageType = SSChatMessageTypeVoice;
-            model.cellString =  SSChatVoiceCellId;
+            chatMessage.messageType = SSChatMessageTypeVoice;
+            chatMessage.cellString =  SSChatVoiceCellId;
+            chatMessage.voiceBody = (EMVoiceMessageBody *)msgBody;
         }
             break;
         case EMMessageBodyTypeVideo:{
             
-            model.messageType = SSChatMessageTypeVideo;
-            model.cellString =  SSChatVideoCellId;
-            model.videoBody = (EMVideoMessageBody *)msgBody;
-            
+            chatMessage.messageType = SSChatMessageTypeVideo;
+            chatMessage.cellString =  SSChatVideoCellId;
+            chatMessage.videoBody = (EMVideoMessageBody *)msgBody;
         }
             break;
         case EMMessageBodyTypeFile:
@@ -133,7 +131,7 @@
             NSLog(@"文件文件大小 -- %lld"       ,body.fileLength);
             NSLog(@"文件文件的下载状态 -- %lu"   ,body.downloadStatus);
             
-            model.cellString =  SSChatVoiceCellId;
+            chatMessage.cellString =  SSChatVoiceCellId;
         }
             break;
             
@@ -141,7 +139,7 @@
             break;
     }
     
-    return model;
+    return chatMessage;
 }
 
 

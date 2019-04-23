@@ -46,19 +46,18 @@
     
     [super setLayout:layout];
     
-    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
+    UIImage *image = [UIImage imageNamed:layout.chatMessage.backImgString];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
     
-    UIImage *videoImage = [UIImage imageWithContentsOfFile:self.layout.message.videoBody.thumbnailLocalPath];
-    self.mImgView.image = videoImage;
+    UIImage *videoImage = [UIImage imageWithContentsOfFile:self.layout.chatMessage.videoBody.thumbnailLocalPath];
     if(videoImage){
         self.mImgView.image = videoImage;
     }else{
-        NSURL *url = [NSURL URLWithString:self.layout.message.videoBody.thumbnailRemotePath];
+        NSURL *url = [NSURL URLWithString:self.layout.chatMessage.videoBody.thumbnailRemotePath];
         [self.mImgView setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionProgressive completion:nil];
     }
 

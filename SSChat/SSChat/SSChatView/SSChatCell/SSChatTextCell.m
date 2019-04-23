@@ -27,14 +27,14 @@
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
+    UIImage *image = [UIImage imageNamed:layout.chatMessage.backImgString];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
 
     self.mTextView.frame = self.layout.textLabRect;
-    self.mTextView.attributedText = layout.message.attTextString;
+    self.mTextView.attributedText = layout.chatMessage.attTextString;
     
 }
 

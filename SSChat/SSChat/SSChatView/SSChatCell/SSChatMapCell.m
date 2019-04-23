@@ -63,8 +63,8 @@
 
     _mTitleLab.width = self.mBackImgButton.width - 30;
     _mDetaiLLab.width = self.mBackImgButton.width - 30;
-    _mTitleLab.text = self.layout.message.addressString;
-    _mDetaiLLab.text = self.layout.message.addressString;
+    _mTitleLab.text = self.layout.chatMessage.addressString;
+    _mDetaiLLab.text = self.layout.chatMessage.addressString;
     [_mTitleLab sizeToFit];
     [_mDetaiLLab sizeToFit];
     _mTitleLab.width = self.mBackImgButton.width - 30;
@@ -76,8 +76,8 @@
     
     
     _mMapView.frame = CGRectMake(1.2, 53, self.mBackImgButton.width-9.1, self.mBackImgButton.height-53.6);
-    double lat = self.layout.message.latitude;
-    double lon = self.layout.message.longitude;
+    double lat = self.layout.chatMessage.latitude;
+    double lon = self.layout.chatMessage.longitude;
     CLLocationCoordinate2D coord = (CLLocationCoordinate2D){lat, lon};
     [_mMapView setCenterCoordinate:coord animated:YES];
     

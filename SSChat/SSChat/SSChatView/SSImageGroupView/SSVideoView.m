@@ -20,8 +20,8 @@
         self.userInteractionEnabled = YES;
         
         _item = item;
-        _currentTime = 0;
-        _totalTime = _item.message.videoBody.duration;
+        _currentTime = 0.0;
+        _totalTime = 0.0;
         
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(GestureRecognizerPressed:)];
         gesture.numberOfTapsRequired = 1;
@@ -120,7 +120,7 @@
 -(void)setPeriodicTimeAndProgress{
     
     _playSlider.minimumValue = 0;
-    _playSlider.maximumValue = _totalTime;
+    _playSlider.maximumValue =  _totalTime ;
     _playSlider.value = _currentTime;
     
     //当前播放的时间
@@ -133,7 +133,10 @@
     _currenTimeLab.right = _playSlider.left - 10;
     
     //视频的总时间
-    _totalTimeLab.text = makeStrWithInt(_totalTime);
+    NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:_totalTime];
+    NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+    [dateFormatter2 setDateFormat:@"mm:ss"];
+    _totalTimeLab.text =  [dateFormatter2 stringFromDate: detaildate2];
     [_totalTimeLab sizeToFit];
     _totalTimeLab.centerY = _playLeftButton.centerY;
     _totalTimeLab.left = _playSlider.right + 10;
@@ -241,34 +244,29 @@
 -(instancetype)initWithItem:(SSImageGroupItem *)item{
     if(self = [super init]){
         self.frame = [UIScreen mainScreen].bounds;
-        self.backgroundColor = [UIColor redColor];
         _item = item;
-        
-        NSString *path = _item.message.videoBody.localPath;
-        NSLog(@"视频地址：%@",path);
-        
-        NSURL *playUrl = [NSURL fileURLWithPath:path];
-        AVPlayerItem *it = [[AVPlayerItem alloc]initWithURL:playUrl];
-        self.player = [AVPlayer playerWithPlayerItem:it];
         
         _playerLayer = [AVPlayerLayer new];
         _playerLayer.frame = CGRectMake(0, 0, SCREEN_Width, SCREEN_Height);
         [self.layer addSublayer:_playerLayer];
-        _playerLayer.backgroundColor = [UIColor greenCGColor];
-        self.playerLayer.player = self.player;
-        
-//        [_player play];
         
         //播放完成通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
         
+       
         _mVideoImagelayer = [[SSVideoImageLayer alloc]initWithItem:_item];
         _mVideoImagelayer.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mVideoImagelayer];
-        _mVideoImagelayer.totalTime = _item.message.videoBody.duration;
-        _mVideoImagelayer.image = _item.fromImage;
         _mVideoImagelayer.delegate = self;
-        _mVideoImagelayer.image = nil;
+        
+//        UIImage *videoImage = [UIImage imageWithContentsOfFile:_item.chatMessage.videoBody.thumbnailLocalPath];
+//        _mVideoImagelayer.image = videoImage;
+//        if(videoImage){
+//            _mVideoImagelayer.image = videoImage;
+//        }else{
+//            NSURL *url = [NSURL URLWithString:_item.chatMessage.videoBody.thumbnailRemotePath];
+//            [_mVideoImagelayer setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionProgressive completion:nil];
+//        }
         
     }
     return self;
@@ -280,7 +278,7 @@
     _videoViewFrame = videoViewFrame;
     self.frame = _videoViewFrame;
     _mVideoImagelayer.frame = self.bounds;
-//    _playerLayer.frame = self.bounds;
+    _playerLayer.frame = self.bounds;
     
     [_mVideoImagelayer setNewFrameWithDeviceoRientation];
 }
@@ -297,10 +295,7 @@
             //放大展示
         case SSImageShowValue2:{
             cout(@"开始播放");
-            [self.player play];
-            [self addPeriodicTime];
-            self.mVideoImagelayer.status = SSVideoLayerValue3;
-            
+            [self playWithVideoLocalPath];
         }
             break;
             //滚动展示
@@ -319,14 +314,61 @@
     }
 }
 
+-(void)playWithVideoLocalPath{
+    
+    EMMessage *message = _item.chatMessage.message;
+    EMVideoMessageBody *body = (EMVideoMessageBody *)message.body;
+    if(body.downloadStatus == EMDownloadStatusSucceed){
+        cout(@"视频已经下载，直接播放");
+        [self videoPlay];
+        return;
+    }
+    
+    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    indicator.size = CGSizeMake(80, 80);
+    indicator.center = CGPointMake(self.width / 2, self.height / 2);
+    indicator.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.670];
+    indicator.clipsToBounds = YES;
+    indicator.layer.cornerRadius = 6;
+    [indicator startAnimating];
+    [self addSubview:indicator];
+    
+    _mVideoImagelayer.hidden = YES;
+    self.userInteractionEnabled = NO;
+    [[EMClient sharedClient].chatManager downloadMessageAttachment:message progress:nil completion:^(EMMessage *message, EMError *error) {
+         [indicator removeFromSuperview];
+        self.mVideoImagelayer.hidden = NO;
+        self.userInteractionEnabled = YES;
+        if (error) {
+            [[self getViewController] showTime:@"视频下载失败!"];
+        } else {
+            self.item.chatMessage.message = message;
+            [self videoPlay];
+        }
+    }];
+}
+
+-(void)videoPlay{
+    
+    NSString *path = _item.chatMessage.videoBody.localPath;
+    NSLog(@"视频地址：%@",path);
+    NSURL *playUrl = [NSURL fileURLWithPath:path];
+    _player = [AVPlayer playerWithURL:playUrl];
+    _playerLayer.player = _player;
+    
+    [_player play];
+    [self addPeriodicTime];
+    _mVideoImagelayer.status = SSVideoLayerValue3;
+}
+
 //获取播放的时间
 -(void)addPeriodicTime{
     
     __block SSVideoView *weakSelf = self;
     [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
-
+        
         weakSelf.mVideoImagelayer.currentTime = CMTimeGetSeconds(time);
-        weakSelf.mVideoImagelayer.totalTime = weakSelf.item.message.videoBody.duration;
+        weakSelf.mVideoImagelayer.totalTime = CMTimeGetSeconds(weakSelf.player.currentItem.duration);
         [weakSelf.mVideoImagelayer setPeriodicTimeAndProgress];
     }];
 }

@@ -33,15 +33,20 @@
         _item = item;
         
         _mImageView = [[UIImageView alloc]init];
-        _mImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mImageView];
         _mImageView.userInteractionEnabled = YES;
-        _mImageView.contentMode = _item.contentMode;
+        _mImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         //普通图片
         if(_item.imageType == SSImageGroupImage){
-            NSURL *url = [NSURL URLWithString:_item.message.imageBody.thumbnailRemotePath];
-            [_mImageView setImageWithURL:url placeholder:[UIImage imageFromColor:BackGroundColor]];
+ 
+            UIImage *image = [UIImage imageWithContentsOfFile:_item.chatMessage.imageBody.localPath];
+            if(image){
+                _mImageView.image = image;
+            }else{
+                NSURL *url = [NSURL URLWithString:_item.chatMessage.imageBody.remotePath];
+                [_mImageView setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionProgressive completion:nil];
+            }
         }
         //gif图
         else{
@@ -147,7 +152,7 @@
         
         _mScrollView.contentSize = CGSizeMake(_mScrollView.width * self.groupItems.count, _mScrollView.height);
         _mScrollView.contentOffset = CGPointMake(_mScrollView.width * _currentIndex, 0);
-
+        
         
         for(int i=0;i<_groupItems.count;++i){
             SSImageGroupItem *item = _groupItems[i];

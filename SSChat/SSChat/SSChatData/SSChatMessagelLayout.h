@@ -25,14 +25,14 @@
 /**
  根据模型生成布局
  
- @param message 传入消息模型
+ @param model 传入消息模型
  @return 返回布局对象
  */
--(instancetype)initWithMessage:(SSChatMessage *)message;
+-(instancetype)initWithMessage:(SSChatMessage *)chatMessage;
 
 
 //消息模型
-@property (nonatomic, strong) SSChatMessage  *message;
+@property (nonatomic, strong) SSChatMessage  *chatMessage;
 
 //消息布局到CELL的总高度
 @property (nonatomic, assign) CGFloat      cellHeight;

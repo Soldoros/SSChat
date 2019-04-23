@@ -56,18 +56,18 @@
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
+    UIImage *image = [UIImage imageNamed:layout.chatMessage.backImgString];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
-    _mVoiceImg.image = layout.message.voiceImg;
-    _mVoiceImg.animationImages = layout.message.voiceImgs;
+    _mVoiceImg.image = layout.chatMessage.voiceImg;
+    _mVoiceImg.animationImages = layout.chatMessage.voiceImgs;
     _mVoiceImg.frame = layout.voiceImgRect;
     
     
-    NSString *time = makeStrWithInt(layout.message.voiceBody.duration);
+    NSString *time = makeStrWithInt(layout.chatMessage.voiceBody.duration);
     _mTimeLab.text = makeString(time, @"\"");
     _mTimeLab.frame = layout.voiceTimeLabRect;
     
@@ -82,7 +82,7 @@
         _audio = [UUAVAudioPlayer sharedInstance];
         _audio.delegate = self;
         
-        [_audio playSongWithUrl:self.layout.message.voiceBody.remotePath];
+        [_audio playSongWithUrl:self.layout.chatMessage.voiceBody.remotePath];
   
     }else{
         [self UUAVAudioPlayerDidFinishPlay];

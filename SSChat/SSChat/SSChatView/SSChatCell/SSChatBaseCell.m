@@ -75,14 +75,14 @@
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     _layout = layout;
     
-    _mMessageTimeLab.hidden = !layout.message.showTime;
-    _mMessageTimeLab.text = layout.message.messageTime;
+    _mMessageTimeLab.hidden = !layout.chatMessage.showTime;
+    _mMessageTimeLab.text = layout.chatMessage.messageTime;
     _mMessageTimeLab.frame = layout.timeLabRect;
     
     self.mHeaderImgBtn.frame = layout.headerImgRect;
     [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxaing2"] forState:UIControlStateNormal];
     self.mHeaderImgBtn.layer.cornerRadius = self.mHeaderImgBtn.height*0.5;
-    if(_layout.message.messageFrom == SSChatMessageFromOther){
+    if(_layout.chatMessage.messageFrom == SSChatMessageFromOther){
         [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxiang1"] forState:UIControlStateNormal];
     }
     
