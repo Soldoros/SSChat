@@ -54,6 +54,9 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
+    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    
+     self.automaticallyAdjustsScrollViewInsets = NO;
     
     //适配ios 11  滚动视图返回时有偏移
     for (UIView* subView in self.view.subviews){
@@ -63,10 +66,11 @@
             if (@available(iOS 11.0, *)){
                 tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
                 tableView.scrollIndicatorInsets = tableView.contentInset;
-                //reloadData的时候，会重新计算contentSize，就有可能会引起contentOffset的变化 在这里关闭
+
                 tableView.estimatedRowHeight = 0;
                 tableView.estimatedSectionHeaderHeight = 0;
                 tableView.estimatedSectionFooterHeight = 0;
+                
             }
             UIScrollView *scro = (UIScrollView *)subView;
             scro.scrollIndicatorInsets = tableView.contentInset;

@@ -199,7 +199,9 @@
                     _fristImgView = item.fromImgView;
                     videoView.videoViewFrame =  [_mScrollView convertRect:_fromImgView.frame fromView:_fromImgView.superview];
                     _fromImgView.hidden = YES;
+                    [videoView.mVideoImagelayer hiddenAllControl];
                 }else{
+                    [videoView.mVideoImagelayer showAllControl];
                     videoView.videoViewFrame = CGRectMake(i*_mScrollView.width, 0, _mScrollView.width, _mScrollView.height);
                 }
             }
@@ -273,6 +275,7 @@
     CGRect fromRect2 = [_mScrollView convertRect:_fristImgView.frame fromView:_fristImgView.superview];
     
     SSVideoView  *videoView = _mScrollView.subviews[item.itemTag-10];
+    [videoView.mVideoImagelayer hiddenAllControl];
     
     [UIView animateWithDuration:0.3 animations:^{
         self.backView.alpha = 0.01;

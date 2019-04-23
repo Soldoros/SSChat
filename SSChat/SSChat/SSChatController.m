@@ -38,7 +38,8 @@
 //开始翻页的messageId
 @property(nonatomic,strong)NSString *startMsgId;
 
-@property(nonatomic,strong)NSString *video;
+//图片 gif 短视频展开
+@property(nonatomic,strong)SSImageGroupView *imageGroupView;
 
 @end
 
@@ -61,8 +62,15 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = YES;
+    
+    if(_imageGroupView){
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }else{
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -237,7 +245,6 @@
             else{
                 
                 NSString *localPath = (NSString *)object;
-                self.video = localPath;
                 [self sendVideoMessage:localPath];
             }
         }];
@@ -345,10 +352,10 @@
         [groupItems addObject:item];
     }
     
-    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
-    [self.navigationController.view addSubview:imageGroupView];
+    _imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
+    [self.navigationController.view addSubview:_imageGroupView];
 
-    __block SSImageGroupView *blockView = imageGroupView;
+    __block SSImageGroupView *blockView = _imageGroupView;
     blockView.dismissBlock = ^{
         [blockView removeFromSuperview];
         blockView = nil;

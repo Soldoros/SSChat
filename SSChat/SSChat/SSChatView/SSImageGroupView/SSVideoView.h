@@ -65,6 +65,14 @@ typedef NS_ENUM(NSInteger, SSVideoLayerStatus) {
 //根据屏幕旋转刷新控件的位置
 -(void)setNewFrameWithDeviceoRientation;
 
+//控件的显示和隐藏
+-(void)hiddenAllControl;
+-(void)showAllControl;
+@property(nonatomic,assign)BOOL allHidden;
+
+//图片
+@property(nonatomic,strong)UIImage *mBackImage;
+
 //展示单位
 @property(nonatomic,strong)SSImageGroupItem *item;
 
@@ -86,9 +94,9 @@ typedef NS_ENUM(NSInteger, SSVideoLayerStatus) {
 @property(nonatomic,strong)UISlider *playSlider;
 
 //当前播放时间
-@property(nonatomic,assign)float currentTime;
+@property(nonatomic,assign)NSTimeInterval currentTime;
 //总时间
-@property(nonatomic,assign)float totalTime;
+@property(nonatomic,assign)NSTimeInterval totalTime;
 //根据时间设置显示和进度条状态
 -(void)setPeriodicTimeAndProgress;
 

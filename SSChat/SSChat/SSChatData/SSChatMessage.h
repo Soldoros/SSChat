@@ -198,9 +198,9 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, assign) double      longitude;
 @property (nonatomic, strong) NSString    *addressString;
 
-//短视频缩略图网络路径 本地路径  视频图片 local路径
+//短视频缩
 @property (nonatomic, strong) EMVideoMessageBody *videoBody;
-
+@property(nonatomic,strong)UIImage *videoImage;
 
 //拓展消息
 @property(nonatomic,strong)NSDictionary *dict;
