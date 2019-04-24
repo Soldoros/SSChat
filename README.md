@@ -2,7 +2,7 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<span>Hello是基于环信和SSChat框架开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信，真的很棒。感谢为此Demo提出宝贵的意见和建议！ </span>
+<span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信SDK。感谢为此Demo提出宝贵的意见和建议！ </span>
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
@@ -124,7 +124,8 @@ _mInputView.delegate = self;
 2.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
 
 ```Objective-C
-#pragma SSChatBaseCellDelegate Click on the picture and click on the short video
+
+#pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
     NSInteger currentIndex = 0;
@@ -137,43 +138,43 @@ _mInputView.delegate = self;
         SSChatMessagelLayout *mLayout = self.datas[i];
         
         SSImageGroupItem *item = [SSImageGroupItem new];
-        if(mLayout.message.messageType == SSChatMessageTypeImage){
+        if(mLayout.chatMessage.messageType == SSChatMessageTypeImage){
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
-            item.fromImage = mLayout.message.image;
+            item.fromImage = nil;
+            item.chatMessage = mLayout.chatMessage;
         }
-        else if(mLayout.message.messageType == SSChatMessageTypeGif){
+        else if(mLayout.chatMessage.messageType == SSChatMessageTypeGif){
             item.imageType = SSImageGroupGif;
             item.fromImgView = cell.mImgView;
-            item.fromImages = mLayout.message.imageArr;
+            item.fromImages = mLayout.chatMessage.imageArr;
         }
-        else if (mLayout.message.messageType == SSChatMessageTypeVideo){
+        else if (mLayout.chatMessage.messageType == SSChatMessageTypeVideo){
+           
             item.imageType = SSImageGroupVideo;
-            item.videoPath = mLayout.message.videoLocalPath;
             item.fromImgView = cell.mImgView;
-            item.fromImage = mLayout.message.videoImage;
+            item.chatMessage = mLayout.chatMessage;
         }
         else continue;
         
-        item.contentMode = mLayout.message.contentMode;
+        item.contentMode = mLayout.chatMessage.contentMode;
         item.itemTag = groupItems.count + 10;
         if([mLayout isEqual:layout])currentIndex = groupItems.count;
         [groupItems addObject:item];
-        
     }
     
-    SSImageGroupView *imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
-    [self.navigationController.view addSubview:imageGroupView];
-    
-    __block SSImageGroupView *blockView = imageGroupView;
+    _imageGroupView = [[SSImageGroupView alloc]initWithGroupItems:groupItems currentIndex:currentIndex];
+    [self.navigationController.view addSubview:_imageGroupView];
+
+    __block SSImageGroupView *blockView = _imageGroupView;
     blockView.dismissBlock = ^{
         [blockView removeFromSuperview];
         blockView = nil;
     };
     
-    //This section is the chat interface keyboard recovery process alone using the media zoom function can not be written
     [self.mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
+
 ```
 
 <h2>三、直接使用SSChat</h2>
