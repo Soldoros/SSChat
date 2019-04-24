@@ -31,7 +31,6 @@
 
 -(void)initSSChatCellUserInterface{
     
-    
     // 2、创建头像
     _mHeaderImgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _mHeaderImgBtn.backgroundColor =  [UIColor brownColor];
@@ -64,6 +63,13 @@
     [_mBackImgButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
 
+    _mReadLab = [UILabel new];
+    _mReadLab.bounds = CGRectMake(0, 0, 0, 0);
+    [self.contentView addSubview:_mReadLab];
+    _mReadLab.textAlignment = NSTextAlignmentCenter;
+    _mReadLab.font = [UIFont systemFontOfSize:12];
+    _mReadLab.textColor = TitleColor;
+    
 }
 
 
@@ -93,6 +99,28 @@
 -(void)buttonPressed:(UIButton *)sender{
     
     
+}
+
+//设置已读未读
+-(void)setMessageReadStatus{
+    
+    if(_layout.chatMessage.messageFrom == SSChatMessageFromMe){
+     
+        if(_layout.chatMessage.message.isReadAcked == YES){
+            _mReadLab.text = @"已读";
+            _mReadLab.textColor = [UIColor lightGrayColor];
+        } else{
+            _mReadLab.text = @"未读";
+            _mReadLab.textColor = TitleColor;
+        }
+        _mReadLab.hidden = NO;
+        [_mReadLab sizeToFit];
+        _mReadLab.top = _mBackImgButton.bottom + 10;
+        _mReadLab.right = _mBackImgButton.right - SSChatAirLRS;
+        
+    }else{
+        _mReadLab.hidden = YES;
+    }
 }
 
 

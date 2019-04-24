@@ -21,6 +21,7 @@
 #import "SSMake.h"
 #import "SSChoiceView.h"
 #import "SSAlert.h"
+#import "SSAudioPlayer.h"
 
 #import "NSObject+SSAdd.h"
 #import "UIImage+SSAdd.h"

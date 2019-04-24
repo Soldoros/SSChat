@@ -187,7 +187,16 @@ static SSNotificationManager *manager = nil;
         EMConversation *conv = conversations[i];
         count += conv.unreadMessagesCount;
     }
+    
+    UINavigationController *nav2 = tabBarController.viewControllers[0];
+    if(count>0){
+        nav2.tabBarItem.badgeValue = makeStrWithInt(count);
+    }else{
+        nav2.tabBarItem.badgeValue = nil;
+    }
+    
     [UIApplication sharedApplication].applicationIconBadgeNumber = count + manager.unreadCount;
+    
 }
 
 

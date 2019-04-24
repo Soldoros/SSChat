@@ -66,7 +66,7 @@
     
     EMMessage *lastMessage = conversation.latestMessage;
     SSChatDatas *_chatData = [SSChatDatas new];
-    SSChatMessage *model = [_chatData getModelWithMessage:lastMessage];
+    SSChatMessage *chatMessage = [_chatData getModelWithMessage:lastMessage];
     
     
     _mTitleLab.text = conversation.conversationId;
@@ -76,7 +76,7 @@
     _mTitleLab.width = SCREEN_Width - _mTitleLab.left - 100;
     
  
-    _mDetailLab.text = [self getStringWithMessage:model];
+    [self setLabelStringWithMessage:chatMessage label:_mDetailLab];
     [_mDetailLab sizeToFit];
     _mDetailLab.width = SCREEN_Width - _mTitleLab.left - 70;
     _mDetailLab.left = _mLeftImgView.right + 17;
@@ -108,13 +108,18 @@
 
 
 
--(NSString *)getStringWithMessage:(SSChatMessage *)message{
+-(void)setLabelStringWithMessage:(SSChatMessage *)chatMessage label:(UILabel *)label{
+    
+    NSString *status = @"";
+    if(chatMessage.message.isRead == NO){
+        status = @"[未读] ";
+    }
     
     NSString *string = @"";
-    switch (message.messageType) {
+    switch (chatMessage.messageType) {
             
         case SSChatMessageTypeText:
-            string = message.textString;
+            string = chatMessage.textString;
             break;
         case SSChatMessageTypeImage:
             string = @"[图片]";
@@ -137,7 +142,13 @@
         default:
             break;
     }
-    return string;
+   
+    if(status.length>0){
+         string = makeString(status, string);
+         setLabColor(label, string, 0, status.length, TitleColor);
+    }else{
+         label.text = string;
+    }
 }
 
 

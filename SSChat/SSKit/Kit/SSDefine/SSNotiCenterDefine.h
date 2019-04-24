@@ -32,6 +32,9 @@
 //数据归档后通知
 #define NotiDataPersistence           @"NotiDataPersistence"
 
+//消息已读回执通知
+#define NotiMessageReadBack           @"NotiMessageReadBack"
+
 
 
 

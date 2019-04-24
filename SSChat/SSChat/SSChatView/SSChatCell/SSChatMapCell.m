@@ -96,6 +96,7 @@
     
     _mMapButton.frame = self.mBackImgButton.bounds;
     
+    [self setMessageReadStatus];
 }
 
 

@@ -62,9 +62,13 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    [self registerNoti];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = YES;
+    
+    [_conversation markAllMessagesAsRead:nil];
     
     if(_imageGroupView){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -77,12 +81,14 @@
     [super viewWillDisappear:animated];
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.navigationBar.translucent = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-//消息发生变化+接收消息
+//接收消息 消息已读回执
 -(void)registerNoti{
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveMessages:) name:NotiReceiveMessages object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messagesDidRead:) name:NotiMessageReadBack object:nil];
 }
 
 -(void)receiveMessages:(NSNotification *)noti{
@@ -97,10 +103,34 @@
     });
 }
 
+//已读回执
+-(void)messagesDidRead:(NSNotification *)noti{
+    
+    dispatch_async(dispatch_queue_create(0, 0), ^{
+      
+        for(EMMessage *message in noti.object){
+            
+            for(int i=0;i<self.datas.count;++i){
+                SSChatMessagelLayout *layout = self.datas[i];
+                if(![layout.chatMessage.message.conversationId isEqualToString:self.conversation.conversationId]){
+                    return;
+                }else{
+                    if([layout.chatMessage.message.messageId isEqualToString:message.messageId]){
+                        layout.chatMessage.message.isReadAcked = YES;
+                        self.datas[i] = layout;
+                    }
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mTableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
+        });
+    });
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self registerNoti];
     self.navigationItem.title = _conversation.conversationId;
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -297,24 +327,46 @@
 //发送消息
 -(void)sendMessage:(EMMessageBody *)body messageType:(EMChatType)messageType{
 
-    EMMessage *message = [[EMMessage alloc] initWithConversationID:_conversation.conversationId from:_currentUser to:_conversation.conversationId body:body ext:nil];
-    message.chatType = messageType;
+    EMMessage *msg = [[EMMessage alloc] initWithConversationID:_conversation.conversationId from:_currentUser to:_conversation.conversationId body:body ext:nil];
+    msg.chatType = messageType;
+    NSLog(@"是否已读回执%d",msg.isReadAcked);
+
+    [self updateTableViewWithMessage:msg startSend:YES];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:@[message]];
-    
-    [[EMClient sharedClient].chatManager sendMessage:message progress:^(int progress) {
+    [[EMClient sharedClient].chatManager sendMessage:msg progress:^(int progress) {
         cout(@(progress));
+        [self updateTableViewWithMessage:msg startSend:NO];
+       
     } completion:^(EMMessage *message, EMError *error) {
-        [self.mTableView reloadData];
+        
+        [self updateTableViewWithMessage:msg startSend:NO];
         [self sendNotifCation:NotiMessageChange];
     }];
+    
+}
 
+
+-(void)updateTableViewWithMessage:(EMMessage *)message startSend:(BOOL)startSend{
+   
+    dispatch_async(dispatch_queue_create(0, 0), ^{
+        if([message.conversationId isEqualToString:self.conversation.conversationId]){
+            
+            SSChatMessagelLayout *layout = [self.chatData getLayoutWithMessage:message];
+            
+            if(!startSend){
+                self.datas[self.datas.count-1] = layout;
+            }
+            else [self.datas addObject:layout];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateTableView:YES];
+        });
+    });
 }
 
 
 #pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
-    
     
     
     NSInteger currentIndex = 0;

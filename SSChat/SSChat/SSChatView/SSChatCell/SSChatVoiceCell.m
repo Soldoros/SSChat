@@ -71,6 +71,7 @@
     _mTimeLab.text = makeString(time, @"\"");
     _mTimeLab.frame = layout.voiceTimeLabRect;
     
+    [self setMessageReadStatus];
 }
 
 //播放音频 暂停音频

@@ -36,6 +36,8 @@
     self.mTextView.frame = self.layout.textLabRect;
     self.mTextView.attributedText = layout.chatMessage.attTextString;
     
+    
+    [self setMessageReadStatus];
 }
 
 

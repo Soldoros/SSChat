@@ -14,6 +14,15 @@
 
 
 
+/**
+ 消息设置已读
+
+ @param message 消息
+ @param type 会话类型
+ */
+-(void)setMessagesAsReadWithMessage:(EMMessage *)message type:(EMConversationType)type;
+
+
 
 /**
  发送消息或者接受消息的时间 初始化-1 代表直接显示时间

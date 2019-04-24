@@ -47,6 +47,10 @@
 @property(nonatomic, strong) UILabel  *mMessageTimeLab;
 @property(nonatomic, strong) UIButton  *mBackImgButton;
 
+//已读未读
+@property(nonatomic,strong) UILabel *mReadLab;
+-(void)setMessageReadStatus;
+
 //消息按钮
 -(void)buttonPressed:(UIButton *)sender;
 

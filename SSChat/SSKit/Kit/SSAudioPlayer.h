@@ -39,6 +39,11 @@
 
 
 
+/**
+ 播放系统x音效
+ */
++(void)PlaySystemSound;
+
 
 
 

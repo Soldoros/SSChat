@@ -38,6 +38,8 @@
 #define SSChatTextLRS           12           //文本左右短距离
 #define SSChatTextLRB           20           //文本左右长距离
 
+#define SSChatReadLabBottom     20           //已读未读提示高度
+
 //显示时间
 #define SSChatTimeWidth         250          //时间宽度
 #define SSChatTimeHeight        20           //时间高度

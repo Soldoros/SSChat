@@ -10,6 +10,7 @@
 #import "SSChatDatas.h"
 #import <UserNotifications/UserNotifications.h>
 #import "SSChatTime.h"
+#import "SSNotificationManager.h"
 
 @implementation SSChatDatas
 
@@ -35,13 +36,14 @@
 
 
 //设置已读
--(void)setReadWithUsername:(NSString *)username type:(SSChatConversationType )type messageId:(NSString *)messageId{
+-(void)setMessagesAsReadWithMessage:(EMMessage *)message type:(EMConversationType)type{
     
-    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:username type:type createIfNotExist:YES];
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:message.conversationId type:type createIfNotExist:YES];
+    [conversation markMessageAsReadWithId:message.messageId error:nil];
     
-    //    [conversation markAllMessagesAsRead:nil];
-    [conversation markMessageAsReadWithId:messageId error:nil];
+    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
     
+    [self sendNotifCation:NotiMessageChange];
 }
 
 
@@ -49,6 +51,7 @@
 //将环信的消息模型转换成本地模型
 -(SSChatMessage *)getModelWithMessage:(EMMessage *)message{
     
+   
     SSChatMessage *chatMessage = [SSChatMessage new];
     chatMessage.conversationId = message.messageId;
     chatMessage.timestamp = message.timestamp;
@@ -147,6 +150,7 @@
 //将环信模型转换成 SSChatMessagelLayout
 -(SSChatMessagelLayout *)getLayoutWithMessage:(EMMessage *)message{
     
+   
     SSChatMessage *chatMessage = [self getModelWithMessage:message];
     return [[SSChatMessagelLayout alloc]initWithMessage:chatMessage];
 }
@@ -157,11 +161,15 @@
     
     NSMutableArray *array = [NSMutableArray new];
     for(EMMessage *message in aMessages){
+        
         if([message.conversationId isEqualToString:conversationId]){
+            
+            [self setMessagesAsReadWithMessage:message type:EMConversationTypeChat];
             SSChatMessagelLayout *layout = [self getLayoutWithMessage:message];
             [array addObject:layout];
         }
     }
+    
     return  array;
 }
 

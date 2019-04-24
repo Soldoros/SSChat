@@ -20,14 +20,11 @@ static SSHelloManager *hello = nil;
         hello = [[SSHelloManager alloc]init];
        
         EMOptions *options = [EMOptions optionsWithAppkey:HelloAppKey];
-        [EMClient sharedClient].options.isAutoTransferMessageAttachments = YES;
         [[EMClient sharedClient] initializeSDKWithOptions:options];
         
         [[EMClient sharedClient] addDelegate:hello delegateQueue:nil];
         [[EMClient sharedClient].chatManager addDelegate:hello delegateQueue:nil];
         [[EMClient sharedClient].contactManager addDelegate:hello delegateQueue:nil];
-        
-        
         
     });
     return hello;
@@ -104,14 +101,25 @@ static SSHelloManager *hello = nil;
 //接收一条及以上的普通在线消息
 -(void)messagesDidReceive:(NSArray *)aMessages{
     cout(@"在线来消息了");
+    [SSAudioPlayer PlaySystemSound];
     [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:aMessages];
 }
 
 //接收一条及以上的透传消息
 -(void)cmdMessagesDidReceive:(NSArray *)aCmdMessages{
     cout(@"透传来消息了");
+    [SSAudioPlayer PlaySystemSound];
     [[NSNotificationCenter defaultCenter] postNotificationName:NotiReceiveMessages object:aCmdMessages];
 }
+
+//消息已读回调
+-(void)messagesDidRead:(NSArray *)aMessages{
+    
+    cout(@"消息已读回执");
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotiMessageReadBack object:aMessages];
+}
+
+
 
 
 @end

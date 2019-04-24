@@ -6,9 +6,21 @@
 //  Copyright © 2018年 soldoros. All rights reserved.
 //
 
+/*
+ 
+ Git  add .
+ Git commit –m “版本”
+ git remote add origin https://github.com/Soldoros/project.git
+ git pull origin master
+ git push -u origin master
+ 
+ 
+ */
+
 #import "AppDelegate.h"
 #import "SSRootManager.h"
 #import "SSHelloManager.h"
+
 
 @interface AppDelegate ()
 

@@ -34,6 +34,9 @@
 //消息模型
 @property (nonatomic, strong) SSChatMessage  *chatMessage;
 
+//已读未读高度
+@property (nonatomic, assign) CGFloat      readHeight;
+
 //消息布局到CELL的总高度
 @property (nonatomic, assign) CGFloat      cellHeight;
 
