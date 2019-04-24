@@ -124,7 +124,6 @@ _mInputView.delegate = self;
 2.在点击图片或短视频的时候对图片、短视频的数组做处理，有一些必传的参数
 
 ```Objective-C
-#pragma SSChatBaseCellDelegate Click on the picture and click on the short video
 
 #pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
