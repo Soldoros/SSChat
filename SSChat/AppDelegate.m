@@ -10,7 +10,7 @@
  
  Git  add .
  Git commit –m “版本”
- git remote add origin https://github.com/Soldoros/project.git
+ git remote add origin https://github.com/Soldoros/SSChat.git
  git pull origin master
  git push -u origin master
  

@@ -35,18 +35,6 @@
 }
 
 
-//设置已读
--(void)setMessagesAsReadWithMessage:(EMMessage *)message type:(EMConversationType)type{
-    
-    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:message.conversationId type:type createIfNotExist:YES];
-    [conversation markMessageAsReadWithId:message.messageId error:nil];
-    
-    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:nil];
-    
-    [self sendNotifCation:NotiMessageChange];
-}
-
-
 
 //将环信的消息模型转换成本地模型
 -(SSChatMessage *)getModelWithMessage:(EMMessage *)message{
@@ -172,6 +160,20 @@
     
     return  array;
 }
+
+
+//设置已读
+-(void)setMessagesAsReadWithMessage:(EMMessage *)message type:(EMConversationType)type{
+    
+    EMConversation *conversation = [[EMClient sharedClient].chatManager getConversation:message.conversationId type:type createIfNotExist:YES];
+    [conversation markMessageAsReadWithId:message.messageId error:nil];
+    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:^(EMMessage *aMessage, EMError *aError) {
+        [self sendNotifCation:NotiMessageChange];
+    }];
+    
+}
+
+
 
 
 @end

@@ -30,11 +30,38 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiMessageChange object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiReceiveMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageChange) name:NotiContactChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messagesDidRead:) name:NotiMessageReadBack object:nil];
 }
 
 -(void)messageChange{
     [self.datas removeAllObjects];
     [self netWorking];
+}
+
+//只需要处理发送的消息
+-(void)messagesDidRead:(NSNotification *)noti{
+    
+    for(int i=0;i<self.datas.count;++i){
+        
+        EMConversation *conversation = self.datas[i];
+        for(EMMessage *message in noti.object){
+            
+            if(message.direction == EMMessageDirectionReceive){
+                continue;
+            }else{
+                if(![conversation.latestMessage.messageId isEqualToString:message.messageId]){
+                    return;
+                }else{
+                    conversation.latestMessage.isReadAcked = YES;
+                    self.datas[i] = conversation;
+                    break;
+                }
+            }
+        }
+    }
+    [self.mTableView reloadData];
+    
+
 }
 
 

@@ -109,12 +109,7 @@
 
 
 -(void)setLabelStringWithMessage:(SSChatMessage *)chatMessage label:(UILabel *)label{
-    
-    NSString *status = @"";
-    if(chatMessage.message.isRead == NO){
-        status = @"[未读] ";
-    }
-    
+
     NSString *string = @"";
     switch (chatMessage.messageType) {
             
@@ -143,11 +138,20 @@
             break;
     }
    
-    if(status.length>0){
-         string = makeString(status, string);
-         setLabColor(label, string, 0, status.length, TitleColor);
+    if(chatMessage.messageFrom == SSChatMessageFromMe){
+        
+        NSString *status = @"";
+        if(chatMessage.message.isReadAcked == NO){
+            status = @"[未读] ";
+            string = makeString(status, string);
+            setLabColor(label, string, 0, status.length, TitleColor);
+        }else{
+            status = @"[已读] ";
+            string = makeString(status, string);
+            label.text = string;
+        }
     }else{
-         label.text = string;
+        label.text = string;
     }
 }
 
