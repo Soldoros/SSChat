@@ -2,7 +2,7 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<h3>友情提示：由于网易云IM的库文件过大，pod里面没有加载，客官们下载后CD到主文件夹在终端执行pod update 即可加载网易的IM库</h3>
+<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3>
 
 
 <span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信SDK。感谢为此Demo提出宝贵的意见和建议！ </span>
