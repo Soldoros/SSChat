@@ -2,17 +2,17 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3>
+<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3><br><br>
 
 
-<span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信SDK。感谢为此Demo提出宝贵的意见和建议！ </span>
+<span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，感谢网易云IM！ </span>
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
       简书：https://www.jianshu.com/p/a65905cb3072 </span><br>
   
 <span>测试账号1：13540033101 &nbsp;&nbsp;&nbsp; aaaa1111  <br>
-      测试账号2：13540033102 &nbsp;&nbsp;&nbsp; qqqq1111 <br></span><br>
+      测试账号2：13540033103 &nbsp;&nbsp;&nbsp; aaaa1111 <br></span><br>
 
 <br><br>
 <div align=center> 
