@@ -1,0 +1,26 @@
+//
+//  DEProject.pch
+//  Project
+//
+//  Created by soldoros on 16/6/27.
+//  Copyright © 2016年 soldoros. All rights reserved.
+
+
+#ifndef SSProject_pch
+#define SSProject_pch
+
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+
+#import "SSKit.h"
+
+#import "YYKit.h"
+#import "MJRefresh.h"
+
+#import <NIMSDK/NIMSDK.h>
+#import <BmobSDK/Bmob.h>
+
+#endif 
+

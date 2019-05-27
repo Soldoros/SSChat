@@ -1,0 +1,164 @@
+//
+//  ConversationViews.m
+//  SSChat
+//
+//  Created by soldoros on 2019/4/13.
+//  Copyright © 2019 soldoros. All rights reserved.
+//
+
+#import "ConversationViews.h"
+
+@implementation ConversationListCell
+
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]){
+        self.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        
+        
+        _mLeftImgView = [UIImageView new];
+        _mLeftImgView.bounds = CGRectMake(0, 0, 45, 45);
+        _mLeftImgView.left = 10;
+        _mLeftImgView.centerY = ConversationListCellH * 0.5;
+        _mLeftImgView.clipsToBounds = YES;
+        _mLeftImgView.backgroundColor = [UIColor colora];
+        _mLeftImgView.layer.cornerRadius = _mLeftImgView.height * 0.5;
+        [self.contentView addSubview:_mLeftImgView];
+        _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
+        
+        
+        _mTitleLab = [UILabel new];
+        _mTitleLab.bounds = makeRect(0, 0, 100, 30);
+        _mTitleLab.textColor = [UIColor blackColor];
+        [self.contentView addSubview:_mTitleLab];
+        _mTitleLab.font = makeFont(16);
+        
+        
+        _mDetailLab = [UILabel new];
+        _mDetailLab.bounds = makeRect(0, 0, 100, 30);
+        _mDetailLab.textColor = makeColorRgb(160, 160, 160);
+        [self.contentView addSubview:_mDetailLab];
+        _mDetailLab.font = makeFont(15);
+        
+        
+        _mTimeLab = [UILabel new];
+        _mTimeLab.bounds = makeRect(0, 0, 100, 30);
+        _mTimeLab.textColor = makeColorRgb(180, 180, 180);
+        [self.contentView addSubview:_mTimeLab];
+        _mTimeLab.font = makeFont(12);
+        
+        
+        _mRedLab = [UILabel new];
+        _mRedLab.bounds = makeRect(0, 0, 30, 30);
+        _mRedLab.textColor = [UIColor whiteColor];
+        [self.contentView addSubview:_mRedLab];
+        _mRedLab.font = makeFont(12);
+        _mRedLab.backgroundColor = makeColorRgb(239, 70, 65);
+        _mRedLab.textAlignment = NSTextAlignmentCenter;
+        _mRedLab.clipsToBounds = YES;
+        
+    }
+    return self;
+}
+
+-(void)setRecentSession:(NIMRecentSession *)recentSession{
+    _recentSession = recentSession;
+    
+    NSString *img = [SSChatDatas showHeaderImgWithSession:_recentSession.session];
+    
+    NSString *title = [SSChatDatas getNavagationTitle:recentSession.session];
+    
+    NSString *detail = [self messageContent:_recentSession.lastMessage];
+    NSString *time =  [self getTimeWithTimeInterval:_recentSession.lastMessage.timestamp];
+    
+    _mLeftImgView.image = [UIImage imageNamed:img];
+    
+    _mTitleLab.text = title;
+    [_mTitleLab sizeToFit];
+    _mTitleLab.left = _mLeftImgView.right + 15;
+    _mTitleLab.top = _mLeftImgView.top;
+    _mTitleLab.width = SCREEN_Width - _mTitleLab.left - 100;
+    
+    _mDetailLab.text = detail;
+    [_mDetailLab sizeToFit];
+    _mDetailLab.width = SCREEN_Width - _mTitleLab.left - 70;
+    _mDetailLab.left = _mLeftImgView.right + 16;
+    _mDetailLab.bottom = _mLeftImgView.bottom;
+    
+    _mTimeLab.text = time;
+    [_mTimeLab sizeToFit];
+    _mTimeLab.right = SCREEN_Width - 20;
+    _mTimeLab.top = _mLeftImgView.top;
+    
+    
+    if(_recentSession.unreadCount == 0){
+        _mRedLab.hidden = YES;
+    }else{
+        _mRedLab.hidden = NO;
+    }
+    _mRedLab.text = makeStrWithInt(_recentSession.unreadCount);
+    [_mRedLab sizeToFit];
+    _mRedLab.height += 4;
+    _mRedLab.width  += 10;
+    if(_mRedLab.width<_mRedLab.height){
+        _mRedLab.width = _mRedLab.height;
+    }
+    _mRedLab.clipsToBounds = YES;
+    _mRedLab.layer.cornerRadius = _mRedLab.height * 0.5;
+    _mRedLab.right = SCREEN_Width - 20;
+    _mRedLab.bottom = _mLeftImgView.bottom;
+}
+
+- (NSString *)messageContent:(NIMMessage*)lastMessage{
+    NSString *text = @"";
+    switch (lastMessage.messageType) {
+        case NIMMessageTypeText:
+            text = lastMessage.text;
+            break;
+        case NIMMessageTypeAudio:
+            text = @"[语音]";
+            break;
+        case NIMMessageTypeImage:
+            text = @"[图片]";
+            break;
+        case NIMMessageTypeVideo:
+            text = @"[视频]";
+            break;
+        case NIMMessageTypeLocation:
+            text = @"[位置]";
+            break;
+        case NIMMessageTypeNotification:{
+            return @"[通知]";
+        }
+        case NIMMessageTypeFile:
+            text = @"[文件]";
+            break;
+        case NIMMessageTypeTip:
+            text = lastMessage.text;
+            break;
+        case NIMMessageTypeRobot:
+            text = @"[机器人]";
+            break;
+        default:
+            text = @"[未知消息]";
+    }
+    
+    return text;
+}
+
+
+- (NSString *)getTimeWithTimeInterval:(double)timeInterval{
+
+    NSString *latestMessageTime = @"";
+    if(timeInterval > 140000000000) {
+        timeInterval = timeInterval / 1000;
+    }
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    latestMessageTime = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:timeInterval]];
+    return latestMessageTime;
+    
+}
+
+
+@end

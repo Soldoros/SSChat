@@ -1,0 +1,13 @@
+//
+//  SSDeviceManager.m
+//  SSChat
+//
+//  Created by soldoros on 2019/5/17.
+//  Copyright © 2019 soldoros. All rights reserved.
+//
+
+#import "SSDeviceManager.h"
+
+@implementation SSDeviceManager
+
+@end
