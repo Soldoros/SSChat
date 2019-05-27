@@ -131,6 +131,7 @@ _mInputView.delegate = self;
 #pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
+    
     NSInteger currentIndex = 0;
     NSMutableArray *groupItems = [NSMutableArray new];
     
@@ -144,7 +145,6 @@ _mInputView.delegate = self;
         if(mLayout.chatMessage.messageType == SSChatMessageTypeImage){
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
-            item.fromImage = nil;
             item.chatMessage = mLayout.chatMessage;
         }
         else if(mLayout.chatMessage.messageType == SSChatMessageTypeGif){
@@ -153,7 +153,6 @@ _mInputView.delegate = self;
             item.fromImages = mLayout.chatMessage.imageArr;
         }
         else if (mLayout.chatMessage.messageType == SSChatMessageTypeVideo){
-           
             item.imageType = SSImageGroupVideo;
             item.fromImgView = cell.mImgView;
             item.chatMessage = mLayout.chatMessage;
@@ -170,7 +169,11 @@ _mInputView.delegate = self;
     [self.navigationController.view addSubview:_imageGroupView];
 
     __block SSImageGroupView *blockView = _imageGroupView;
-    blockView.dismissBlock = ^{
+    blockView.dismissBlock = ^(SSImageGroupItem *item) {
+        if(item.imageType == SSImageGroupVideo){
+            NSString *path = item.chatMessage.videoObject.url;
+            [[NIMSDK sharedSDK].resourceManager cancelTask:path];
+        }
         [blockView removeFromSuperview];
         blockView = nil;
     };
@@ -187,11 +190,15 @@ _mInputView.delegate = self;
 2.初始化聊天界面，sessionId为会话Id，对接后台时需要传递，这里在做时间5分钟间隔的时候用到了。chatType为会话类型，区分群聊和单聊。群聊和单聊界面相似，后期会更新上来。
 
 ```Objective-C
-SSChatController *vc = [SSChatController new];
-vc.hidesBottomBarWhenPushed = YES;
-vc.chatType = SSChatConversationTypeChat;
-vc.sessionId = @"";
-[self.navigationController pushViewController:vc animated:YES];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NIMRecentSession *recentSession = self.datas[indexPath.row];
+    SSChatController *vc = [SSChatController new];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.session = recentSession.session;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 ```
 
