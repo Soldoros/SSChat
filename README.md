@@ -27,7 +27,8 @@
 pod 'IQKeyboardManager'
 pod 'MJRefresh'
 pod 'YYKit'
-pod 'HyphenateLite'
+pod 'NIMSDK'
+pod 'BmobSDK'
 ```
 
 <h2>一、使用键盘</h2>
