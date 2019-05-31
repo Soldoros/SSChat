@@ -2,14 +2,17 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，也感谢环信SDK。感谢为此Demo提出宝贵的意见和建议！ </span>
+<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3><br><br>
+
+
+<span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，感谢网易云IM！ </span>
 
 <span>邮箱：765970680@qq.com  <br>
       钉钉：13540033103 <br>
       简书：https://www.jianshu.com/p/a65905cb3072 </span><br>
   
 <span>测试账号1：13540033101 &nbsp;&nbsp;&nbsp; aaaa1111  <br>
-      测试账号2：13540033102 &nbsp;&nbsp;&nbsp; qqqq1111 <br></span><br>
+      测试账号2：13540033103 &nbsp;&nbsp;&nbsp; aaaa1111 <br></span><br>
 
 <br><br>
 <div align=center> 
@@ -24,7 +27,8 @@
 pod 'IQKeyboardManager'
 pod 'MJRefresh'
 pod 'YYKit'
-pod 'HyphenateLite'
+pod 'NIMSDK'
+pod 'BmobSDK'
 ```
 
 <h2>一、使用键盘</h2>
@@ -128,6 +132,7 @@ _mInputView.delegate = self;
 #pragma SSChatBaseCellDelegate 点击图片 点击短视频
 -(void)SSChatImageVideoCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
+    
     NSInteger currentIndex = 0;
     NSMutableArray *groupItems = [NSMutableArray new];
     
@@ -141,7 +146,6 @@ _mInputView.delegate = self;
         if(mLayout.chatMessage.messageType == SSChatMessageTypeImage){
             item.imageType = SSImageGroupImage;
             item.fromImgView = cell.mImgView;
-            item.fromImage = nil;
             item.chatMessage = mLayout.chatMessage;
         }
         else if(mLayout.chatMessage.messageType == SSChatMessageTypeGif){
@@ -150,7 +154,6 @@ _mInputView.delegate = self;
             item.fromImages = mLayout.chatMessage.imageArr;
         }
         else if (mLayout.chatMessage.messageType == SSChatMessageTypeVideo){
-           
             item.imageType = SSImageGroupVideo;
             item.fromImgView = cell.mImgView;
             item.chatMessage = mLayout.chatMessage;
@@ -167,7 +170,11 @@ _mInputView.delegate = self;
     [self.navigationController.view addSubview:_imageGroupView];
 
     __block SSImageGroupView *blockView = _imageGroupView;
-    blockView.dismissBlock = ^{
+    blockView.dismissBlock = ^(SSImageGroupItem *item) {
+        if(item.imageType == SSImageGroupVideo){
+            NSString *path = item.chatMessage.videoObject.url;
+            [[NIMSDK sharedSDK].resourceManager cancelTask:path];
+        }
         [blockView removeFromSuperview];
         blockView = nil;
     };
@@ -184,11 +191,15 @@ _mInputView.delegate = self;
 2.初始化聊天界面，sessionId为会话Id，对接后台时需要传递，这里在做时间5分钟间隔的时候用到了。chatType为会话类型，区分群聊和单聊。群聊和单聊界面相似，后期会更新上来。
 
 ```Objective-C
-SSChatController *vc = [SSChatController new];
-vc.hidesBottomBarWhenPushed = YES;
-vc.chatType = SSChatConversationTypeChat;
-vc.sessionId = @"";
-[self.navigationController pushViewController:vc animated:YES];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NIMRecentSession *recentSession = self.datas[indexPath.row];
+    SSChatController *vc = [SSChatController new];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.session = recentSession.session;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 ```
 
