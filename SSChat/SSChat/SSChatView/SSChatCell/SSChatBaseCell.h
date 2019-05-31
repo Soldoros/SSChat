@@ -26,6 +26,9 @@
 //点击定位cell
 -(void)SSChatMapCellClick:(NSIndexPath*)indexPath layout:(SSChatMessagelLayout *)layout;
 
+//点击文件cell
+-(void)SSChatFileCellClick:(NSIndexPath*)indexPath layout:(SSChatMessagelLayout *)layout;
+
 
 @end
 

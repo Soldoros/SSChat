@@ -6,11 +6,11 @@
 //  Copyright © 2018年 soldoros. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseController.h"
 
 typedef void (^SSChatLocationBlock)(NSDictionary *locationDic, NSError *error);
 
-@interface SSChatLocationController : UIViewController
+@interface SSChatLocationController : BaseController
 
 @property(nonatomic,copy)SSChatLocationBlock locationBlock;
 

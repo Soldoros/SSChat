@@ -44,7 +44,7 @@
     
 }
 
-
+//显示个人信息
 -(void)setDataDic:(NSDictionary *)dataDic{
     
     NSString *me = [[NIMSDK sharedSDK].loginManager currentAccount];

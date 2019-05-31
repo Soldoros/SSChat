@@ -179,7 +179,6 @@
 }
 
 
-
 //登陆
 -(void)loginNetworking:(UIButton *)sender{
     
@@ -189,18 +188,17 @@
         [self showTime:@"请输入账号!"];
     }else if([passWorld isEqualToString:@""]){
         [self showTime:@"请输入密码!"];
-    }else if (![NSString mima:passWorld]){
-        [self showTime:@"请输入6-16位数的密码!"];
     }else{
         NSString *token = [passWorld md5String];
         [self loginIM:sender phoneNum:phoneNum token:token];
     }
 }
 
+
 -(void)loginIM:(UIButton *)sender phoneNum:(NSString *)phoneNum token:(NSString *)token{
     
     cout(token);
-   
+    
     [sender addActivityOnBtn];
     [[NIMSDK sharedSDK].loginManager login:phoneNum token:token  completion:^(NSError * _Nullable error) {
         [sender closeActivityByBtn:@"登录"];

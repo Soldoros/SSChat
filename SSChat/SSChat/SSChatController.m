@@ -17,6 +17,8 @@
 #import "SSChatLocationController.h"
 #import "SSImageGroupView.h"
 #import "SSChatMapController.h"
+#import "SSChatFileDownController.h"
+#import "SSChatFileController.h"
 
 
 @interface SSChatController ()<SSChatKeyBoardInputViewDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SSChatBaseCellDelegate,NIMChatManagerDelegate,NIMConversationManagerDelegate>
@@ -129,6 +131,8 @@
     [_mTableView registerClass:NSClassFromString(@"SSChatVoiceCell") forCellReuseIdentifier:SSChatVoiceCellId];
     [_mTableView registerClass:NSClassFromString(@"SSChatMapCell") forCellReuseIdentifier:SSChatMapCellId];
     [_mTableView registerClass:NSClassFromString(@"SSChatVideoCell") forCellReuseIdentifier:SSChatVideoCellId];
+    [_mTableView registerClass:NSClassFromString(@"SSChatFileCell") forCellReuseIdentifier:SSChatFileCellId];
+    [_mTableView registerClass:NSClassFromString(@"SSChatNotiCell") forCellReuseIdentifier:SSChatNotiCellId];
 
     
     [self netWorking:NO];
@@ -142,8 +146,9 @@
     
     NSArray<NIMMessage *> *messages = [[[NIMSDK sharedSDK] conversationManager] messagesInSession:_session message:nil limit:20];
  
-    
     NSArray *layouts = [self.chatData getLayoutsWithMessages:messages sessionId:_session.sessionId];
+    
+    cout(messages);
     
     [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
     if(animation == NO){
@@ -209,9 +214,11 @@
 }
 
 
-//多功能视图点击回调  图片10  视频11  位置12
+//照片10 视频11 通话12 位置13 文件14 红包15
+//转账16 语音输入17 名片18 活动19
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index{
     
+    //照片视频
     if(index==10 || index==11){
         
         if(!_mAddImage) _mAddImage = [[SSAddImage alloc]init];
@@ -233,14 +240,29 @@
             }
         }];
         
-    }else{
+    }
+    //位置
+    else if(index == 13){
+        
         SSChatLocationController *vc = [SSChatLocationController new];
+        [self.navigationController pushViewController:vc animated:YES];
         vc.locationBlock = ^(NSDictionary *locationDic, NSError *error) {
-            
+            double   lat  = [locationDic[@"lat"] doubleValue];
+            double   lon  = [locationDic[@"lon"] doubleValue];
+            NSString *add = locationDic[@"address"];
+            [self sendLocationMessage:lat longitude:lon address:add];
             
         };
-        [self.navigationController pushViewController:vc animated:YES];
         
+    }
+    
+    //文件
+    else if(index == 14){
+        SSChatFileController *vc = [SSChatFileController new];
+        [self.navigationController pushViewController:vc animated:YES];
+        vc.handle = ^(NSDictionary *dict, id object) {
+            [self sendFileMessage:dict];
+        };
     }
 }
 
@@ -285,6 +307,35 @@
     [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
 }
 
+//发送位置消息
+-(void)sendLocationMessage:(double)latitude longitude:(double)longitude address:(NSString *)address{
+    NIMLocationObject *object = [[NIMLocationObject alloc]initWithLatitude:latitude longitude:longitude title:address];
+    NIMMessage *message = [NIMMessage new];
+    message.messageObject = object;
+    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+}
+
+//发送文件消息
+-(void)sendFileMessage:(NSDictionary *)dict{
+    NSString *path = dict[@"value"];
+    NIMFileObject *object = [[NIMFileObject alloc]initWithSourcePath:path];
+    object.displayName = dict[@"key"];
+    
+    NIMMessage *message = [NIMMessage new];
+    message.messageObject = object;
+    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session completion:^(NSError * _Nullable error) {
+        
+    }];
+}
+
+
+
+//文件下载
+-(void)SSChatFileCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
+    SSChatFileDownController *vc = [SSChatFileDownController new];
+    vc.fileObject = layout.chatMessage.fileObject;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark - NIMChatManagerDelegate
 //接收到消息
@@ -381,8 +432,8 @@
 -(void)SSChatMapCellClick:(NSIndexPath *)indexPath layout:(SSChatMessagelLayout *)layout{
     
     SSChatMapController *vc = [SSChatMapController new];
-    vc.latitude = layout.chatMessage.latitude;
-    vc.longitude = layout.chatMessage.longitude;
+    vc.latitude = layout.chatMessage.locationObject.latitude;
+    vc.longitude = layout.chatMessage.locationObject.longitude;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

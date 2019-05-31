@@ -48,11 +48,14 @@
         case SSChatMessageTypeRedEnvelope:
             [self setVideo];
             break;
-        case SSChatMessageTypeUndo:
-            [self setRecallMessage];
+        case SSChatMessageTypeFile:
+            [self setFile];
             break;
-        case SSChatMessageTypeDelete:
-            [self setRemoveMessage];
+        case SSChatMessageTypeTypeTip:
+        [self setFile];
+        break;
+        case NIMMessageTypeCustom:
+            [self setFile];
             break;
         default:
             break;
@@ -97,8 +100,8 @@
     _timeLabRect = CGRectMake(0, 0, 0, 0);
     
     if(_chatMessage.showTime==YES){
-
-       [self getTimeLabRect];
+        
+        [self getTimeLabRect];
         
         CGRect hRect = self.headerImgRect;
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
@@ -338,6 +341,64 @@
     _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
     
 }
+
+
+//文件
+-(void)setFile{
+    
+    CGFloat textWidth  = SSChatFileWidth;
+    CGFloat textHeight = SSChatFileHeight;
+    
+    if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
+        
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
+        
+        _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
+        
+        _fileImgRect = CGRectMake(22, 15, SSChatFileIconW, SSChatFileIconH);
+        _titleLabRect = CGRectMake(SSChatFileIconW + 35, 20, SSChatFileWidth - SSChatFileIconW - 30, 20);
+        
+        _sizeLabRect = CGRectMake(SSChatFileIconW + 37, SSChatFileIconH - 10, SSChatFileWidth - SSChatFileIconW - 30, 20);
+        
+    }else{
+        
+        _readHeight = SSChatReadLabBottom;
+        
+        _headerImgRect = CGRectMake(SSChatIcon_RX, SSChatCellTop, SSChatIconWH, SSChatIconWH);
+        
+        _backImgButtonRect = CGRectMake(SSChatIcon_RX-SSChatDetailRight-SSChatTextLRB-textWidth-SSChatTextLRS, self.headerImgRect.origin.y, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
+        
+        _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRS, SSChatAirBottom, SSChatAirLRB);
+        
+        _fileImgRect = CGRectMake(15, 15, SSChatFileIconW, SSChatFileIconH);
+        
+        _titleLabRect = CGRectMake(SSChatFileIconW + 30, 20, SSChatFileWidth - SSChatFileIconW - 20, 20);
+        
+        _sizeLabRect = CGRectMake(SSChatFileIconW + 32, SSChatFileIconH - 10, SSChatFileWidth - SSChatFileIconW - 30, 20);
+    }
+    
+    
+    //判断时间是否显示
+    _timeLabRect = CGRectMake(0, 0, 0, 0);
+    
+    if(_chatMessage.showTime==YES){
+        
+        [self getTimeLabRect];
+        
+        CGRect hRect = self.headerImgRect;
+        hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
+        self.headerImgRect = hRect;
+        
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+    }
+    
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    
+}
+
+
+
 
 
 //显示支付定金订单信息

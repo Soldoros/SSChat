@@ -194,6 +194,7 @@
     
 }
 
+//更新昵称
 -(void)uploadNicknName:(NSString *)nickName{
     
     [[NIMSDK sharedSDK].userManager updateMyUserInfo:@{@(NIMUserInfoUpdateTagNick) : nickName} completion:^(NSError *error) {

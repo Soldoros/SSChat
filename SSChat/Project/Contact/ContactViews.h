@@ -23,22 +23,37 @@
 @interface ContactListCell : UITableViewCell
 
 @property(nonatomic,strong)NSIndexPath  *indexPath;
-@property(nonatomic,strong)NIMUser *user;
+
+@property(nonatomic,strong)UIImageView *mLeftImgView;
+@property(nonatomic,strong)UILabel *mTitleLab;
+@property(nonatomic,strong)UILabel *mRedLab;
 
 //通讯录数据
+@property(nonatomic,strong)NIMUser *user;
 @property(nonatomic,strong)NSDictionary *dataDic;
 //搜索好友的数据
 @property(nonatomic,strong)NSString *friendString;
+//群组数据
+@property(nonatomic,strong)NIMTeam *team;
+
+@end
+
+
+
+#define ContactChoiceFriendsCellId  @"ContactChoiceFriendsCellId"
+#define ContactChoiceFriendsCellH   50
+
+//通讯录列表
+@interface ContactChoiceFriendsCell : UITableViewCell
+
+@property(nonatomic,strong)NSIndexPath  *indexPath;
+@property(nonatomic,strong)NIMUser *user;
 
 @property(nonatomic,strong)UIImageView *mLeftImgView;
 @property(nonatomic,strong)UILabel *mTitleLab;
 
-//红色数字提示
-@property(nonatomic,strong)UILabel *mRedLab;
-
 
 @end
-
 
 
 //好友申请列表

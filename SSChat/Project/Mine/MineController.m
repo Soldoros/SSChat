@@ -91,7 +91,6 @@
         cell.textLabel.text = self.datas[indexPath.section][indexPath.row][@"title"];
         return cell;
     }
-    
 }
 
 //扫一扫添加好友

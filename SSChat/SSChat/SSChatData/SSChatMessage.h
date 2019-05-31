@@ -23,7 +23,7 @@
 #define SSChatMapCellId         @"SSChatMapCellId"
 #define SSChatVideoCellId       @"SSChatVideoCellId"
 #define SSChatNotiCellId        @"SSChatNotiCellId"
-
+#define SSChatFileCellId        @"SSChatFileCellId"
 
 
 
@@ -92,6 +92,13 @@
 #define SSChatVideoWidth        200
 #define SSChatVideoHeight       150
 
+//文件宽度 高度
+#define SSChatFileWidth        SCREEN_Width / 2
+#define SSChatFileHeight       SCREEN_Width / 5
+//文件icon的尺寸
+#define SSChatFileIconH        SCREEN_Width / 5 - 10
+#define SSChatFileIconW        (SCREEN_Width / 5 - 10) * 0.8
+ 
 
 
 /**
@@ -130,6 +137,10 @@ typedef NS_ENUM(NSInteger, SSChatMessageFrom) {
  - SSChatMessageTypeVideo:        发送小视频
  - SSChatMessageTypeRedEnvelope:  发红包
  - SSChatMessageTypeNotification: 通知消息
+ - SSChatMessageTypeFile: 文件消息
+ - SSChatMessageTypeTypeTip: 提醒类消息消息
+ - SSChatMessageTypeCustom: 自定义消息
+ 
  
  - SSChatMessageTypeUndo:         撤销的消息
  - SSChatMessageTypeDelete:       删除的消息
@@ -143,6 +154,9 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
     SSChatMessageTypeVideo        = 6,
     SSChatMessageTypeRedEnvelope  = 7,
     SSChatMessageTypeNotification = 8,
+    SSChatMessageTypeFile         = 9,
+    SSChatMessageTypeTypeTip      = 10,
+    SSChatMessageTypeCustom       = 11,
     
     SSChatMessageTypeUndo        = 50,
     SSChatMessageTypeDelete      = 51,
@@ -199,14 +213,14 @@ typedef NS_ENUM(NSInteger, SSChatMessageType) {
 @property (nonatomic, strong) NSArray     *voiceImgs;
 
 //地理位置纬度  经度   详细地址
-@property (nonatomic, assign) double      latitude;
-@property (nonatomic, assign) double      longitude;
-@property (nonatomic, strong) NSString    *addressString;
 @property (nonatomic, strong) NIMLocationObject    *locationObject;
 
 //短视频
 @property (nonatomic, strong) NIMVideoObject *videoObject;
 @property(nonatomic,strong)UIImage *videoImage;
+
+//文件消息
+@property (nonatomic, strong) NIMFileObject *fileObject;
 
 //通知消息
 @property (nonatomic, strong) NIMNotificationObject *notiObject;

@@ -22,8 +22,8 @@
         count = 8;
         
         //添加功能只需要在标题和图片数组里面直接添加就行
-        titles = @[@"照片",@"视频",@"位置"];
-        images = @[@"zhaopian",@"shipin",@"weizhi"];
+        titles = @[@"照片",@"视频",@"通话",@"位置",@"文件",@"红包",@"转账",@"语音输入",@"名片",@"活动"];
+        images = @[@"zhaopian",@"shipin",@"yuyin",@"weizhi",@"wenjian",@"hongbao",@"zhuanzhang",@"yuyin",@"mingpian",@""];
         
         NSInteger number = titles.count/count+1;
         

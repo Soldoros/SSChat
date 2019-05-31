@@ -191,12 +191,16 @@
         //获取普通图片
         else{
             _modelType = SSImagePickerModelImage;
-            _pickerBlock(_wayStyle,_modelType,[imgString substringFromIndex:7]);
-//            if(_imagePickerController.editing == YES){
-//                [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerEditedImage]];
-//            }else{
-//                [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerOriginalImage]];
-//            }
+            
+            if(imgUrl && imgString){
+                _pickerBlock(_wayStyle,_modelType,[imgString substringFromIndex:7]);
+            }else{
+                if(_imagePickerController.editing == YES){
+                    [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerEditedImage]];
+                }else{
+                    [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerOriginalImage]];
+                }
+            }
         
         }
     }
@@ -233,23 +237,30 @@
 //拍照或者选取照片后的保存和刷新操作
 -(void)saveImageAndUpdataHeader:(UIImage *)image{
     
-    NSString *filePath = [SSDocumentManager getAccountDocumentPath:@"image.jpeg"];
-    cout(filePath);
-    NSData *data = UIImagePNGRepresentation(image);
-    BOOL success = data && [data writeToFile:filePath atomically:YES];
-    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1);
+    NSString *fullPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/image.jpg"];
+    BOOL success = [imageData writeToFile:fullPath atomically:NO];
     if(success){
-        cout(@"图片保存成功");
+        cout(@"保存成功");
         if(_pickerBlock){
-            _pickerBlock(_wayStyle,_modelType,filePath);
+            _pickerBlock(_wayStyle,_modelType,fullPath);
         }else{
             _pickerBlock = nil;
         }
     }else{
-        cout(@"图片保存失败");
+        cout(@"保存失败");
     }
 }
 
++(void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(id)contextInfo{
+    
+    if(error){
+        cout(@"图片保存失败");
+    }else{
+        cout(@"图片保存成功");
+        cout(contextInfo);
+    }
+}
 
 //保存视频
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{

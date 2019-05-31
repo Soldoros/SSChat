@@ -14,6 +14,8 @@
 		AF1C7F34226E288300870258 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF1C7F33226E288300870258 /* AssetsLibrary.framework */; };
 		AF326171229258FA006A63DF /* SSApplicationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AF326170229258FA006A63DF /* SSApplicationHelper.m */; };
 		AF32617C22929466006A63DF /* ServiceRegisterTask.m in Sources */ = {isa = PBXBuildFile; fileRef = AF32617B22929466006A63DF /* ServiceRegisterTask.m */; };
+		AF427E56229F6B9C001153D9 /* SSChatFileController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF427E55229F6B9C001153D9 /* SSChatFileController.m */; };
+		AF427E59229F6BB8001153D9 /* SSChatFileDownController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF427E58229F6BB8001153D9 /* SSChatFileDownController.m */; };
 		AF804B1321A3DC7F00225FCE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B1221A3DC7F00225FCE /* AppDelegate.m */; };
 		AF804B2121A3DC8000225FCE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B2021A3DC8000225FCE /* main.m */; };
 		AF804C0A21A3DCE100225FCE /* SSChatLocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF804B3C21A3DCE000225FCE /* SSChatLocationController.m */; };
@@ -111,6 +113,10 @@
 		AFD736D8225C4ADB00A3328C /* SSChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD736D4225C4ADA00A3328C /* SSChatMessage.m */; };
 		AFD736D9225C4ADB00A3328C /* SSChatMessagelLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD736D6225C4ADB00A3328C /* SSChatMessagelLayout.m */; };
 		AFD736DC225C4BB500A3328C /* AccountRegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD736DB225C4BB500A3328C /* AccountRegisterController.m */; };
+		AFD859BB229D2CBB00496D70 /* SSChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD859BA229D2CBB00496D70 /* SSChatFileCell.m */; };
+		AFD859BE229D388800496D70 /* SSChatNotiCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD859BD229D388800496D70 /* SSChatNotiCell.m */; };
+		AFDBC43922A11ED3000E86EC /* ContactChoiceFriendsController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC43822A11ED3000E86EC /* ContactChoiceFriendsController.m */; };
+		AFDBC43F22A130ED000E86EC /* ContactTeamListController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDBC43E22A130ED000E86EC /* ContactTeamListController.m */; };
 		AFDEB116228E5F0C00EA2CB1 /* SSContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDEB115228E5F0C00EA2CB1 /* SSContactManager.m */; };
 		AFDEB119228E5F1800EA2CB1 /* SSAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDEB118228E5F1800EA2CB1 /* SSAccountManager.m */; };
 		AFDEB11C228E5F2400EA2CB1 /* SSSystemManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AFDEB11B228E5F2400EA2CB1 /* SSSystemManager.m */; };
@@ -137,6 +143,10 @@
 		AF326170229258FA006A63DF /* SSApplicationHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSApplicationHelper.m; sourceTree = "<group>"; };
 		AF32617A22929466006A63DF /* ServiceRegisterTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceRegisterTask.h; sourceTree = "<group>"; };
 		AF32617B22929466006A63DF /* ServiceRegisterTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceRegisterTask.m; sourceTree = "<group>"; };
+		AF427E54229F6B9C001153D9 /* SSChatFileController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatFileController.h; sourceTree = "<group>"; };
+		AF427E55229F6B9C001153D9 /* SSChatFileController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatFileController.m; sourceTree = "<group>"; };
+		AF427E57229F6BB8001153D9 /* SSChatFileDownController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatFileDownController.h; sourceTree = "<group>"; };
+		AF427E58229F6BB8001153D9 /* SSChatFileDownController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatFileDownController.m; sourceTree = "<group>"; };
 		AF804B0E21A3DC7F00225FCE /* SSChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SSChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF804B1121A3DC7F00225FCE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AF804B1221A3DC7F00225FCE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -328,6 +338,14 @@
 		AFD736D7225C4ADB00A3328C /* SSChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSChatMessage.h; sourceTree = "<group>"; };
 		AFD736DA225C4BB500A3328C /* AccountRegisterController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountRegisterController.h; sourceTree = "<group>"; };
 		AFD736DB225C4BB500A3328C /* AccountRegisterController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountRegisterController.m; sourceTree = "<group>"; };
+		AFD859B9229D2CBB00496D70 /* SSChatFileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatFileCell.h; sourceTree = "<group>"; };
+		AFD859BA229D2CBB00496D70 /* SSChatFileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatFileCell.m; sourceTree = "<group>"; };
+		AFD859BC229D388800496D70 /* SSChatNotiCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatNotiCell.h; sourceTree = "<group>"; };
+		AFD859BD229D388800496D70 /* SSChatNotiCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatNotiCell.m; sourceTree = "<group>"; };
+		AFDBC43722A11ED3000E86EC /* ContactChoiceFriendsController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactChoiceFriendsController.h; sourceTree = "<group>"; };
+		AFDBC43822A11ED3000E86EC /* ContactChoiceFriendsController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactChoiceFriendsController.m; sourceTree = "<group>"; };
+		AFDBC43D22A130ED000E86EC /* ContactTeamListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactTeamListController.h; sourceTree = "<group>"; };
+		AFDBC43E22A130ED000E86EC /* ContactTeamListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactTeamListController.m; sourceTree = "<group>"; };
 		AFDEB114228E5F0C00EA2CB1 /* SSContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSContactManager.h; sourceTree = "<group>"; };
 		AFDEB115228E5F0C00EA2CB1 /* SSContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSContactManager.m; sourceTree = "<group>"; };
 		AFDEB117228E5F1800EA2CB1 /* SSAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSAccountManager.h; sourceTree = "<group>"; };
@@ -455,10 +473,14 @@
 		AF804B3B21A3DCE000225FCE /* InsideController */ = {
 			isa = PBXGroup;
 			children = (
-				AF804B3C21A3DCE000225FCE /* SSChatLocationController.m */,
-				AF804B3D21A3DCE000225FCE /* SSChatMapController.m */,
 				AF804B3E21A3DCE000225FCE /* SSChatLocationController.h */,
+				AF804B3C21A3DCE000225FCE /* SSChatLocationController.m */,
 				AF804B3F21A3DCE000225FCE /* SSChatMapController.h */,
+				AF804B3D21A3DCE000225FCE /* SSChatMapController.m */,
+				AF427E54229F6B9C001153D9 /* SSChatFileController.h */,
+				AF427E55229F6B9C001153D9 /* SSChatFileController.m */,
+				AF427E57229F6BB8001153D9 /* SSChatFileDownController.h */,
+				AF427E58229F6BB8001153D9 /* SSChatFileDownController.m */,
 			);
 			path = InsideController;
 			sourceTree = "<group>";
@@ -478,6 +500,10 @@
 				AF804B5321A3DCE000225FCE /* SSChatVideoCell.m */,
 				AF804B4B21A3DCE000225FCE /* SSChatVoiceCell.h */,
 				AF804B5021A3DCE000225FCE /* SSChatVoiceCell.m */,
+				AFD859B9229D2CBB00496D70 /* SSChatFileCell.h */,
+				AFD859BA229D2CBB00496D70 /* SSChatFileCell.m */,
+				AFD859BC229D388800496D70 /* SSChatNotiCell.h */,
+				AFD859BD229D388800496D70 /* SSChatNotiCell.m */,
 			);
 			path = SSChatCell;
 			sourceTree = "<group>";
@@ -554,6 +580,8 @@
 			children = (
 				AFA76A342265E713001D7C9F /* ContactFriendRequestsController.h */,
 				AFA76A352265E713001D7C9F /* ContactFriendRequestsController.m */,
+				AFDBC43722A11ED3000E86EC /* ContactChoiceFriendsController.h */,
+				AFDBC43822A11ED3000E86EC /* ContactChoiceFriendsController.m */,
 			);
 			path = Friends;
 			sourceTree = "<group>";
@@ -774,6 +802,7 @@
 		AFD736BA225C433200A3328C /* Contact */ = {
 			isa = PBXGroup;
 			children = (
+				AFDBC43C22A130DE000E86EC /* Team */,
 				AFA76A332265E675001D7C9F /* Friends */,
 				AFD736C0225C436B00A3328C /* ContactController.h */,
 				AFD736C1225C436B00A3328C /* ContactController.m */,
@@ -828,6 +857,15 @@
 				AFD736D6225C4ADB00A3328C /* SSChatMessagelLayout.m */,
 			);
 			path = SSChatData;
+			sourceTree = "<group>";
+		};
+		AFDBC43C22A130DE000E86EC /* Team */ = {
+			isa = PBXGroup;
+			children = (
+				AFDBC43D22A130ED000E86EC /* ContactTeamListController.h */,
+				AFDBC43E22A130ED000E86EC /* ContactTeamListController.m */,
+			);
+			path = Team;
 			sourceTree = "<group>";
 		};
 		AFDEB113228E5EF400EA2CB1 /* Manager */ = {
@@ -995,6 +1033,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFDBC43922A11ED3000E86EC /* ContactChoiceFriendsController.m in Sources */,
 				AFDEB119228E5F1800EA2CB1 /* SSAccountManager.m in Sources */,
 				AFD73699225C2CE300A3328C /* SSActionTableView.m in Sources */,
 				AFCFD0FE225C98930004C74E /* SSRequestStatus.m in Sources */,
@@ -1011,6 +1050,7 @@
 				AF804C0B21A3DCE100225FCE /* SSChatMapController.m in Sources */,
 				AFD736D3225C4AB900A3328C /* SSChatDatas.m in Sources */,
 				AFD73696225C2CE300A3328C /* SSImageAnimationView.m in Sources */,
+				AFDBC43F22A130ED000E86EC /* ContactTeamListController.m in Sources */,
 				AFAAA77422675DE50067A4E2 /* SSRootManager.m in Sources */,
 				AFD736D9225C4ADB00A3328C /* SSChatMessagelLayout.m in Sources */,
 				AF804C1521A3DCE100225FCE /* SSChatVoiceCell.m in Sources */,
@@ -1040,6 +1080,7 @@
 				AFD736A3225C2CE300A3328C /* UIImage+SSAdd.m in Sources */,
 				AFD736AC225C2CE300A3328C /* UIView+SSAdd.m in Sources */,
 				AFD736A5225C2CE300A3328C /* UITextField+SSAdd.m in Sources */,
+				AFD859BB229D2CBB00496D70 /* SSChatFileCell.m in Sources */,
 				AFD736C9225C43A600A3328C /* AccountLoginController.m in Sources */,
 				AFD736B7225C2D1000A3328C /* SSAddImage.m in Sources */,
 				AFD736AB225C2CE300A3328C /* UISearchBar+SSAdd.m in Sources */,
@@ -1050,6 +1091,7 @@
 				AFA76A362265E713001D7C9F /* ContactFriendRequestsController.m in Sources */,
 				AFD736B0225C2CE300A3328C /* BaseTableViewGroupedController.m in Sources */,
 				AF804B2121A3DC8000225FCE /* main.m in Sources */,
+				AFD859BE229D388800496D70 /* SSChatNotiCell.m in Sources */,
 				AFA76A282265A636001D7C9F /* MineSettingController.m in Sources */,
 				AFFA3BC0225ED780002AE49A /* PBSearchView.m in Sources */,
 				AF804B1321A3DC7F00225FCE /* AppDelegate.m in Sources */,
@@ -1057,6 +1099,7 @@
 				AFD736A9225C2CE300A3328C /* UITableView+SSAdd.m in Sources */,
 				AFDEB122228E5FFD00EA2CB1 /* SSDocumentManager.m in Sources */,
 				AFA76A2B2265AA32001D7C9F /* MineBlackListController.m in Sources */,
+				AF427E59229F6BB8001153D9 /* SSChatFileDownController.m in Sources */,
 				AFCFD0F0225C95E30004C74E /* ContactViews.m in Sources */,
 				AFA76A312265D58B001D7C9F /* AccountForgotPasswordController.m in Sources */,
 				AF187C6C2264D64400152931 /* MinePersonalController.m in Sources */,
@@ -1092,6 +1135,7 @@
 				AFD736D8225C4ADB00A3328C /* SSChatMessage.m in Sources */,
 				AFCFD0FC225C98930004C74E /* SSRequestLoadingStatus.m in Sources */,
 				AF804CAF21A3DCE100225FCE /* SSImageGroupData.m in Sources */,
+				AF427E56229F6B9C001153D9 /* SSChatFileController.m in Sources */,
 				AFD7369F225C2CE300A3328C /* SSDeviceDefault.m in Sources */,
 				AFD736AD225C2CE300A3328C /* BaseController.m in Sources */,
 				AFD736C5225C437600A3328C /* MineController.m in Sources */,
@@ -1222,8 +1266,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LJPV8HTP98;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = FW3ML5C7BU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SSChat/SSProject.pch;
 				INFOPLIST_FILE = SSChat/Info.plist;
@@ -1232,8 +1277,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.SSChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = soldorosTest;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1244,8 +1290,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LJPV8HTP98;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = FW3ML5C7BU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SSChat/SSProject.pch;
 				INFOPLIST_FILE = SSChat/Info.plist;
@@ -1254,8 +1301,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.SSChat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = soldorosTest;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

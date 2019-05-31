@@ -11,6 +11,9 @@
 #import "SSChatController.h"
 #import "PBSearchController.h"
 #import "ContactFriendRequestsController.h"
+#import "ContactChoiceFriendsController.h"
+#import "RootNavigationController.h"
+#import "ContactTeamListController.h"
 
 
 @interface ContactController ()<NIMSystemNotificationManagerDelegate,NIMUserManagerDelegate>
@@ -50,6 +53,7 @@
     
     [self.mTableView.mj_header beginRefreshing];
 }
+
 
 -(void)netWorking{
     
@@ -103,20 +107,35 @@
     return cell;
 }
 
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    //好友申请
     if(indexPath.section == 0 && indexPath.row == 0){
         ContactFriendRequestsController *vc = [ContactFriendRequestsController new];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
-    else if(indexPath.section == 1){
-        
-        SSChatController *vc = [SSChatController new];
+    //我的群组
+    else if(indexPath.section == 0 && indexPath.row == 1){
+        ContactTeamListController *vc = [ContactTeamListController new];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
+    }
+    //新建群组
+    else if(indexPath.section == 0 && indexPath.row == 2){
+        ContactChoiceFriendsController *vc = [ContactChoiceFriendsController new];
+        RootNavigationController *nav = [[RootNavigationController alloc]initWithRootViewController:vc];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        vc.handle = ^(NSArray *userIds, NSString *name) {
+            [self createTeam:userIds name:name];
+        };
+    }
+    //聊天
+    else if(indexPath.section == 1){
+        NIMUser *user =  self.datas[indexPath.section][indexPath.row];
+        [self chatWithSession:user.userId type:NIMSessionTypeP2P];
     }
 }
 
@@ -146,6 +165,34 @@
         }];
     }
 }
+
+
+
+//创建群组
+-(void)createTeam:(NSArray *)userIds name:(NSString *)name{
+    NIMCreateTeamOption *optin = [[NIMCreateTeamOption alloc]init];
+    optin.type = NIMTeamTypeNormal;
+    optin.name = name;
+    optin.maxMemberCountLimitation = 200;
+    [[NIMSDK sharedSDK].teamManager createTeam:optin users:userIds completion:^(NSError * _Nullable error, NSString * _Nullable teamId, NSArray<NSString *> * _Nullable failedUserIds) {
+        if(error){
+            [self showTime:error.description];
+        }else{
+            
+            [self chatWithSession:teamId type:NIMSessionTypeTeam];
+        }
+    }];
+}
+
+//创建会话
+-(void)chatWithSession:(NSString *)sessionId type:(NIMSessionType)type{
+    NIMSession *session = [NIMSession session:sessionId type:NIMSessionTypeTeam];
+    SSChatController *vc = [SSChatController new];
+    vc.session = session;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 -(void)rightBtnClick{
     PBSearchController *vc = [PBSearchController new];

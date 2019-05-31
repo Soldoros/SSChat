@@ -80,7 +80,7 @@
     
 }
 
-
+//通讯列表数据
 -(void)setUser:(NIMUser *)user{
     _user = user;
     
@@ -127,12 +127,77 @@
     _mTitleLab.left = _mLeftImgView.right + 15;
 }
 
+//群组数据
+- (void)setTeam:(NIMTeam *)team{
+    
+    _mRedLab.hidden = YES;
+    
+    [_mLeftImgView setImageWithURL:[NSURL URLWithString:team.avatarUrl] placeholder:[UIImage imageNamed:@"group_avatar"]];
+    
+    _mTitleLab.text = team.teamName;
+    [_mTitleLab sizeToFit];
+    _mTitleLab.centerY = _mLeftImgView.centerY;
+    _mTitleLab.left = _mLeftImgView.right + 15;
+}
+
+
+
 @end
 
 
 
 
+//选择联系人cell
+@implementation ContactChoiceFriendsCell
+
+-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    if(self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]){
+        self.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.accessoryType = UITableViewCellAccessoryNone;
+        self.tintColor = TitleColor;
+        
+        _mLeftImgView = [UIImageView new];
+        _mLeftImgView.bounds = CGRectMake(0, 0, 30, 30);
+        _mLeftImgView.left = 10;
+        _mLeftImgView.centerY = ContactChoiceFriendsCellH * 0.5;
+        _mLeftImgView.clipsToBounds = YES;
+        _mLeftImgView.backgroundColor = [UIColor colora];
+        _mLeftImgView.layer.cornerRadius = _mLeftImgView.height * 0.5;
+        [self.contentView addSubview:_mLeftImgView];
+        
+        
+        _mTitleLab = [UILabel new];
+        _mTitleLab.bounds = makeRect(0, 0, 100, 30);
+        _mTitleLab.textColor = [UIColor blackColor];
+        [self.contentView addSubview:_mTitleLab];
+        _mTitleLab.font = makeFont(14);
+        
+    }
+    return self;
+}
+
+-(void)setUser:(NIMUser *)user{
+    _user = user;
+    
+    _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    
+    _mTitleLab.text = _user.userInfo.nickName ? _user.userInfo.nickName : _user.userId;
+    [_mTitleLab sizeToFit];
+    _mTitleLab.centerY = _mLeftImgView.centerY;
+    _mTitleLab.left = _mLeftImgView.right + 15;
+    
+}
+
+@end
+
+
+
+
+
 //好友申请列表cell
+
 @implementation ContactFriendRequestsCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{

@@ -17,7 +17,7 @@
 }
 
 +(NSString *)getAPPDocumentPath{
-    
+
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     NSString *documentPath = [path  stringByAppendingPathComponent:[[NIMSDK sharedSDK] appKey]];
     
@@ -42,8 +42,8 @@
 
 +(NSString *)getAccountDocumentPath:(NSString *)suffix{
     
-    NSString *userPath = [[SSDocumentManager getUserDocumentPath] stringByAppendingPathComponent:suffix];
-    
+    NSString *userPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                          
     if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]){
         [[NSFileManager defaultManager] createDirectoryAtPath:userPath withIntermediateDirectories:NO attributes:nil error:nil];
     }

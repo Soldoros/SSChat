@@ -63,8 +63,8 @@
 
     _mTitleLab.width = self.mBackImgButton.width - 30;
     _mDetaiLLab.width = self.mBackImgButton.width - 30;
-    _mTitleLab.text = self.layout.chatMessage.addressString;
-    _mDetaiLLab.text = self.layout.chatMessage.addressString;
+    _mTitleLab.text = self.layout.chatMessage.locationObject.title;
+    _mDetaiLLab.text = self.layout.chatMessage.locationObject.title;
     [_mTitleLab sizeToFit];
     [_mDetaiLLab sizeToFit];
     _mTitleLab.width = self.mBackImgButton.width - 30;
@@ -76,17 +76,17 @@
     
     
     _mMapView.frame = CGRectMake(1.2, 53, self.mBackImgButton.width-9.1, self.mBackImgButton.height-53.6);
-    double lat = self.layout.chatMessage.latitude;
-    double lon = self.layout.chatMessage.longitude;
+    double lat = self.layout.chatMessage.locationObject.latitude;
+    double lon = self.layout.chatMessage.locationObject.longitude;
     CLLocationCoordinate2D coord = (CLLocationCoordinate2D){lat, lon};
     [_mMapView setCenterCoordinate:coord animated:YES];
     
-//    _mMapView.frame = self.mBackImgButton.bounds;
-//    [_mMapView setVisibleMapRect:MKMapRectMake(0, 50, _mMapView.width, _mMapView.height-50) edgePadding:UIEdgeInsetsMake(50, 0, 0, 0) animated:YES];
-//
-//    UIImageView *btnImgView = [[UIImageView alloc]initWithImage:image];
-//    btnImgView.frame = CGRectInset(_mMapView.frame, 0.0f, 0.0f);
-//    _mMapView.layer.mask = btnImgView.layer;
+    _mMapView.frame = self.mBackImgButton.bounds;
+    [_mMapView setVisibleMapRect:MKMapRectMake(0, 50, _mMapView.width, _mMapView.height-50) edgePadding:UIEdgeInsetsMake(50, 0, 0, 0) animated:YES];
+
+    UIImageView *btnImgView = [[UIImageView alloc]initWithImage:image];
+    btnImgView.frame = CGRectInset(_mMapView.frame, 0.0f, 0.0f);
+    _mMapView.layer.mask = btnImgView.layer;
     
     
     _mLine.width = _mMapView.width;

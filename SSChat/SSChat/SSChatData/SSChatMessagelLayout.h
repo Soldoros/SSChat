@@ -63,6 +63,10 @@
 //视频控件的frame
 @property (nonatomic, assign) CGRect       videoImgRect;
 
+//文件icon的frame
+@property (nonatomic, assign) CGRect       fileImgRect;
+@property (nonatomic, assign) CGRect       titleLabRect;
+@property (nonatomic, assign) CGRect       sizeLabRect;
 
 
 @end

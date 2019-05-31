@@ -23,13 +23,27 @@
 
 @implementation SSChatMapController
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.translucent = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationController.navigationBar.hidden = YES;
+    self.navigationController.navigationBar.translucent = NO;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"位置";
     self.view.backgroundColor = [UIColor whiteColor];
+    [self setNavgaionTitle:@"位置"];
     
     
-    _mMapView = [[MKMapView alloc]initWithFrame:CGRectMake(0, SafeAreaTop_Height , SCREEN_Width, SCREEN_Height-SafeAreaTop_Height)];
+    _mMapView = [[MKMapView alloc]initWithFrame:CGRectMake(0, SafeAreaTop_Height , SCREEN_Width, MainViewSub_Height)];
     _mMapView.delegate = self;
     _mMapView.mapType = MKMapTypeStandard;
     _mMapView.showsUserLocation = YES;

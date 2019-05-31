@@ -231,11 +231,45 @@
             chatMessage.textColor   = SSChatTextColor;
             chatMessage.cellString  =  SSChatNotiCellId;
             chatMessage.messageType = SSChatMessageTypeNotification;
-            chatMessage.notiObject  = (NIMNotificationObject *)message.messageObject;
+//            chatMessage.notiObject  = (NIMNotificationObject *)message.messageObject;
+//
+            chatMessage.textString = @"NIMMessageTypeNotification";
+            
+            chatMessage.textColor   = SSChatTextColor;
         }
             break;
             
-        default:
+        case NIMMessageTypeFile:{
+            chatMessage.cellString =  SSChatFileCellId;
+            chatMessage.messageType = SSChatMessageTypeFile;
+            chatMessage.textString = @"NIMMessageTypeFile";
+            chatMessage.fileObject = (NIMFileObject *)message.messageObject;
+            chatMessage.textColor   = SSChatTextColor;
+            
+        }
+            break;
+        case NIMMessageTypeTip:{
+            
+            chatMessage.cellString =  SSChatFileCellId;
+            chatMessage.messageType = SSChatMessageTypeCustom;
+            chatMessage.textString = @"NIMMessageTypeTip";
+            
+            chatMessage.textColor   = SSChatTextColor;
+        }
+            break;
+        case NIMMessageTypeCustom:{
+            chatMessage.cellString =  SSChatFileCellId;
+            chatMessage.messageType = SSChatMessageTypeTypeTip;
+            chatMessage.textString = @"NIMMessageTypeCustom";
+            
+            chatMessage.textColor   = SSChatTextColor;
+        }
+            break;
+            
+        default:{
+            cout(@"未处理类型");
+            cout(@(message.messageType));
+        }
             break;
     }
     
