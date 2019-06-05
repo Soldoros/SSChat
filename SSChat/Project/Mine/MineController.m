@@ -51,8 +51,11 @@
 
 -(void)netWorking{
     
+    NSString *me = [[NIMSDK sharedSDK].loginManager currentAccount];
+    NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:me];
+    
     NSArray *array =
-    @[@[@{@"title":@"",@"detail":@""}],
+    @[@[@{@"title":@"",@"detail":user}],
       @[@{@"title":@"黑名单",@"detail":@""},
         @{@"title":@"意见反馈",@"detail":@""},
         @{@"title":@"关于我们",@"detail":@""}],
@@ -83,7 +86,7 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.section == 0){
         MineTopCell *cell = [tableView dequeueReusableCellWithIdentifier:MineTopCellId];
-        cell.dataDic = self.datas[indexPath.section][indexPath.row];
+        cell.user = self.datas[indexPath.section][indexPath.row][@"detail"];
         return cell;
     }
     else{

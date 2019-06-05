@@ -564,61 +564,26 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section{
         [self.contentView addSubview:_mTitleLab];
         _mTitleLab.font = makeFont(16);
         
-        _mButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.contentView addSubview:_mButton];
-        _mButton.bounds = makeRect(0, 0, 85, 28);
-        _mButton.right = SCREEN_Width - 15;
-        _mButton.centerY = _mLeftImgView.centerY;
-        _mButton.backgroundColor = [UIColor whiteColor];
-        [_mButton setTitleColor:TitleColor forState:UIControlStateNormal];
-        [_mButton setTitle:@"添加" forState:UIControlStateNormal];
-        _mButton.titleLabel.font = makeFont(14);
-        _mButton.clipsToBounds = YES;
-        _mButton.layer.cornerRadius = 3;
-        _mButton.layer.borderColor = TitleColor.CGColor;
-        _mButton.layer.borderWidth = 1;
-        [_mButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
     }
     return self;
 }
 
-//搜索好友的数据
--(void)setFriendString:(NSString *)friendString{
+//通讯列表数据
+-(void)setUser:(NIMUser *)user{
+    _user = user;
     
-    _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:user.userInfo.avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        
+        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:[UIImage imageNamed:@"user_avatar_blue"] options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
     
-    _mTitleLab.text = friendString;
+    
+    _mTitleLab.text = _user.userInfo.nickName ? _user.userInfo.nickName : _user.userId;
     [_mTitleLab sizeToFit];
     _mTitleLab.centerY = _mLeftImgView.centerY;
     _mTitleLab.left = _mLeftImgView.right + 15;
     
-    
-    _mButton.enabled = YES;
-     [_mButton setTitle:@"添加" forState:UIControlStateNormal];
-    [_mButton setTitleColor:TitleColor forState:UIControlStateNormal];
-    _mButton.layer.borderColor = TitleColor.CGColor;
-    
-    for (NSString *str in _invitedUsers){
-        if([str isEqualToString:friendString]){
-            _mButton.enabled = NO;
-            [_mButton setTitle:@"已添加" forState:UIControlStateNormal];
-            [_mButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-            _mButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        }
-    }
-    
 }
-
-//添加好友
--(void)buttonPressed:(UIButton *)sender{
-    
-    if(_delegate && [_delegate respondsToSelector:@selector(PBSearchFriendCellBtnClick:sender:)]){
-        [_delegate PBSearchFriendCellBtnClick:_indexPath sender:sender];
-    }
-}
-
 
 @end
 

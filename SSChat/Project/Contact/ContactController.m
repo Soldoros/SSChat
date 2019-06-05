@@ -14,6 +14,7 @@
 #import "ContactChoiceFriendsController.h"
 #import "RootNavigationController.h"
 #import "ContactTeamListController.h"
+#import "ContactFriendDetController.h"
 
 
 @interface ContactController ()<NIMSystemNotificationManagerDelegate,NIMUserManagerDelegate>
@@ -134,8 +135,9 @@
     }
     //聊天
     else if(indexPath.section == 1){
-        NIMUser *user =  self.datas[indexPath.section][indexPath.row];
-        [self chatWithSession:user.userId type:NIMSessionTypeP2P];
+        ContactFriendDetController *vc = [ContactFriendDetController new];
+        vc.user = self.datas[indexPath.section][indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -186,7 +188,7 @@
 
 //创建会话
 -(void)chatWithSession:(NSString *)sessionId type:(NIMSessionType)type{
-    NIMSession *session = [NIMSession session:sessionId type:NIMSessionTypeTeam];
+    NIMSession *session = [NIMSession session:sessionId type:type];
     SSChatController *vc = [SSChatController new];
     vc.session = session;
     vc.hidesBottomBarWhenPushed = YES;

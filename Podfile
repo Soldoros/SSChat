@@ -10,5 +10,6 @@ pod 'YYKit'
 
 #pod 'NIMSDK'
 pod 'BmobSDK'
+pod 'Masonry'
 
 end

@@ -7,20 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PBSearchData.h"
-
-
-
-/**
- 搜索结果的排序
- 
- - SearchResultStateUp: 每个属性的升序
- - SearchResultStateDown: 每个属性的降序
- */
-typedef NS_ENUM(NSInteger, SearchResultState){
-    SearchResultStateUp,
-    SearchResultStateDown,
-};
+#import "PBData.h"
 
 
 @protocol PBSearchViewsDelegate <NSObject>
@@ -174,11 +161,11 @@ typedef NS_ENUM(NSInteger, SearchResultState){
 @property(nonatomic,strong)NSIndexPath  *indexPath;
 //已经发送添加的好友 准备添加的好友
 @property(nonatomic,strong)NSArray  *invitedUsers;
-@property(nonatomic,strong)NSString *friendString;
 
 @property(nonatomic,strong)UIImageView *mLeftImgView;
 @property(nonatomic,strong)UILabel *mTitleLab;
-@property(nonatomic,strong)UIButton *mButton;
+
+@property(nonatomic,strong)NIMUser  *user;
 
 @end
 

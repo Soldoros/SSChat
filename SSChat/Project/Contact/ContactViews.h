@@ -83,3 +83,93 @@
 @property(nonatomic,strong)UILabel     *mBottomLab;
 
 @end
+
+
+
+
+/**
+ 群组详情的成员cell
+ */
+#define ContactTeamDetTopCellId  @"ContactTeamDetTopCellId"
+#define ContactTeamDetTopCellW   (SCREEN_Width - 20)/5
+#define ContactTeamDetTopCellH   (SCREEN_Width - 20)/5 + 10
+
+@interface ContactTeamDetTopCell : UICollectionViewCell
+
+@property(nonatomic,strong)NSIndexPath *indexPath;
+
+@property(nonatomic,strong)UIImageView *mImgView;
+
+@property(nonatomic,strong)UILabel *mNameLab;
+
+@end
+
+
+/**
+ 群组详情的其他cell
+ */
+#define ContactTeamDetOtherCellId  @"ContactTeamDetOtherCellId"
+#define ContactTeamDetOtherCellW   SCREEN_Width
+#define ContactTeamDetOtherCellH   50
+
+@interface ContactTeamDetOtherCell : UICollectionViewCell
+
+@property(nonatomic,strong)NSIndexPath *indexPath;
+
+@property(nonatomic,strong)UILabel *mTitleLab;
+@property(nonatomic,strong)UILabel *mDetaillab;
+@property(nonatomic,strong)UISlider *mSlider;
+
+@end
+
+
+/**
+ 群组详情的功能cell 清空消息 退出群组
+ */
+#define ContactTeamDetBottomCellId  @"ContactTeamDetBottomCellId"
+#define ContactTeamDetBottomCellW   SCREEN_Width
+#define ContactTeamDetBottomCellH   50
+
+@interface ContactTeamDetBottomCell : UICollectionViewCell
+
+@property(nonatomic,strong)NSIndexPath *indexPath;
+@property(nonatomic,strong)UIButton *mButton;
+//群组数据
+@property(nonatomic,strong)NSDictionary *teamDic;
+
+@end
+
+
+
+
+/**
+ 好友详情的其他cell
+ */
+#define ContactFriendsDetOtherCellId  @"ContactFriendsDetOtherCellId"
+#define ContactFriendsDetOtherCellH   50
+
+@interface ContactFriendsDetOtherCell : UITableViewCell
+
+@property(nonatomic,strong)NSIndexPath *indexPath;
+
+@property(nonatomic,strong)UISwitch *mSwitch;
+
+@property(nonatomic,strong)NIMUser  *user;
+
+@end
+
+
+/**
+ 群组详情的功能cell 清空消息 退出群组
+ */
+#define ContactFriendsDetBottomCellId  @"ContactFriendsDetBottomCellId"
+#define ContactFriendsDetBottomCellH   50
+
+@interface ContactFriendsDetBottomCell : UITableViewCell
+
+@property(nonatomic,strong)NSIndexPath *indexPath;
+
+//好友数据
+@property(nonatomic,strong)NIMUser *user;
+
+@end

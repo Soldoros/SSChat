@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MineData.h"
 
 @protocol MineViewsDelegate <NSObject>
 
@@ -24,7 +25,7 @@
 @interface MineTopCell : UITableViewCell
 
 @property(nonatomic,strong)NSIndexPath *indexPath;
-@property(nonatomic,strong)NSDictionary *dataDic;
+@property(nonatomic,strong)NIMUser *user;
 
 @property(nonatomic,strong)UIImageView *mLeftImgView;
 @property(nonatomic,strong)UILabel *mTitleLab;

@@ -38,7 +38,7 @@
             case NIMSessionTypeP2P:
             {
                 NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:uid];
-                name = user.userInfo.nickName;
+                name = [PBData getUserNameWithUser:user];
             }
                 break;
             case NIMSessionTypeTeam:
@@ -117,7 +117,7 @@
             break;
         case NIMSessionTypeP2P:{
             NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:session.sessionId];
-            title = user.userInfo.nickName;
+            title = [PBData getUserNameWithUser:user];
         }
             break;
         default:

@@ -15,7 +15,7 @@
 @protocol SSChatBaseCellDelegate <NSObject>
 
 //点击头像
--(void)SSChatHeaderImgCellClick:(NSInteger)index indexPath:(NSIndexPath *)indexPath;
+-(void)SSChatHeaderImgCellClick:(SSChatMessagelLayout *)layout indexPath:(NSIndexPath *)indexPath;
 
 //点击文本cell
 -(void)SSChatTextCellClick:(NSIndexPath*)indexPath index:(NSInteger)index layout:(SSChatMessagelLayout *)layout;

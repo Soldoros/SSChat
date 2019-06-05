@@ -7,7 +7,3 @@
 //
 
 #import "MineData.h"
-
-@implementation MineData
-
-@end

@@ -166,10 +166,11 @@
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
 
             self.emotion = [SSChartEmotionImages ShareSSChartEmotionImages];
+            [self.emotion initEmotionImages];
             [self.emotion initSystemEmotionImages];
             
             [self.emoticonImages addObjectsFromArray:self.emotion.images];
-            self.defaultEmoticons = [self.emotion dealWithArray:[NSMutableArray new] arr2:self.emotion.systemImages];
+            self.defaultEmoticons = [self.emotion dealWithArray:self.emotion.images arr2:self.emotion.systemImages];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.collectionView reloadData];
@@ -215,16 +216,53 @@
     }
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    
+    if (scrollView == self.collectionView) {
+        if (scrollView.contentOffset.x >= SCREEN_Width * _numberPage1){
+            [self setSymbolValue2];
+            
+        } else {
+            [self setSymbolValue1];
+        }
+    }
+}
 
 #pragma SSChatKeyBordSymbolFooterDelegate
 //底部切换表情500+  发送200
 -(void)SSChatKeyBordSymbolFooterBtnClick:(UIButton *)sender{
 
-    if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBordSymbolViewBtnClick:)]){
-        [_delegate SSChatKeyBordSymbolViewBtnClick:sender.tag];
+    if(sender.tag==500){
+        [self.collectionView setContentOffset:CGPointMake(0, self.collectionView.contentOffset.y) animated:YES];
+        [self setSymbolValue1];
+        self.pageControl.currentPage = 0;
+        
+    }else if (sender.tag==501){
+        [self.collectionView setContentOffset:CGPointMake(SCREEN_Width * _numberPage1, self.collectionView.contentOffset.y) animated:YES];
+        [self setSymbolValue2];
+        
+    }else{
+        if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBordSymbolViewBtnClick:)]){
+            [_delegate SSChatKeyBordSymbolViewBtnClick:sender.tag];
+        }
     }
 }
 
+//跳转到第一类表情
+-(void)setSymbolValue1{
+    self.pageControl.numberOfPages = _numberPage1;
+    self.pageControl.currentPage = (self.collectionView.contentOffset.x / SCREEN_Width);
+    _footer.mButton1.selected = YES;
+    _footer.mButton2.selected = NO;
+}
+
+//跳转到第二类表情
+-(void)setSymbolValue2{
+    self.pageControl.numberOfPages = _numberPage2;
+    self.pageControl.currentPage = ((self.collectionView.contentOffset.x - _numberPage1*SCREEN_Width) / SCREEN_Width);
+    _footer.mButton1.selected = NO;
+    _footer.mButton2.selected = YES;
+}
 
 
 @end

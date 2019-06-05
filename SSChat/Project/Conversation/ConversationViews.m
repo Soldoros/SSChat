@@ -64,6 +64,7 @@
 -(void)setRecentSession:(NIMRecentSession *)recentSession{
     _recentSession = recentSession;
     
+    NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:_recentSession.session.sessionId];
     NSString *img = [SSChatDatas showHeaderImgWithSession:_recentSession.session];
     
     NSString *title = [SSChatDatas getNavagationTitle:recentSession.session];
@@ -71,8 +72,14 @@
     NSString *detail = [self messageContent:_recentSession.lastMessage];
     NSString *time =  [self getTimeWithTimeInterval:_recentSession.lastMessage.timestamp];
     
-    _mLeftImgView.image = [UIImage imageNamed:img];
     
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:user.userInfo.avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        UIImage *image = [UIImage imageNamed:img];
+        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:image options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
+    
+    
+   
     _mTitleLab.text = title;
     [_mTitleLab sizeToFit];
     _mTitleLab.left = _mLeftImgView.right + 15;

@@ -45,32 +45,31 @@
 }
 
 //显示个人信息
--(void)setDataDic:(NSDictionary *)dataDic{
+-(void)setUser:(NIMUser *)user{
+    _user = user;
     
-    NSString *me = [[NIMSDK sharedSDK].loginManager currentAccount];
-    NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:me];
-    
+    NSString *name = [PBData getUserNameWithUser:_user];
     NSString *avatarUrl = user.userInfo.avatarUrl;
-    NSString *nikcName = user.userInfo.nickName;
     if(avatarUrl == nil)avatarUrl = @"";
-    if(nikcName == nil)nikcName = @"";
     
-    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
-        UIImage *image = [UIImage imageNamed:@"user_avatar_gray"];
-        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:image options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
-    }];
-   
     
-    _mTitleLab.text = nikcName.length != 0 ?nikcName:me;
+    _mTitleLab.text = name;
     [_mTitleLab sizeToFit];
     _mTitleLab.left = _mLeftImgView.right + 15;
     _mTitleLab.bottom = MineTopCellH * 0.5 - 3;
     
-    _mDetailLab.text = makeString(@"账号：", me);
+    _mDetailLab.text = makeString(@"账号：", user.userId);
     _mDetailLab.font = makeFont(14);
     [_mDetailLab sizeToFit];
     _mDetailLab.left = _mLeftImgView.right + 17;
     _mDetailLab.top = MineTopCellH * 0.5 + 4;
+    
+    
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        UIImage *image = [UIImage imageNamed:@"user_avatar_blue"];
+        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:image options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
+    
 }
 
 

@@ -38,7 +38,7 @@
     _mHeaderImgBtn.userInteractionEnabled = YES;
     [self.contentView addSubview:_mHeaderImgBtn];
     _mHeaderImgBtn.clipsToBounds = YES;
-    [_mHeaderImgBtn addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_mHeaderImgBtn addTarget:self action:@selector(headerButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     
     //创建时间
@@ -94,11 +94,16 @@
     
 }
 
+//头像10
+-(void)headerButtonPressed:(UIButton *)sender{
+    if(_delegate && [_delegate respondsToSelector:@selector(SSChatHeaderImgCellClick:indexPath:)]){
+        [_delegate SSChatHeaderImgCellClick:self.layout indexPath:self.indexPath];
+    }
+}
 
-//消息按钮
+//消息按钮50
 -(void)buttonPressed:(UIButton *)sender{
-    
-    
+   
 }
 
 //设置已读未读
@@ -106,7 +111,7 @@
     
     if(_layout.chatMessage.messageFrom == SSChatMessageFromMe){
      
-        if(YES){
+        if(/* DISABLES CODE */ (YES)){
             _mReadLab.text = @"已读";
             _mReadLab.textColor = [UIColor lightGrayColor];
         } else{

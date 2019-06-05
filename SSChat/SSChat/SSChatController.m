@@ -19,9 +19,12 @@
 #import "SSChatMapController.h"
 #import "SSChatFileDownController.h"
 #import "SSChatFileController.h"
+#import "ContactTeamDetController.h"
+#import "ContactFriendDetController.h"
+#import "MinePersonalController.h"
 
 
-@interface SSChatController ()<SSChatKeyBoardInputViewDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SSChatBaseCellDelegate,NIMChatManagerDelegate,NIMConversationManagerDelegate>
+@interface SSChatController ()<SSChatKeyBoardInputViewDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SSChatBaseCellDelegate,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMSystemNotificationManagerDelegate>
 
 //聊天列表
 @property (strong, nonatomic) UIView    *mBackView;
@@ -64,6 +67,7 @@
 -(void)dealloc{
     [[NIMSDK sharedSDK].chatManager removeDelegate:self];
     [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+    [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -94,9 +98,11 @@
     [super viewDidLoad];
     self.navigationItem.title = [SSChatDatas getNavagationTitle:_session];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"gerenxingxi_one"] style:UIBarButtonItemStyleDone target:self action:@selector(navgationNarBtnClick:)];
     
     [[NIMSDK sharedSDK].chatManager addDelegate:self];
     [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+    [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
     
     _mInputView = [SSChatKeyBoardInputView new];
     _mInputView.delegate = self;
@@ -198,6 +204,21 @@
     [_mInputView SetSSChatKeyBoardInputViewEndEditing];
 }
 
+//点击头像
+-(void)SSChatHeaderImgCellClick:(SSChatMessagelLayout *)layout indexPath:(NSIndexPath *)indexPath{
+    NSString *currentUser = [NIMSDK sharedSDK].loginManager.currentAccount;
+    NIMMessage *message = layout.chatMessage.message;
+    if([message.from isEqualToString:currentUser]){
+        MinePersonalController *vc = [MinePersonalController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else{
+        ContactFriendDetController *vc = [ContactFriendDetController new];
+        vc.user = [[NIMSDK sharedSDK].userManager userInfo:_session.sessionId];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 
 #pragma SSChatKeyBoardInputViewDelegate 底部输入框代理回调
 //点击按钮视图frame发生变化 调整当前列表frame
@@ -213,6 +234,10 @@
     }];
 }
 
+#pragma mark - NIMSystemNotificationManagerDelegate
+-(void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification{
+    
+}
 
 //照片10 视频11 通话12 位置13 文件14 红包15
 //转账16 语音输入17 名片18 活动19
@@ -438,5 +463,26 @@
 }
 
 
+
+//进入个人详情或群组、聊天室详情
+-(void)navgationNarBtnClick:(UIButton *)sender{
+    
+    
+    if(_session.sessionType == NIMSessionTypeP2P){
+        ContactFriendDetController *vc = [ContactFriendDetController new];
+        vc.user = [[NIMSDK sharedSDK].userManager userInfo:_session.sessionId];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    else if(_session.sessionType == NIMSessionTypeTeam){
+        ContactTeamDetController *vc = [ContactTeamDetController new];
+        vc.team = [NIMTeam new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+    else{
+    
+    }
+}
 
 @end

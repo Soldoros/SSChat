@@ -7,6 +7,7 @@
 //
 
 #import "SSApplicationHelper.h"
+#import "SSChatIMEmotionModel.h"
 
 static SSApplicationHelper *applicationHelper = nil;
 
@@ -27,6 +28,12 @@ static SSApplicationHelper *applicationHelper = nil;
     [[NIMSDK sharedSDK] registerWithOption:option];
     
     [Bmob registerWithAppKey:BOMB_APPKey];
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        SSChartEmotionImages *emotion = [SSChartEmotionImages ShareSSChartEmotionImages];
+        [emotion initEmotionImages];
+        [emotion initSystemEmotionImages];
+    });
 }
 
 

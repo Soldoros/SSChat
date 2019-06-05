@@ -11,6 +11,8 @@
 #import "ContactViews.h"
 #import "MineViews.h"
 #import "SSTableSwitchView.h"
+#import "ContactFriendDetController.h"
+#import "MinePersonalController.h"
 
 @interface PBSearchController ()<UISearchBarDelegate,PBSearchViewsDelegate>
 
@@ -160,7 +162,7 @@
     cell.delegate = self;
     cell.indexPath = indexPath;
     cell.invitedUsers = _invitedUsers;
-    cell.friendString = self.datas[indexPath.row];
+    cell.user = self.datas[indexPath.row];
     return cell;
 }
 
@@ -174,11 +176,19 @@
 }
 
 
-//体检套餐 特色服务 医疗美容 科室 常见疾病 专家队伍 食物
+//好友详情
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    
+    NIMUser *user = self.datas[indexPath.row];
+    NSString *current = [NIMSDK sharedSDK].loginManager.currentAccount;
+    if([current isEqualToString:user.userId]){
+        MinePersonalController *vc = [MinePersonalController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        ContactFriendDetController *vc = [ContactFriendDetController new];
+        vc.user = self.datas[indexPath.row];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
@@ -322,7 +332,8 @@
     [[NIMSDK sharedSDK].userManager fetchUserInfos:@[_searchString] completion:^(NSArray *users, NSError *error) {
 
         if (users.count) {
-            [self.datas addObject:self.searchString];
+            [self.datas removeAllObjects];
+            [self.datas addObjectsFromArray:users];
             [self.mTableView reloadData];
         }else{
             [self showTime:@"该用户不存在"];
@@ -331,53 +342,6 @@
 
 }
 
-//点击添加联系人回调
--(void)PBSearchFriendCellBtnClick:(NSIndexPath *)indexPath sender:(UIButton *)sender{
-    
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"留言" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        
-        UITextField *textF = alert.textFields[0];
-        [self addFriend:textF.text indexPath:indexPath];
-    }];
-    
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-    
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"请输入留言";
-    }];
-    
-    [okAction setValue:TitleColor forKey:@"_titleTextColor"];
-    [cancelAction setValue:TitleColor forKey:@"_titleTextColor"];
-    [alert addAction:okAction];
-    [alert addAction:cancelAction];
-    [self presentViewController:alert animated:YES completion:nil];
-    
-}
-
-//添加好友需要验证 NIMUserOperationRequest
--(void)addFriend:(NSString *)message indexPath:(NSIndexPath *)indexPath{
-    
-    NSString *user = self.datas[indexPath.row];
-
-    NIMUserRequest *request = [[NIMUserRequest alloc] init];
-    request.userId = user;
-    request.operation = NIMUserOperationRequest;
-    request.message = message.length>0 ? message : @"请求添加您为好友!";
-   
-    [[NIMSDK sharedSDK].userManager requestFriend:request completion:^(NSError *error) {
-
-        if (!error) {
-            [self showTime:@"发送成功"];
-            [self.invitedUsers addObject:user];
-            [self.mTableView reloadData];
-        }
-        else{
-            [self showTime:@"发送失败"];
-        }
-    }];
-}
 
 @end
 

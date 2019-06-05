@@ -94,7 +94,6 @@
 
 //播放音频 暂停音频
 -(void)buttonPressed:(UIButton *)sender{
-    
     if ([self.layout.chatMessage.message attachmentDownloadState]== NIMMessageAttachmentDownloadStateFailed
         || [self.layout.chatMessage.message attachmentDownloadState] == NIMMessageAttachmentDownloadStateNeedDownload) {
         [[[NIMSDK sharedSDK] chatManager] fetchMessageAttachment:self.layout.chatMessage.message error:nil];

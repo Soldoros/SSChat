@@ -84,9 +84,13 @@
 -(void)setUser:(NIMUser *)user{
     _user = user;
     
-    _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:user.userInfo.avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        
+        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:[UIImage imageNamed:@"user_avatar_blue"] options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
     
-    _mTitleLab.text = _user.userInfo.nickName ? _user.userInfo.nickName : _user.userId;
+    
+    _mTitleLab.text = [PBData getUserNameWithUser:_user];
     [_mTitleLab sizeToFit];
     _mTitleLab.centerY = _mLeftImgView.centerY;
     _mTitleLab.left = _mLeftImgView.right + 15;
@@ -113,18 +117,6 @@
         _mRedLab.right = SCREEN_Width - 20;
         _mRedLab.centerY = ContactListCellH * 0.5;
     }
-}
-
-
-//搜索好友的数据
--(void)setFriendString:(NSString *)friendString{
-    
-    _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
-    
-    _mTitleLab.text = friendString;
-    [_mTitleLab sizeToFit];
-    _mTitleLab.centerY = _mLeftImgView.centerY;
-    _mTitleLab.left = _mLeftImgView.right + 15;
 }
 
 //群组数据
@@ -181,14 +173,18 @@
 -(void)setUser:(NIMUser *)user{
     _user = user;
     
-    _mLeftImgView.image = [UIImage imageNamed:@"user_avatar_blue"];
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:user.userInfo.avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        
+        [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:[UIImage imageNamed:@"user_avatar_blue"] options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
     
-    _mTitleLab.text = _user.userInfo.nickName ? _user.userInfo.nickName : _user.userId;
+    _mTitleLab.text = [PBData getUserNameWithUser:user];
     [_mTitleLab sizeToFit];
     _mTitleLab.centerY = _mLeftImgView.centerY;
     _mTitleLab.left = _mLeftImgView.right + 15;
     
 }
+
 
 @end
 
@@ -379,6 +375,314 @@
     
 }
 
+
+
+@end
+
+
+
+//群组详情的成员cell
+@implementation ContactTeamDetTopCell
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    if(self = [super initWithFrame:frame]){
+        self.backgroundColor = [UIColor whiteColor];
+        
+        _mImgView = [UIImageView new];
+        _mImgView.bounds = makeRect(0, 0, self.width - 25, self.width - 25);
+        _mImgView.top = 5;
+        _mImgView.centerX = self.width * 0.5;
+        [self.contentView addSubview:_mImgView];
+        _mImgView.clipsToBounds = YES;
+        _mImgView.layer.cornerRadius = 3;
+        
+        _mNameLab = [UILabel new];
+        [self.contentView addSubview:_mNameLab];
+        _mNameLab.font = [UIFont systemFontOfSize:14];
+        _mNameLab.textColor = [UIColor blackColor];
+        _mNameLab.textAlignment = NSTextAlignmentCenter;
+        
+    }
+    return self;
+}
+
+-(void)setIndexPath:(NSIndexPath *)indexPath{
+    _indexPath = indexPath;
+    NSArray *imgs = @[@"",@"",@"",@"",@"",@""];
+    NSArray *names = @[@"",@"",@"",@"",@"",@""];
+    for(int i=0;i<imgs.count;++i){
+        NSString *img = @"logo500";
+        NSString *name = @"好友";
+        _mImgView.image = [UIImage imageNamed:img];
+        _mNameLab.text = name;
+        [_mNameLab sizeToFit];
+        _mNameLab.centerX = self.width * 0.5;
+        _mNameLab.top = _mImgView.bottom + 5;
+    }
+}
+
+@end 
+
+
+//群组详情的其他cell
+@implementation ContactTeamDetOtherCell
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    if(self = [super initWithFrame:frame]){
+        self.backgroundColor = [UIColor whiteColor];
+        
+        _mTitleLab = [UILabel new];
+        [self.contentView addSubview:_mTitleLab];
+        _mTitleLab.font = [UIFont systemFontOfSize:16];
+        _mTitleLab.textColor = [UIColor blackColor];
+        _mTitleLab.textAlignment = NSTextAlignmentLeft;
+        _mTitleLab.frame = makeRect(15, 0, 200, ContactTeamDetOtherCellH);
+        
+        _mDetaillab = [UILabel new];
+        [self.contentView addSubview:_mDetaillab];
+        _mDetaillab.font = [UIFont systemFontOfSize:14];
+        _mDetaillab.textColor = [UIColor lightGrayColor];
+        _mDetaillab.textAlignment = NSTextAlignmentRight;
+        _mDetaillab.bounds = makeRect(0, 0, 200, ContactTeamDetOtherCellH);
+        _mDetaillab.top = 0;
+        _mDetaillab.right = SCREEN_Width - 15;
+        
+    }
+    return self;
+}
+
+-(void)setIndexPath:(NSIndexPath *)indexPath{
+    _indexPath = indexPath;
+    if(indexPath.section == 1){
+        if(indexPath.row == 0){
+            _mTitleLab.text = @"群名称";
+            _mDetaillab.text = @"萝卜讨论组";
+        }else if(indexPath.row == 1){
+            _mTitleLab.text = @"群昵称";
+            _mDetaillab.text = @"哎呀呀";
+        }else{
+            _mTitleLab.text = @"群介绍";
+            _mDetaillab.text = @"帮大家发财致富";
+        }
+    }else{
+        if(indexPath.row == 0){
+            _mTitleLab.text = @"群公告";
+            _mDetaillab.text = @"今天发红包，记得别忘了";
+        }else if(indexPath.row == 1){
+            _mTitleLab.text = @"消息提醒";
+            _mDetaillab.text = @"";
+        }else{
+            _mTitleLab.text = @"聊天置顶";
+            _mDetaillab.text = @"萝卜讨论组";
+        }
+    }
+}
+
+@end
+
+
+
+
+//群组详情的功能cell 清空消息 退出群组
+@implementation ContactTeamDetBottomCell
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    if(self = [super initWithFrame:frame]){
+        self.backgroundColor = [UIColor whiteColor];
+        
+        _mButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _mButton.frame = self.contentView.bounds;
+        _mButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [_mButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [_mButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_mButton];
+    }
+    return self;
+}
+
+-(void)buttonPressed:(UIButton *)sender{
+    
+    
+}
+
+//群组数据
+-(void)setTeamDic:(NSDictionary *)teamDic{
+    if(_indexPath.row == 0){
+        [_mButton setTitle:@"清空聊天记录" forState:UIControlStateNormal];
+    }else{
+        [_mButton setTitle:@"删除并退出" forState:UIControlStateNormal];
+    }
+}
+
+
+@end
+
+
+//好友详情cell
+@implementation ContactFriendsDetOtherCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    
+    if(self = [super initWithStyle:UITableViewCellStyleValue1
+       reuseIdentifier:reuseIdentifier]){
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor whiteColor];
+        
+        self.detailTextLabel.font = [UIFont systemFontOfSize:14];
+        self.detailTextLabel.textColor = [UIColor lightGrayColor];
+        
+        self.textLabel.font = [UIFont systemFontOfSize:16];
+        self.textLabel.textColor = [UIColor blackColor];
+        
+        
+        _mSwitch = [UISwitch new];
+        _mSwitch.right = SCREEN_Width - 15;
+        _mSwitch.centerY = ContactFriendsDetOtherCellH * 0.5;
+        [self.contentView addSubview:_mSwitch];
+        [_mSwitch addTarget:self action:@selector(valueChanged:) forControlEvents:(UIControlEventValueChanged)];
+        
+    }
+    return self;
+}
+
+//置顶聊天0 消息提醒1  黑名单2
+-(void)valueChanged:(UISwitch *)sender{
+    
+    if(_indexPath.row == 0){
+        
+    }
+    else if(_indexPath.row == 1){
+        [[NIMSDK sharedSDK].userManager updateNotifyState:sender.on forUser:_user.userId completion:^(NSError *error) {
+            if (error) {
+                 [[self viewController].view showTimeBlack:@"设置消息提醒失败"];
+            }else{
+                [[self viewController].view showTimeBlack:@"设置消息提醒成功"];
+            }
+        }];
+    }else{
+        //加入黑名单
+        if(sender.on){
+            [[NIMSDK sharedSDK].userManager addToBlackList:_user.userId completion:^(NSError *error) {
+                
+                if (!error) {
+                    [[self viewController].view showTimeBlack:@"加入黑名单成功"];
+                }else{
+                    [[self viewController].view showTimeBlack:@"加入黑名单失败"];
+                }
+            }];
+        }
+        //移除黑名单
+        else{
+            
+            [[NIMSDK sharedSDK].userManager removeFromBlackBlackList:_user.userId completion:^(NSError *error) {
+                if (!error) {
+                    [[self viewController].view showTimeBlack:@"移除黑名单成功"];
+                }else{
+                    [[self viewController].view showTimeBlack:@"移除黑名单失败"];
+                }
+            }];
+        }
+    }
+}
+
+//头像  备注 (昵称 签名 电话)  (消息提醒  拉黑)  (聊天 删除)
+-(void)setUser:(NIMUser *)user{
+    _user = user;
+    self.accessoryType = UITableViewCellAccessoryNone;
+    
+    _mSwitch.hidden = YES;
+    self.detailTextLabel.hidden = NO;
+    if(_indexPath.section == 1){
+        self.textLabel.text = @"备注";
+        self.detailTextLabel.text = _user.alias;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    else if(_indexPath.section == 2){
+        if(_indexPath.row == 0){
+            self.textLabel.text = @"昵称";
+            self.detailTextLabel.text = user.userInfo.nickName?user.userInfo.nickName:@"暂无";
+        }
+        else if(_indexPath.row == 1){
+            self.textLabel.text = @"签名";
+            self.detailTextLabel.text = user.userInfo.sign?user.userInfo.sign:@"暂无";
+        }else{
+            self.textLabel.text = @"电话";
+            self.detailTextLabel.text = user.userInfo.mobile?user.userInfo.mobile:@"暂无";
+        }
+    }
+    else{
+        _mSwitch.hidden = NO;
+        self.detailTextLabel.hidden = YES;
+        
+        if(_indexPath.row == 0){
+            self.textLabel.text = @"置顶聊天";
+            if(_user.notifyForNewMsg){
+                _mSwitch.on = YES;
+            }else{
+                _mSwitch.on = NO;
+            }
+        }
+        else if(_indexPath.row == 1){
+            self.textLabel.text = @"消息提醒";
+            if(_user.notifyForNewMsg){
+                _mSwitch.on = YES;
+            }else{
+                _mSwitch.on = NO;
+            }
+        }
+        else{
+            self.textLabel.text = @"黑名单";
+            if(_user.isInMyBlackList){
+                _mSwitch.on = YES;
+            }else{
+                _mSwitch.on = NO;
+            }
+        }
+    }
+}
+
+
+@end
+
+
+
+
+
+//好友详情的功能cell 会话 删除
+@implementation ContactFriendsDetBottomCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    
+    if(self = [super initWithStyle:UITableViewCellStyleDefault
+                   reuseIdentifier:reuseIdentifier]){
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor whiteColor];
+        
+        self.textLabel.font = [UIFont systemFontOfSize:16];
+        self.textLabel.textColor = [UIColor redColor];
+        self.textLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return self;
+}
+
+//群组数据
+-(void)setUser:(NIMUser *)user{
+    _user = user;
+    
+    BOOL isMyFriend = [[NIMSDK sharedSDK].userManager isMyFriend:_user.userId];
+    
+    if(_indexPath.row == 0){
+        self.textLabel.text = @"发送消息";
+        self.textLabel.textColor = makeColorRgb(62, 110, 181);
+    }else{
+        self.textLabel.textColor = makeColorRgb(195, 45, 50);
+        if(isMyFriend){
+            self.textLabel.text = @"删除好友";
+        }else{
+            self.textLabel.text = @"添加好友";
+        }
+    }
+}
 
 
 @end

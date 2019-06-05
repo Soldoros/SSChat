@@ -26,27 +26,14 @@
     
     //创建layout
     self.collectionLayout = [[SSCollectionViewFlowLayout alloc] init];
-//    //设置item的行间距和列间距
-//    self.collectionLayout.minimumInteritemSpacing = 0;
-//    self.collectionLayout.minimumLineSpacing = 0;
-//    //设置item的大小
-//    self.collectionLayout.itemSize = CGSizeMake(SCREEN_Width, 44);
-//    //设置每个分区的上左下右的内边距
-//    self.collectionLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    //设置区头和区尾的大小
-//    self.collectionLayout.headerReferenceSize = CGSizeMake(0, 0);
-//    self.collectionLayout.footerReferenceSize = CGSizeMake(0, 0);
-//    //设置分区的头视图和尾视图是否始终固定在屏幕上边和下边
-//    self.collectionLayout.sectionFootersPinToVisibleBounds = YES;
-//    self.collectionLayout.sectionHeadersPinToVisibleBounds = YES;
     
-
     //创建collectionView
     self.mCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, SafeAreaTop_Height, SCREEN_Width, self.tableViewH) collectionViewLayout:self.collectionLayout];
     self.mCollectionView.delegate = self;
     self.mCollectionView.dataSource = self;
     self.mCollectionView.backgroundColor = [UIColor whiteColor];
     self.mCollectionView.backgroundView.backgroundColor = [UIColor whiteColor];
+    self.mCollectionView.alwaysBounceVertical = YES;
    
     [self.mCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     [self.mCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"headerId"];
