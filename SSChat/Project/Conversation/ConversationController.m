@@ -9,8 +9,12 @@
 #import "ConversationController.h"
 #import "ConversationViews.h"
 #import "SSChatController.h"
+#import "PBSearchView.h"
+#import "PBSearchController.h"
 
-@interface ConversationController ()<NIMConversationManagerDelegate>
+@interface ConversationController ()<NIMConversationManagerDelegate,PBSearchViewsDelegate>
+
+@property(nonatomic,strong)PBSearchTableHeader *tableHeader;
 
 @end
 
@@ -36,7 +40,13 @@
     
     self.mTableView.top -= 1;
     self.mTableView.height += 1;
+    self.mTableView.backgroundColor = [UIColor whiteColor];
+    self.mTableView.backgroundView.backgroundColor = [UIColor whiteColor];
     [self.mTableView registerClass:@"ConversationListCell" andCellId:ConversationListCellId];
+    
+    _tableHeader = [[PBSearchTableHeader alloc]initWithFrame:makeRect(0, 0, SCREEN_Width, PBSearchTableHeaderH) placeholder:@"搜索"];
+    _tableHeader.delegate = self;
+    self.mTableView.tableHeaderView = _tableHeader;
  
     self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [self.datas removeAllObjects];
@@ -89,6 +99,14 @@
         
         [self.mTableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+#pragma arguments PBSearchViewsDelegate
+-(void)PBSearchTableHeaderBtnClick:(UIButton *)sender{
+    PBSearchController *vc = [PBSearchController new];
+    vc.FirstResponder = YES;
+    vc.searchType = PBSearchAllType2;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

@@ -9,6 +9,67 @@
 #import "PBSearchView.h"
 
 
+@implementation PBSearchTableHeader
+
+- (instancetype)initWithFrame:(CGRect)frame placeholder:(NSString *)placeholder
+{
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor whiteColor];
+        
+        _searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _searchBtn.bounds = CGRectMake(0, 0, SCREEN_Width-25, 38);
+        _searchBtn.centerX = self.width * 0.5;
+        _searchBtn.centerY = self.height * 0.5;
+        [self addSubview:_searchBtn];
+        _searchBtn.clipsToBounds = YES;
+        _searchBtn.layer.cornerRadius = 6;
+        [_searchBtn setBackgroundImage:[UIImage imageWithColor:makeColorHex(@"F7F7F7")] forState:UIControlStateNormal];
+        _searchBtn.showsTouchWhenHighlighted = YES;
+        [_searchBtn addTarget:self action:@selector(searchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        _mSearchBar = [[UISearchBar alloc]init];
+        _mSearchBar.frame = _searchBtn.bounds;
+        [_searchBtn addSubview:_mSearchBar];
+        _mSearchBar.clipsToBounds = YES;
+        _mSearchBar.layer.cornerRadius = 6;
+        [_mSearchBar setReturnKeyType:UIReturnKeyDone];
+        _mSearchBar.delegate = self;
+        _mSearchBar.placeholder = placeholder;
+        _mSearchBar.showsCancelButton = NO;
+        _mSearchBar.enablesReturnKeyAutomatically = NO;
+        _mSearchBar.barTintColor = [UIColor clearColor];
+        _mSearchBar.tintColor=[UIColor blackColor];
+        [[[[_mSearchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
+        [_mSearchBar setBackgroundColor:[UIColor clearColor]];
+        _mSearchBar.userInteractionEnabled = NO;
+        
+        [_mSearchBar setImage:[[UIImage imageNamed:@"icon_sousuo"] imageWithColor:makeColorHex(@"#999999")]
+             forSearchBarIcon:UISearchBarIconSearch
+                        state:UIControlStateNormal];
+        
+        UITextField *searchField = [_mSearchBar valueForKey:@"searchField"];
+        if (searchField) {
+            [searchField setBackgroundColor:[UIColor clearColor]];
+            searchField.clipsToBounds = YES;
+            searchField.layer.cornerRadius = 6;
+            [searchField setFont:[UIFont systemFontOfSize:16]];
+            searchField.tintColor = makeColorHex(@"C7C7C7");
+            [searchField setValue:makeColorHex(@"C7C7C7") forKeyPath:@"_placeholderLabel.textColor"];
+            searchField.textColor = makeColorHex(@"333333");
+        }
+    }
+    return self;
+}
+
+-(void)searchButtonClick:(UIButton *)sender{
+    if(_delegate && [_delegate respondsToSelector:@selector(PBSearchTableHeaderBtnClick:)]){
+        [_delegate PBSearchTableHeaderBtnClick:sender];
+    }
+}
+
+@end
+
+
 @implementation PBSearchReusableView
 -(instancetype)initWithFrame:(CGRect)frame{
     if(self = [super initWithFrame:frame]){

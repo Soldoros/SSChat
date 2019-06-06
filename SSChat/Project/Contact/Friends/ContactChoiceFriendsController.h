@@ -8,9 +8,11 @@
 
 #import "BaseTableViewGroupedController.h"
 
-typedef void (^ContactChoiceFriendsHandle)(NSArray *userIds,NSString *name);
+typedef void (^ContactChoiceFriendsHandle)(NSArray *userIds,NSString *name, NIMTeamType type);
 
 @interface ContactChoiceFriendsController : BaseTableViewGroupedController
+
+@property(nonatomic,assign)NIMTeamType type;
 
 @property(nonatomic,copy)ContactChoiceFriendsHandle handle;
 

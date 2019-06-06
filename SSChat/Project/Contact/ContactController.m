@@ -126,14 +126,9 @@
     }
     //新建群组
     else if(indexPath.section == 0 && indexPath.row == 2){
-        ContactChoiceFriendsController *vc = [ContactChoiceFriendsController new];
-        RootNavigationController *nav = [[RootNavigationController alloc]initWithRootViewController:vc];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
-        vc.handle = ^(NSArray *userIds, NSString *name) {
-            [self createTeam:userIds name:name];
-        };
+        [self creatTeam];
     }
-    //聊天
+    //个人名片
     else if(indexPath.section == 1){
         ContactFriendDetController *vc = [ContactFriendDetController new];
         vc.user = self.datas[indexPath.section][indexPath.row];
@@ -168,23 +163,55 @@
     }
 }
 
+//新建群组
+-(void)creatTeam{
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"请选择创建群组的类型" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* outAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    UIAlertAction* action1 = [UIAlertAction actionWithTitle:@"讨论组" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self creatTeamWithType:NIMTeamTypeNormal];
+    }];
+    UIAlertAction* action2 = [UIAlertAction actionWithTitle:@"高级群" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self creatTeamWithType:NIMTeamTypeAdvanced];
+    }];
+    
+    [alert addAction:outAction];
+    [alert addAction:action1];
+    [alert addAction:action2];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alert animated:YES completion:nil];
+    });
+}
 
+//根据类型创建群组
+-(void)creatTeamWithType:(NIMTeamType)type{
+    ContactChoiceFriendsController *vc = [ContactChoiceFriendsController new];
+    vc.type = type;
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+    vc.handle = ^(NSArray *userIds, NSString *name, NIMTeamType type) {
+        [self createTeam:userIds name:name type:type];
+    };
+}
 
-//创建群组
--(void)createTeam:(NSArray *)userIds name:(NSString *)name{
-    NIMCreateTeamOption *optin = [[NIMCreateTeamOption alloc]init];
-    optin.type = NIMTeamTypeNormal;
-    optin.name = name;
-    optin.maxMemberCountLimitation = 200;
-    [[NIMSDK sharedSDK].teamManager createTeam:optin users:userIds completion:^(NSError * _Nullable error, NSString * _Nullable teamId, NSArray<NSString *> * _Nullable failedUserIds) {
+-(void)createTeam:(NSArray *)userIds name:(NSString *)name type:(NIMTeamType)type{
+    
+    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc]init];
+    option.type = type;
+    option.name = name;
+    option.joinMode   = NIMTeamJoinModeNoAuth;
+    option.postscript = @"邀请你加入群组";
+    [[NIMSDK sharedSDK].teamManager createTeam:option users:userIds completion:^(NSError * _Nullable error, NSString * _Nullable teamId, NSArray<NSString *> * _Nullable failedUserIds) {
         if(error){
-            [self showTime:error.description];
+            [self showTime:@"创建群组失败"];
         }else{
-            
             [self chatWithSession:teamId type:NIMSessionTypeTeam];
         }
     }];
 }
+
 
 //创建会话
 -(void)chatWithSession:(NSString *)sessionId type:(NIMSessionType)type{

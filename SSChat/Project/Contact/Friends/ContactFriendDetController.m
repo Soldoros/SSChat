@@ -47,7 +47,7 @@
     
 }
 
-//头像  备注 (昵称 签名 电话)  (消息提醒  拉黑)  (聊天 删除)
+//头像  备注 (昵称 签名 电话)  (置顶聊天 消息提醒  拉黑)  (聊天 删除)
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 5;
 }
@@ -56,11 +56,11 @@
     return 10;
 }
 
-//头像  备注 (昵称 签名 电话)  (消息提醒  拉黑)  (聊天 删除)
+//头像  备注 (昵称 签名 电话)  (置顶聊天 消息提醒  拉黑)  (聊天 删除)
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0 || section == 1)return 1;
-    else if(section == 2) return 3;
-    else return 2;
+    else if(section == 4) return 2;
+    else return 3;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -189,7 +189,6 @@
 //删除好友的友情提示
 -(void)deleteFriendHelpfulHints{
 
-    cout(@"diddddd");
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"删除好友会直接解除双方的好友关系" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction* outAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];

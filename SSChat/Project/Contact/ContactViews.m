@@ -394,7 +394,7 @@
         _mImgView.centerX = self.width * 0.5;
         [self.contentView addSubview:_mImgView];
         _mImgView.clipsToBounds = YES;
-        _mImgView.layer.cornerRadius = 3;
+        _mImgView.layer.cornerRadius = _mImgView.height * 0.5;
         
         _mNameLab = [UILabel new];
         [self.contentView addSubview:_mNameLab];
@@ -406,19 +406,25 @@
     return self;
 }
 
--(void)setIndexPath:(NSIndexPath *)indexPath{
-    _indexPath = indexPath;
-    NSArray *imgs = @[@"",@"",@"",@"",@"",@""];
-    NSArray *names = @[@"",@"",@"",@"",@"",@""];
-    for(int i=0;i<imgs.count;++i){
-        NSString *img = @"logo500";
-        NSString *name = @"好友";
-        _mImgView.image = [UIImage imageNamed:img];
-        _mNameLab.text = name;
-        [_mNameLab sizeToFit];
-        _mNameLab.centerX = self.width * 0.5;
-        _mNameLab.top = _mImgView.bottom + 5;
+-(void)setMember:(NIMTeamMember *)member{
+    
+    NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:member.userId];
+    
+    NSString *avatarUrl = user.userInfo.avatarUrl;
+    if(avatarUrl == nil)avatarUrl = @"";
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        UIImage *image = [UIImage imageNamed:@"user_avatar_blue"];
+        [self.mImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:image options:YYWebImageOptionIgnoreAnimatedImage completion:nil];
+    }];
+    
+    _mNameLab.text = [PBData getUserNameWithUser:user];
+    [_mNameLab sizeToFit];
+    if(_mNameLab.width > _mImgView.width){
+        _mNameLab.width = _mImgView.width;
     }
+    _mNameLab.centerX = self.width * 0.5;
+    _mNameLab.top = _mImgView.bottom + 5;
+    
 }
 
 @end 
@@ -441,39 +447,114 @@
         _mDetaillab = [UILabel new];
         [self.contentView addSubview:_mDetaillab];
         _mDetaillab.font = [UIFont systemFontOfSize:14];
-        _mDetaillab.textColor = [UIColor lightGrayColor];
+        _mDetaillab.textColor = [UIColor grayColor];
         _mDetaillab.textAlignment = NSTextAlignmentRight;
         _mDetaillab.bounds = makeRect(0, 0, 200, ContactTeamDetOtherCellH);
         _mDetaillab.top = 0;
         _mDetaillab.right = SCREEN_Width - 15;
         
+        _mSwitch = [UISwitch new];
+        _mSwitch.right = SCREEN_Width - 15;
+        _mSwitch.centerY = ContactTeamDetOtherCellH * 0.5;
+        [self.contentView addSubview:_mSwitch];
+        [_mSwitch addTarget:self action:@selector(valueChanged:) forControlEvents:(UIControlEventValueChanged)];
+        
     }
     return self;
 }
 
--(void)setIndexPath:(NSIndexPath *)indexPath{
-    _indexPath = indexPath;
-    if(indexPath.section == 1){
-        if(indexPath.row == 0){
-            _mTitleLab.text = @"群名称";
-            _mDetaillab.text = @"萝卜讨论组";
-        }else if(indexPath.row == 1){
-            _mTitleLab.text = @"群昵称";
-            _mDetaillab.text = @"哎呀呀";
+//消息提醒0  聊天置顶1
+-(void)valueChanged:(UISwitch *)sender{
+    
+    if(_indexPath.row == 0){
+        
+        NIMTeamNotifyState state = sender.on?NIMTeamNotifyStateAll:NIMTeamNotifyStateNone;
+        
+        [[NIMSDK sharedSDK].teamManager updateNotifyState:state inTeam:_team.teamId completion:^(NSError * _Nullable error) {
+            if (error) {
+                [[self viewController].view showTimeBlack:@"设置消息提醒失败"];
+            }else{
+                [[self viewController].view showTimeBlack:@"设置消息提醒成功"];
+            }
+        }];
+    }
+    
+    else if(_indexPath.row == 1){
+        NSDictionary *dic = @{@"NTESRecentSessionTopMark":@(sender.on)};
+        NIMSession *session = [NIMSession session:_team.teamId type:NIMSessionTypeTeam];
+        NIMRecentSession *recent = [[NIMSDK sharedSDK].conversationManager recentSessionBySession:session];
+        [[NIMSDK sharedSDK].conversationManager updateRecentLocalExt:dic recentSession:recent];
+    }
+}
+
+//普通群数据
+-(void)setTeamData:(NIMTeam *)team{
+    _team = team;
+    
+    _mSwitch.hidden = YES;
+    if(_indexPath.section == 1){
+        if(_indexPath.row == 0){
+            _mTitleLab.text = @"群主";
+            _mDetaillab.text = _team.owner;
         }else{
-            _mTitleLab.text = @"群介绍";
-            _mDetaillab.text = @"帮大家发财致富";
+            _mTitleLab.text = @"群名称";
+            _mDetaillab.text = _team.teamName;
         }
-    }else{
-        if(indexPath.row == 0){
+    }
+    else if(_indexPath.section == 2){
+        if(_indexPath.row == 0){
+            _mTitleLab.text = @"群介绍";
+            _mDetaillab.text = _team.intro?_team.intro:@"暂无";
+        }else{
             _mTitleLab.text = @"群公告";
-            _mDetaillab.text = @"今天发红包，记得别忘了";
-        }else if(indexPath.row == 1){
+            _mDetaillab.text = _team.announcement?_team.announcement:@"暂无";
+        }
+    }
+    else{
+        if(_indexPath.row == 0){
+            _mSwitch.hidden = NO;
             _mTitleLab.text = @"消息提醒";
             _mDetaillab.text = @"";
         }else{
+            _mSwitch.hidden = NO;
             _mTitleLab.text = @"聊天置顶";
-            _mDetaillab.text = @"萝卜讨论组";
+            _mDetaillab.text = @"";
+        }
+    }
+}
+
+//高级群数据
+-(void)setSeniorTeamData:(NIMTeam *)team{
+    _team = team;
+    
+    _mSwitch.hidden = YES;
+    if(_indexPath.section == 1){
+        if(_indexPath.row == 0){
+            _mTitleLab.text = @"群主";
+            _mDetaillab.text = _team.owner;
+        }else{
+            _mTitleLab.text = @"群名称";
+            _mDetaillab.text = _team.teamName;
+        }
+    }
+    else if(_indexPath.section == 2){
+        if(_indexPath.row == 0){
+            _mTitleLab.text = @"群介绍";
+            _mDetaillab.text = _team.intro?_team.intro:@"暂无";
+        }else{
+            _mTitleLab.text = @"群公告";
+            _mDetaillab.text = _team.announcement?_team.announcement:@"暂无";
+        }
+    }
+    else{
+        if(_indexPath.row == 0){
+            _mSwitch.hidden = NO;
+            _mTitleLab.text = @"消息提醒";
+            _mDetaillab.text = @"";
+        }else{
+            _mSwitch.hidden = NO;
+            _mTitleLab.text = @"聊天置顶";
+            _mDetaillab.text = @"";
         }
     }
 }
@@ -491,8 +572,8 @@
         self.backgroundColor = [UIColor whiteColor];
         
         _mButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _mButton.frame = self.contentView.bounds;
-        _mButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _mButton.frame = makeRect(0, 0, SCREEN_Width, ContactTeamDetBottomCellH);
+        _mButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [_mButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [_mButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_mButton];
@@ -500,17 +581,37 @@
     return self;
 }
 
+//清空聊天0  删除退出1
 -(void)buttonPressed:(UIButton *)sender{
     
-    
+    if(_delegate && [_delegate respondsToSelector:@selector(ContactTeamDetBottomCellBtnClick:sender:)]){
+        [_delegate ContactTeamDetBottomCellBtnClick:_indexPath sender:sender];
+    }
 }
 
-//群组数据
--(void)setTeamDic:(NSDictionary *)teamDic{
+//讨论组数据
+-(void)setTeamData:(NIMTeam *)team{
+    _team = team;
+    
     if(_indexPath.row == 0){
+        [_mButton setTitleColor:makeColorRgb(62, 110, 181) forState:UIControlStateNormal];
         [_mButton setTitle:@"清空聊天记录" forState:UIControlStateNormal];
     }else{
+        [_mButton setTitleColor:makeColorRgb(195, 45, 50) forState:UIControlStateNormal];
         [_mButton setTitle:@"删除并退出" forState:UIControlStateNormal];
+    }
+}
+
+//高级群数据
+-(void)setSeniorTeamData:(NIMTeam *)team{
+    _team = team;
+    
+    if(_indexPath.row == 0){
+        [_mButton setTitleColor:makeColorRgb(62, 110, 181) forState:UIControlStateNormal];
+        [_mButton setTitle:@"清空聊天记录" forState:UIControlStateNormal];
+    }else{
+        [_mButton setTitleColor:makeColorRgb(195, 45, 50) forState:UIControlStateNormal];
+        [_mButton setTitle:@"解散该群" forState:UIControlStateNormal];
     }
 }
 
@@ -549,7 +650,10 @@
 -(void)valueChanged:(UISwitch *)sender{
     
     if(_indexPath.row == 0){
-        
+        NSDictionary *dic = @{@"NTESRecentSessionTopMark":@(sender.on)};
+        NIMSession *session = [NIMSession session:_user.userId type:NIMSessionTypeP2P];
+        NIMRecentSession *recent = [[NIMSDK sharedSDK].conversationManager recentSessionBySession:session];
+        [[NIMSDK sharedSDK].conversationManager updateRecentLocalExt:dic recentSession:recent];
     }
     else if(_indexPath.row == 1){
         [[NIMSDK sharedSDK].userManager updateNotifyState:sender.on forUser:_user.userId completion:^(NSError *error) {
@@ -565,7 +669,7 @@
             [[NIMSDK sharedSDK].userManager addToBlackList:_user.userId completion:^(NSError *error) {
                 
                 if (!error) {
-                    [[self viewController].view showTimeBlack:@"加入黑名单成功"];
+                    [[self viewController].view showTimeBlack:@"加入了黑名单"];
                 }else{
                     [[self viewController].view showTimeBlack:@"加入黑名单失败"];
                 }
@@ -585,7 +689,7 @@
     }
 }
 
-//头像  备注 (昵称 签名 电话)  (消息提醒  拉黑)  (聊天 删除)
+//头像  备注 (昵称 签名 电话)  (置顶聊天 消息提醒  拉黑)  (聊天 删除)
 -(void)setUser:(NIMUser *)user{
     _user = user;
     self.accessoryType = UITableViewCellAccessoryNone;
@@ -643,8 +747,6 @@
 
 
 @end
-
-
 
 
 

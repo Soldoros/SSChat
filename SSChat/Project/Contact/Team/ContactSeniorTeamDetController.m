@@ -1,22 +1,20 @@
 //
-//  ContactTeamDetController.m
+//  ContactSeniorTeamDetController.m
 //  SSChat
 //
-//  Created by soldoros on 2019/6/3.
+//  Created by soldoros on 2019/6/6.
 //  Copyright © 2019 soldoros. All rights reserved.
 //
 
-
-//讨论组详情
-#import "ContactTeamDetController.h"
+#import "ContactSeniorTeamDetController.h"
 #import "ContactViews.h"
 #import "ContactFriendDetController.h"
 
-@interface ContactTeamDetController ()<ContactViewsDelegate>
+@interface ContactSeniorTeamDetController ()<ContactViewsDelegate>
 
 @end
 
-@implementation ContactTeamDetController
+@implementation ContactSeniorTeamDetController
 
 - (instancetype)init
 {
@@ -30,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setNavgaionTitle:@"讨论组"];
+    [self setNavgaionTitle:@"高级群"];
     
     self.mCollectionView.height += SafeAreaBottom_Height;
     [self.mCollectionView registerClass:[ContactTeamDetTopCell class] forCellWithReuseIdentifier:ContactTeamDetTopCellId];
@@ -41,7 +39,6 @@
     
     [self netWorking];
 }
-
 
 -(void)netWorking{
     
@@ -55,6 +52,7 @@
         }
     }];
 }
+
 
 
 //群成员  群主+群名称  群介绍+群公告  消息提醒+聊天置顶  清空+删除
@@ -157,13 +155,13 @@
         ContactTeamDetBottomCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ContactTeamDetBottomCellId forIndexPath:indexPath];
         cell.indexPath = indexPath;
         cell.delegate = self;
-        [cell setTeamData:_team];
+        [cell setSeniorTeamData:_team];
         return cell;
     }
     else{
         ContactTeamDetOtherCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ContactTeamDetOtherCellId forIndexPath:indexPath];
         cell.indexPath = indexPath;
-        [cell setTeamData:_team];
+        [cell setSeniorTeamData:_team];
         return cell;
     }
     
@@ -191,7 +189,7 @@
     }
     //退群
     else{
-        [self quitTeam:sender];
+        [self quitTeam];
     }
 }
 
@@ -221,13 +219,23 @@
 }
 
 //退群
--(void)quitTeam:(UIButton *)sender{
+-(void)quitTeam{
     
-    [sender addActivityOnBtn:TitleColor scale:0.85];
     [[NIMSDK sharedSDK].teamManager quitTeam:_team.teamId completion:^(NSError *error) {
-        [sender closeActivityByBtn:@"删除并退出"];
         if (!error) {
-            [self showTime:@"已退出讨论组"];
+            [self showTime:@"退群成功"];
+            [self performSelector:@selector(jumoTo) withObject:nil afterDelay:1];
+        }else{
+            [self showTime:error.description];
+        }
+    }];
+}
+
+//解散群
+-(void)dismissTeam{
+    [[NIMSDK sharedSDK].teamManager dismissTeam:_team.teamId completion:^(NSError *error) {
+        if (!error) {
+            [self showTime:@"已解散该群"];
             [self performSelector:@selector(jumoTo) withObject:nil afterDelay:1];
         }else{
             [self showTime:error.description];

@@ -111,6 +111,11 @@
 
 -(void)rightBtnClick{
     
+    if(_choiceUsers.count == 0){
+        [self showTime:@"请选择联系人"];
+        return;
+    }
+    
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"群名称" message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -136,12 +141,16 @@
 -(void)createTeam:(NSString *)name{
     
     if(name.length == 0 || name == nil){
-        name = @"Hello普通群";
+        if(_type == NIMTeamTypeNormal){
+            name = @"普通群";
+        }else{
+            name = @"高级群";
+        }
     }
     if(_handle){
-        _handle(_choiceUsers,name);
+        _handle(_choiceUsers,name, _type);
     }
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

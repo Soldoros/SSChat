@@ -41,7 +41,7 @@
     self.mTableView.height += 1;
     [self.mTableView registerClass:@"ContactListCell" andCellId:ContactListCellId];
     
-    self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    self.mTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [self.datas removeAllObjects];
         [self netWorking];
     }];

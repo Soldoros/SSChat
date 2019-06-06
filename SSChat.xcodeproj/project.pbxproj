@@ -200,6 +200,7 @@
 		AFB84E9B22A7B25100A12106 /* PBData.m in Sources */ = {isa = PBXBuildFile; fileRef = AFB84E9A22A7B25100A12106 /* PBData.m */; };
 		AFBD284F22880F550030B15C /* RootTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFBD284E22880F550030B15C /* RootTabBarController.m */; };
 		AFBD285222880F690030B15C /* RootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFBD285122880F690030B15C /* RootNavigationController.m */; };
+		AFC0059222A8F69A00045839 /* ContactSeniorTeamDetController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC0059122A8F69A00045839 /* ContactSeniorTeamDetController.m */; };
 		AFC971AF22621566007D370E /* ConversationController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971AE22621566007D370E /* ConversationController.m */; };
 		AFC971B222621575007D370E /* ConversationViews.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971B122621575007D370E /* ConversationViews.m */; };
 		AFC971B522621581007D370E /* ConversationData.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC971B422621581007D370E /* ConversationData.m */; };
@@ -508,6 +509,8 @@
 		AFBD284E22880F550030B15C /* RootTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootTabBarController.m; sourceTree = "<group>"; };
 		AFBD285022880F690030B15C /* RootNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootNavigationController.h; sourceTree = "<group>"; };
 		AFBD285122880F690030B15C /* RootNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootNavigationController.m; sourceTree = "<group>"; };
+		AFC0059022A8F69A00045839 /* ContactSeniorTeamDetController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactSeniorTeamDetController.h; sourceTree = "<group>"; };
+		AFC0059122A8F69A00045839 /* ContactSeniorTeamDetController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactSeniorTeamDetController.m; sourceTree = "<group>"; };
 		AFC971AD22621566007D370E /* ConversationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationController.h; sourceTree = "<group>"; };
 		AFC971AE22621566007D370E /* ConversationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConversationController.m; sourceTree = "<group>"; };
 		AFC971B022621575007D370E /* ConversationViews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConversationViews.h; sourceTree = "<group>"; };
@@ -1304,6 +1307,8 @@
 				AFDBC43E22A130ED000E86EC /* ContactTeamListController.m */,
 				AF23851322A4AF2000D8B9ED /* ContactTeamDetController.h */,
 				AF23851422A4AF2000D8B9ED /* ContactTeamDetController.m */,
+				AFC0059022A8F69A00045839 /* ContactSeniorTeamDetController.h */,
+				AFC0059122A8F69A00045839 /* ContactSeniorTeamDetController.m */,
 			);
 			path = Team;
 			sourceTree = "<group>";
@@ -1682,6 +1687,7 @@
 				AFD73698225C2CE300A3328C /* SSTableSwitchView.m in Sources */,
 				AFD736A9225C2CE300A3328C /* UITableView+SSAdd.m in Sources */,
 				AFDEB122228E5FFD00EA2CB1 /* SSDocumentManager.m in Sources */,
+				AFC0059222A8F69A00045839 /* ContactSeniorTeamDetController.m in Sources */,
 				AFA76A2B2265AA32001D7C9F /* MineBlackListController.m in Sources */,
 				AF427E59229F6BB8001153D9 /* SSChatFileDownController.m in Sources */,
 				AF23866022A52A6100D8B9ED /* ContactFriendDetController.m in Sources */,
@@ -1851,8 +1857,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = FW3ML5C7BU;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P6XVD5JJ3V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SSChat/SSProject.pch;
 				INFOPLIST_FILE = SSChat/Info.plist;
@@ -1861,9 +1867,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = soldorosTest;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1875,8 +1881,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = FW3ML5C7BU;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P6XVD5JJ3V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SSChat/SSProject.pch;
 				INFOPLIST_FILE = SSChat/Info.plist;
@@ -1885,9 +1891,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.soldoros.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.chat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = soldorosTest;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

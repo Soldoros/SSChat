@@ -12,6 +12,8 @@
 
 @protocol PBSearchViewsDelegate <NSObject>
 
+//表单的搜索头按钮点击回调
+-(void)PBSearchTableHeaderBtnClick:(UIButton *)sender;
 
 -(void)PBSearchClassTypeViewCellBtnClick:(NSDictionary *)dic keyString:(NSString *)keyString;
 
@@ -25,6 +27,21 @@
 
 //好友申请列表的按钮点击代理
 -(void)PBSearchFriendCellBtnClick:(NSIndexPath *)indexPath sender:(UIButton *)sender;
+
+@end
+
+
+//表单搜索框
+#define PBSearchTableHeaderH  55
+
+@interface PBSearchTableHeader : UIView<UISearchBarDelegate>
+
+- (instancetype)initWithFrame:(CGRect)frame placeholder:(NSString *)placeholder;
+
+@property(nonatomic,assign)id<PBSearchViewsDelegate>delegate;
+
+@property(nonatomic,strong)UIButton *searchBtn;
+@property(nonatomic,strong)UISearchBar *mSearchBar;
 
 @end
 

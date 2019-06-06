@@ -49,9 +49,6 @@
     _user = user;
     
     NSString *name = [PBData getUserNameWithUser:_user];
-    NSString *avatarUrl = user.userInfo.avatarUrl;
-    if(avatarUrl == nil)avatarUrl = @"";
-    
     
     _mTitleLab.text = name;
     [_mTitleLab sizeToFit];
@@ -65,6 +62,8 @@
     _mDetailLab.top = MineTopCellH * 0.5 + 4;
     
     
+    NSString *avatarUrl = user.userInfo.avatarUrl;
+    if(avatarUrl == nil)avatarUrl = @"";
     [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
         UIImage *image = [UIImage imageNamed:@"user_avatar_blue"];
         [self.mLeftImgView setImageWithURL:[NSURL URLWithString:urlString] placeholder:image options:YYWebImageOptionIgnoreAnimatedImage completion:nil];

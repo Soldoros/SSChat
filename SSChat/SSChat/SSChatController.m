@@ -22,6 +22,7 @@
 #import "ContactTeamDetController.h"
 #import "ContactFriendDetController.h"
 #import "MinePersonalController.h"
+#import "ContactSeniorTeamDetController.h"
 
 
 @interface SSChatController ()<SSChatKeyBoardInputViewDelegate,UITableViewDelegate,UITableViewDataSource,UIScrollViewDelegate,SSChatBaseCellDelegate,NIMChatManagerDelegate,NIMConversationManagerDelegate,NIMSystemNotificationManagerDelegate>
@@ -475,9 +476,19 @@
     }
     
     else if(_session.sessionType == NIMSessionTypeTeam){
-        ContactTeamDetController *vc = [ContactTeamDetController new];
-        vc.team = [NIMTeam new];
-        [self.navigationController pushViewController:vc animated:YES];
+        
+        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:_session.sessionId];
+        if(team.type == NIMTeamTypeNormal){
+            ContactTeamDetController *vc = [ContactTeamDetController new];
+            vc.team = team;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+            ContactSeniorTeamDetController *vc = [ContactSeniorTeamDetController new];
+            vc.team = team;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        
+       
     }
     
     else{

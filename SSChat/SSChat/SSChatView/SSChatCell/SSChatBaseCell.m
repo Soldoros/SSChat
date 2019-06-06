@@ -38,6 +38,7 @@
     _mHeaderImgBtn.userInteractionEnabled = YES;
     [self.contentView addSubview:_mHeaderImgBtn];
     _mHeaderImgBtn.clipsToBounds = YES;
+    [_mHeaderImgBtn setImage:[UIImage imageNamed:@"user_avatar_blue"] forState:UIControlStateNormal];
     [_mHeaderImgBtn addTarget:self action:@selector(headerButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -86,12 +87,20 @@
     _mMessageTimeLab.frame = layout.timeLabRect;
     
     self.mHeaderImgBtn.frame = layout.headerImgRect;
-    [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxaing2"] forState:UIControlStateNormal];
     self.mHeaderImgBtn.layer.cornerRadius = self.mHeaderImgBtn.height*0.5;
+    
+    [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxaing2"] forState:UIControlStateNormal];
+    
     if(_layout.chatMessage.messageFrom == SSChatMessageFromOther){
         [self.mHeaderImgBtn setBackgroundImage:[UIImage imageNamed:@"touxiang1"] forState:UIControlStateNormal];
     }
-    
+    NSString *uid = self.layout.chatMessage.message.from;
+    NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:uid];
+    NSString *avatarUrl = user.userInfo.avatarUrl;
+    if(avatarUrl == nil)avatarUrl = @"";
+    [[NIMSDK sharedSDK].resourceManager fetchNOSURLWithURL:avatarUrl completion:^(NSError * _Nullable error, NSString * _Nullable urlString) {
+        [self.mHeaderImgBtn setImageWithURL:[NSURL URLWithString:urlString] forState:UIControlStateNormal options:YYWebImageOptionProgressive];
+    }];
 }
 
 //头像10

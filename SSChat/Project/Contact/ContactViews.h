@@ -14,7 +14,11 @@
 //好友申请列表的按钮点击代理
 -(void)ContactFriendRequestsCellBtnClick:(NSIndexPath *)indexPath sender:(UIButton *)sender;
 
+//群详情底部按钮点击代理
+-(void)ContactTeamDetBottomCellBtnClick:(NSIndexPath *)indexPath sender:(UIButton *)sender;
+
 @end
+
 
 #define ContactListCellId  @"ContactListCellId"
 #define ContactListCellH   60
@@ -99,8 +103,9 @@
 @property(nonatomic,strong)NSIndexPath *indexPath;
 
 @property(nonatomic,strong)UIImageView *mImgView;
-
 @property(nonatomic,strong)UILabel *mNameLab;
+
+@property(nonatomic,strong)NIMTeamMember *member;
 
 @end
 
@@ -115,10 +120,21 @@
 @interface ContactTeamDetOtherCell : UICollectionViewCell
 
 @property(nonatomic,strong)NSIndexPath *indexPath;
+@property(nonatomic,strong)NIMTeam *team;
 
 @property(nonatomic,strong)UILabel *mTitleLab;
 @property(nonatomic,strong)UILabel *mDetaillab;
-@property(nonatomic,strong)UISlider *mSlider;
+@property(nonatomic,strong)UISwitch *mSwitch;
+
+/**
+ 设置讨论组数据
+ */
+-(void)setTeamData:(NIMTeam *)team;
+
+/**
+ 设置高级群数据
+ */
+-(void)setSeniorTeamData:(NIMTeam *)team;
 
 @end
 
@@ -132,10 +148,21 @@
 
 @interface ContactTeamDetBottomCell : UICollectionViewCell
 
+@property(nonatomic,assign)id<ContactViewsDelegate>delegate;
+
 @property(nonatomic,strong)NSIndexPath *indexPath;
+@property(nonatomic,strong)NIMTeam *team;
 @property(nonatomic,strong)UIButton *mButton;
-//群组数据
-@property(nonatomic,strong)NSDictionary *teamDic;
+
+/**
+ 设置讨论组数据
+ */
+-(void)setTeamData:(NIMTeam *)team;
+
+/**
+ 设置高级群数据
+ */
+-(void)setSeniorTeamData:(NIMTeam *)team;
 
 @end
 

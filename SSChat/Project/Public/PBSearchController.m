@@ -103,8 +103,6 @@
     self.mTableView.backgroundView.backgroundColor = [UIColor whiteColor];
 
     [self.mTableView registerClass:@"PBSearchFriendCell" andCellId:PBSearchFriendCellId];
-
-    [self.view bringSubviewToFront:self.navtionBar];
     
     UILabel *footerLab = [[UILabel alloc]initWithFrame:makeRect(0, 0, SCREEN_Width, 60)];
     footerLab.textAlignment = NSTextAlignmentCenter;
@@ -118,6 +116,7 @@
     
     [_mSearchBar changeLeftPlaceholder:@"请输入联系人..."];
 
+    [self.view bringSubviewToFront:self.navtionBar];
     
     if(_FirstResponder){
         _FirstResponder = NO;
