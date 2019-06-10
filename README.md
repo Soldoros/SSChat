@@ -2,7 +2,7 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3><br>
+<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3>
 
 <h3>有需要静态版本的伙伴们可以添加我的钉钉 13540033103</h3><br><br>
 
