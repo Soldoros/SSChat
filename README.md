@@ -2,7 +2,9 @@
   <img src= "https://github.com/Soldoros/SSChat/blob/master/datu/Hello.png" width="500"> 
 </div>
 
-<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3><br><br>
+<h3>友情提示：客官们下载代码后需要执行pod update 加载网易的IM库 才能运行</h3>
+
+<h3>有需要静态版本的伙伴们可以添加我的钉钉 13540033103</h3><br><br>
 
 
 <span>Hello是基于SSChat开发的一款聊天系统，支持在线发送文本、Emojo、图片、动图、音频、视频、位置等。整体功能和界面参照主流的社交软件进行设计，借鉴了微信、QQ、钉钉的一些风格。在此要十分感谢云淡风轻提供的素材，感谢网易云IM！ </span>
@@ -202,4 +204,3 @@ _mInputView.delegate = self;
 }
 
 ```
-
