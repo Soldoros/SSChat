@@ -36,7 +36,7 @@
         
         _mDetailLab = [UILabel new];
         _mDetailLab.bounds = makeRect(0, 0, 100, 30);
-        _mDetailLab.textColor = makeColorRgb(160, 160, 160);
+        _mDetailLab.textColor = TitleColor;
         [self.contentView addSubview:_mDetailLab];
         _mDetailLab.font = makeFont(15);
         
@@ -69,7 +69,7 @@
     
     NSString *title = [SSChatDatas getNavagationTitle:recentSession.session];
     
-    NSString *detail = [self messageContent:_recentSession.lastMessage];
+    NSMutableAttributedString *detail = [self messageContent:_recentSession.lastMessage];
     NSString *time =  [self getTimeWithTimeInterval:_recentSession.lastMessage.timestamp];
     
     
@@ -79,14 +79,13 @@
     }];
     
     
-   
     _mTitleLab.text = title;
     [_mTitleLab sizeToFit];
     _mTitleLab.left = _mLeftImgView.right + 15;
     _mTitleLab.top = _mLeftImgView.top;
     _mTitleLab.width = SCREEN_Width - _mTitleLab.left - 100;
     
-    _mDetailLab.text = detail;
+    _mDetailLab.attributedText = detail;
     [_mDetailLab sizeToFit];
     _mDetailLab.width = SCREEN_Width - _mTitleLab.left - 70;
     _mDetailLab.left = _mLeftImgView.right + 16;
@@ -116,7 +115,8 @@
     _mRedLab.bottom = _mLeftImgView.bottom;
 }
 
-- (NSString *)messageContent:(NIMMessage*)lastMessage{
+//设置消息类型和状态
+- (NSMutableAttributedString *)messageContent:(NIMMessage*)lastMessage{
     NSString *text = @"";
     switch (lastMessage.messageType) {
         case NIMMessageTypeText:
@@ -135,7 +135,8 @@
             text = @"[位置]";
             break;
         case NIMMessageTypeNotification:{
-            return @"[通知]";
+            text = @"[通知]";
+            break;
         }
         case NIMMessageTypeFile:
             text = @"[文件]";
@@ -150,8 +151,46 @@
             text = @"[未知消息]";
     }
     
-    return text;
+    
+    NSString *current = [NIMSDK sharedSDK].loginManager.currentAccount;
+    if([lastMessage.from isEqualToString:current]){
+        if(lastMessage.session.sessionType == NIMSessionTypeP2P){
+            return [self getMessageReceipt:lastMessage text:text];
+        }else{
+            return [self getMessageWithText:text];
+        }
+    }else{
+        return [self getMessageWithText:text];
+    }
+    
 }
+
+-(NSMutableAttributedString *)getMessageWithText:(NSString *)text{
+    NSMutableAttributedString *mutableString =  [[NSMutableAttributedString alloc]initWithString:text];
+    NSDictionary *dic1 = @{NSForegroundColorAttributeName:makeColorRgb(160, 160, 160)};
+    [mutableString addAttributes:dic1 range:NSMakeRange(0,text.length)];
+    return mutableString;
+}
+
+//设置已读未读
+-(NSMutableAttributedString *)getMessageReceipt:(NIMMessage *)message text:(NSString *)text{
+    
+    if(message.isRemoteRead){
+        NSString *str = makeString(@"[已读] ", text);
+        NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc]initWithString:str];
+        NSDictionary *dic1 = @{NSForegroundColorAttributeName:makeColorRgb(160, 160, 160)};
+        [mutableString addAttributes:dic1 range:NSMakeRange(0,str.length)];
+        return  mutableString;
+    }else{
+        NSString *str = makeString(@"[未读] ", text);
+        NSMutableAttributedString *mutableString = [[NSMutableAttributedString alloc]initWithString:str];
+        NSDictionary *dic1 = @{NSForegroundColorAttributeName:makeColorRgb(160, 160, 160)};
+        [mutableString addAttributes:dic1 range:NSMakeRange(str.length - text.length,text.length)];
+        return  mutableString;
+    }
+    
+}
+
 
 
 - (NSString *)getTimeWithTimeInterval:(double)timeInterval{

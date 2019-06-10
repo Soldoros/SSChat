@@ -26,6 +26,13 @@ static SSApplicationHelper *applicationHelper = nil;
     
     NIMSDKOption *option = [NIMSDKOption optionWithAppKey:NIM_APPKey];
     [[NIMSDK sharedSDK] registerWithOption:option];
+    [[NIMSDKConfig sharedConfig] setTeamReceiptEnabled:YES];
+    
+    NIMMessageSetting *setting = [NIMMessageSetting new];
+    setting.teamReceiptEnabled = YES;
+    setting.historyEnabled = YES;
+    setting.roamingEnabled = YES;
+    setting.shouldBeCounted = YES;
     
     [Bmob registerWithAppKey:BOMB_APPKey];
     

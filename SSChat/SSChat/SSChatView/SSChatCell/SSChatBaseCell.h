@@ -46,13 +46,19 @@
 @property(nonatomic, strong) UIMenuController *menu;
 
 //头像  时间  背景按钮
-@property(nonatomic, strong) UIButton *mHeaderImgBtn;
-@property(nonatomic, strong) UILabel  *mMessageTimeLab;
+@property(nonatomic, strong) UIButton  *mHeaderImgBtn;
+@property(nonatomic, strong) UILabel   *mMessageTimeLab;
 @property(nonatomic, strong) UIButton  *mBackImgButton;
 
+//联系人
+@property(nonatomic, strong) UILabel   *mFriendLab;
+
 //已读未读
-@property(nonatomic,strong) UILabel *mReadLab;
+@property(nonatomic,strong) UILabel    *mReadLab;
 -(void)setMessageReadStatus;
+
+//显示姓名
+-(void)setNameWithTeam;
 
 //消息按钮
 -(void)buttonPressed:(UIButton *)sender;

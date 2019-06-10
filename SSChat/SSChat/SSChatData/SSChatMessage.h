@@ -45,7 +45,7 @@
 #define SSChatTimeWidth         250          //时间宽度
 #define SSChatTimeHeight        20           //时间高度
 #define SSChatTimeTop           15           //时间距离顶部
-#define SSChatTimeBottom        20           //时间距离底部
+#define SSChatTimeBottom        30           //时间距离底部
 
 
 #define SSChatAirTop            35           //气泡距离详情顶部

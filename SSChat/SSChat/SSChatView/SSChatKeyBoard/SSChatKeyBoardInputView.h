@@ -61,7 +61,7 @@
 
 @interface SSChatKeyBoardInputView : UIView<UITextViewDelegate,AVAudioRecorderDelegate,SSChatKeyBordViewDelegate,NIMMediaManagerDelegate> 
 
-@property(nonatomic,assign)id<SSChatKeyBoardInputViewDelegate>delegate;
+@property(nonatomic,weak)id<SSChatKeyBoardInputViewDelegate>delegate;
 
 //当前的编辑状态（默认 语音 编辑文本 发送表情 其他功能）
 @property(nonatomic,assign)SSChatKeyBoardStatus keyBoardStatus;
@@ -93,8 +93,6 @@
 @property(nonatomic,strong) NSObject         *emojiText;
 
 //录音相关
-@property(nonatomic, assign) NSInteger       playTime;
-@property(nonatomic, strong) NSTimer         *playTimer;
 @property(nonatomic, strong) SSChatAudioIndicator *audioIndicator;
 
 //键盘归位

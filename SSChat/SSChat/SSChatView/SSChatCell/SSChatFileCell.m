@@ -63,7 +63,9 @@
     self.mBackImgView.layer.mask = btnImgView.layer;
     
     _mFileButton.frame = self.mBackImgButton.bounds;
+    
     [self setMessageReadStatus];
+    [self setNameWithTeam];
 }
 
 

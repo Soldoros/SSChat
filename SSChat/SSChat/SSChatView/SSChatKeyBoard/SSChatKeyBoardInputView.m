@@ -197,12 +197,13 @@
     _keyBoardHieght = keyBoardHieght;
     [self setNewSizeWithController];
 
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:_changeTime animations:^{
-        if(self.keyBoardStatus == SSChatKeyBoardStatusDefault ||
-           self.keyBoardStatus == SSChatKeyBoardStatusVoice){
-            self.bottom = SCREEN_Height-SafeAreaBottom_Height;
+        if(weakSelf.keyBoardStatus == SSChatKeyBoardStatusDefault ||
+           weakSelf.keyBoardStatus == SSChatKeyBoardStatusVoice){
+            weakSelf.bottom = SCREEN_Height-SafeAreaBottom_Height;
         }else{
-            self.bottom = SCREEN_Height-self.keyBoardHieght;
+            weakSelf.bottom = SCREEN_Height-weakSelf.keyBoardHieght;
         }
     } completion:nil];
     
@@ -431,27 +432,28 @@
    
     [self setNewSizeWithController];
     
+    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.25 animations:^{
-        self.mTextView.height = height;
-        self.height = SSChatTBottomDistence + SSChatTBottomDistence + self.mTextView.height;
+        weakSelf.mTextView.height = height;
+        weakSelf.height = SSChatTBottomDistence + SSChatTBottomDistence + weakSelf.mTextView.height;
         
-        self.mTextBtn.height = self.mTextView.height;
-        self.mTextBtn.bottom = self.height-SSChatTBottomDistence;
-        self.mTextView.top = 0;
-        self.mLeftBtn.bottom = self.height-SSChatBBottomDistence;
-        self.mAddBtn.bottom = self.height-SSChatBBottomDistence;
-        self.mSymbolBtn.bottom = self.height-SSChatBBottomDistence;
-        self.mKeyBordView.top = self.height;
+        weakSelf.mTextBtn.height = weakSelf.mTextView.height;
+        weakSelf.mTextBtn.bottom = weakSelf.height-SSChatTBottomDistence;
+        weakSelf.mTextView.top = 0;
+        weakSelf.mLeftBtn.bottom = weakSelf.height-SSChatBBottomDistence;
+        weakSelf.mAddBtn.bottom = weakSelf.height-SSChatBBottomDistence;
+        weakSelf.mSymbolBtn.bottom = weakSelf.height-SSChatBBottomDistence;
+        weakSelf.mKeyBordView.top = weakSelf.height;
         
-        if(self.keyBoardStatus == SSChatKeyBoardStatusDefault ||
-           self.keyBoardStatus == SSChatKeyBoardStatusVoice){
-            self.bottom = SCREEN_Height-SafeAreaBottom_Height;
+        if(weakSelf.keyBoardStatus == SSChatKeyBoardStatusDefault ||
+           weakSelf.keyBoardStatus == SSChatKeyBoardStatusVoice){
+            weakSelf.bottom = SCREEN_Height-SafeAreaBottom_Height;
         }else{
-            self.bottom = SCREEN_Height-self.keyBoardHieght;
+            weakSelf.bottom = SCREEN_Height-self.keyBoardHieght;
         }
         
     } completion:^(BOOL finished) {
-        [self.mTextView.superview layoutIfNeeded];
+        [weakSelf.mTextView.superview layoutIfNeeded];
     }];
 }
 

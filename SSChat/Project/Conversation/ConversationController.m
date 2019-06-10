@@ -12,7 +12,7 @@
 #import "PBSearchView.h"
 #import "PBSearchController.h"
 
-@interface ConversationController ()<NIMConversationManagerDelegate,PBSearchViewsDelegate>
+@interface ConversationController ()<NIMConversationManagerDelegate,NIMChatManagerDelegate,PBSearchViewsDelegate>
 
 @property(nonatomic,strong)PBSearchTableHeader *tableHeader;
 
@@ -37,6 +37,7 @@
     [self setNavgaionTitle:@"Hello"];
     
     [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+    [[NIMSDK sharedSDK].chatManager addDelegate:self];
     
     self.mTableView.top -= 1;
     self.mTableView.height += 1;
@@ -158,6 +159,12 @@
     [self.mTableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+
+
+#pragma mark NIMChatManagerDelegate
+-(void)onRecvMessageReceipts:(NSArray<NIMMessageReceipt *> *)receipts{
+    [self.mTableView reloadData];
+}
 
 
 @end

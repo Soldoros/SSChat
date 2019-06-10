@@ -67,6 +67,7 @@
     
     
     [self setMessageReadStatus];
+    [self setNameWithTeam];
 }
 
 

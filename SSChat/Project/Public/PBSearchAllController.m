@@ -347,7 +347,6 @@
     _searchType = searchType;
     
     
-    //体检套餐 特色服务 医疗美容 科室 常见疾病 专家队伍 食物
     if(_searchType == PBSearchAllType1){
         self.mTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_mSearchBar changeLeftPlaceholder:@"搜索体检套餐......"];

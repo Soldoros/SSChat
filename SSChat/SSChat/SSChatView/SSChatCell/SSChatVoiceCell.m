@@ -90,6 +90,7 @@
     _mTimeLab.frame = layout.voiceTimeLabRect;
     
     [self setMessageReadStatus];
+    [self setNameWithTeam];
 }
 
 //播放音频 暂停音频

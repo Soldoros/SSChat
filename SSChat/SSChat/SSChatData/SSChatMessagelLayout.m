@@ -71,10 +71,19 @@
     CGFloat textWidth  = _textLabRect.size.width;
     CGFloat textHeight = _textLabRect.size.height;
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
+    
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
+        
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
+       
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
         
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         
@@ -107,10 +116,10 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 
@@ -145,10 +154,17 @@
         imgActualHeight = SSChatImageMaxHeight;
     }
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
+        
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, imgActualWidth, imgActualHeight);
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, imgActualWidth, imgActualHeight);
         
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         
@@ -174,10 +190,10 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 
@@ -198,11 +214,17 @@
         currentLength = SSChatVoiceMaxWidth;
     }
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
         
         _headerImgRect = CGRectMake(SSChatIconLeft, SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, currentLength, SSChatVoiceHeight);
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, currentLength, SSChatVoiceHeight);
         
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
 
@@ -234,20 +256,27 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 
 
 -(void)setMap{
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
+        
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, SSChatMapWidth, SSChatMapHeight);
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, SSChatMapWidth, SSChatMapHeight);
         
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         
@@ -275,10 +304,10 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 
@@ -305,11 +334,18 @@
     cout(@(imgActualWidth));
     cout(@(imgActualHeight));
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
     
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
+        
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-         _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, imgActualWidth, imgActualHeight);
+         _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, imgActualWidth, imgActualHeight);
   
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         
@@ -335,10 +371,10 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 
@@ -349,10 +385,17 @@
     CGFloat textWidth  = SSChatFileWidth;
     CGFloat textHeight = SSChatFileHeight;
     
+    CGFloat backTop = 0;
+    if(_chatMessage.message.session.sessionType == NIMSessionTypeTeam && _chatMessage.messageFrom == SSChatMessageFromOther){
+        backTop = 15;
+    }
     if(_chatMessage.messageFrom == SSChatMessageFromOther){
+        
+        _readHeight = SSChatReadLabBottom;
+        
         _headerImgRect = CGRectMake(SSChatIconLeft,SSChatCellTop, SSChatIconWH, SSChatIconWH);
         
-        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
+        _backImgButtonRect = CGRectMake(SSChatIconLeft+SSChatIconWH+SSChatIconRight, self.headerImgRect.origin.y + backTop, textWidth+SSChatTextLRB+SSChatTextLRS, textHeight+SSChatTextTop+SSChatTextBottom);
         
         _imageInsets = UIEdgeInsetsMake(SSChatAirTop, SSChatAirLRB, SSChatAirBottom, SSChatAirLRS);
         
@@ -390,10 +433,10 @@
         hRect.origin.y = SSChatTimeTop+SSChatTimeBottom+SSChatTimeHeight;
         self.headerImgRect = hRect;
         
-        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
+        _backImgButtonRect = CGRectMake(_backImgButtonRect.origin.x, _headerImgRect.origin.y + backTop, _backImgButtonRect.size.width, _backImgButtonRect.size.height);
     }
     
-    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + SSChatCellBottom + _readHeight;
+    _cellHeight = _backImgButtonRect.size.height + _backImgButtonRect.origin.y + backTop + SSChatCellBottom + _readHeight;
     
 }
 

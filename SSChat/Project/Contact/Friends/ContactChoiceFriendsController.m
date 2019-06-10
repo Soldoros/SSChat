@@ -105,7 +105,7 @@
 }
 
 -(void)leftBtnCLick{
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -142,7 +142,7 @@
     
     if(name.length == 0 || name == nil){
         if(_type == NIMTeamTypeNormal){
-            name = @"普通群";
+            name = @"讨论组";
         }else{
             name = @"高级群";
         }

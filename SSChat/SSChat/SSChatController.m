@@ -66,6 +66,7 @@
 }
 
 -(void)dealloc{
+    cout(@"释放了控制器");
     [[NIMSDK sharedSDK].chatManager removeDelegate:self];
     [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
     [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
@@ -77,6 +78,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.navigationBar.translucent = YES;
+    
+    [[NIMSDK sharedSDK].conversationManager markAllMessagesReadInSession:_session];
     
     if(_imageGroupView){
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
@@ -142,22 +145,30 @@
     [_mTableView registerClass:NSClassFromString(@"SSChatNotiCell") forCellReuseIdentifier:SSChatNotiCellId];
 
     
-    [self netWorking:NO];
+    [self netWorking:NO message:nil];
+    
+    __weak typeof(self) weakSelf = self;
     self.mTableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [self netWorking:YES];
+        if(self.datas.count>0){
+            NIMMessage *message = [(SSChatMessagelLayout *)self.datas.firstObject chatMessage].message;
+            [weakSelf netWorking:YES message:message];
+        }else{
+            [self netWorking:NO message:nil];
+        }
     }];
 }
 
 
--(void)netWorking:(BOOL)animation{
+-(void)netWorking:(BOOL)animation message:(NIMMessage *)message{
     
-    NSArray<NIMMessage *> *messages = [[[NIMSDK sharedSDK] conversationManager] messagesInSession:_session message:nil limit:20];
+    NSArray<NIMMessage *> *messages = [[[NIMSDK sharedSDK] conversationManager] messagesInSession:_session message:message limit:20];
+    [self sendMessageReceipt:messages];
  
     NSArray *layouts = [self.chatData getLayoutsWithMessages:messages sessionId:_session.sessionId];
     
-    cout(messages);
-    
     [self.datas insertObjects:layouts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [layouts count])]];
+    
+    [self.mTableView.mj_header endRefreshing];
     if(animation == NO){
         [self updateTableView:NO];
     }else{
@@ -226,10 +237,11 @@
 -(void)SSChatKeyBoardInputViewHeight:(CGFloat)keyBoardHeight changeTime:(CGFloat)changeTime{
  
     CGFloat height = _backViewH - keyBoardHeight;
+     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:changeTime animations:^{
-        self.mBackView.frame = CGRectMake(0, SafeAreaTop_Height, SCREEN_Width, height);
-        self.mTableView.frame = self.mBackView.bounds;
-        [self updateTableView:YES];
+        weakSelf.mBackView.frame = CGRectMake(0, SafeAreaTop_Height, SCREEN_Width, height);
+        weakSelf.mTableView.frame = self.mBackView.bounds;
+        [weakSelf updateTableView:YES];
     } completion:^(BOOL finished) {
         
     }];
@@ -248,12 +260,14 @@
     if(index==10 || index==11){
         
         if(!_mAddImage) _mAddImage = [[SSAddImage alloc]init];
+        
+        __weak typeof(self) weakSelf = self;
         [_mAddImage getImagePickerWithAlertController:self modelType:SSImagePickerModelImage + index-10 pickerBlock:^(SSImagePickerWayStyle wayStyle, SSImagePickerModelType modelType, id object) {
             
             //发送图片和gif图
             if(index==10){
                 if(modelType == SSImagePickerModelImage){
-                    [self sendImageMessage:(NSString *)object];
+                    [weakSelf sendImageMessage:(NSString *)object];
                 }
                 else{
                    
@@ -262,7 +276,7 @@
             //发送视频
             else{
                 NSString *localPath = (NSString *)object;
-                [self sendVideoMessage:localPath];
+                [weakSelf sendVideoMessage:localPath];
             }
         }];
         
@@ -272,11 +286,13 @@
         
         SSChatLocationController *vc = [SSChatLocationController new];
         [self.navigationController pushViewController:vc animated:YES];
+        
+        __weak typeof(self) weakSelf = self;
         vc.locationBlock = ^(NSDictionary *locationDic, NSError *error) {
             double   lat  = [locationDic[@"lat"] doubleValue];
             double   lon  = [locationDic[@"lon"] doubleValue];
             NSString *add = locationDic[@"address"];
-            [self sendLocationMessage:lat longitude:lon address:add];
+            [weakSelf sendLocationMessage:lat longitude:lon address:add];
             
         };
         
@@ -286,8 +302,9 @@
     else if(index == 14){
         SSChatFileController *vc = [SSChatFileController new];
         [self.navigationController pushViewController:vc animated:YES];
+        __weak typeof(self) weakSelf = self;
         vc.handle = ^(NSDictionary *dict, id object) {
-            [self sendFileMessage:dict];
+            [weakSelf sendFileMessage:dict];
         };
     }
 }
@@ -298,7 +315,7 @@
     
     NIMMessage *message = [NIMMessage new];
     message.text = string;
-    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+    [self sendMessage:message];
 }
 
 //发送普通图片
@@ -307,7 +324,7 @@
     NIMImageObject *object = [[NIMImageObject alloc]initWithFilepath:path];
     NIMMessage *message = [NIMMessage new];
     message.messageObject = object;
-    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+    [self sendMessage:message];
 }
 
 //发送视频
@@ -316,7 +333,7 @@
     NIMVideoObject *object = [[NIMVideoObject alloc]initWithSourcePath:videoPath];
     NIMMessage *message = [NIMMessage new];
     message.messageObject = object;
-    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+    [self sendMessage:message];
 }
 
 //发送语音
@@ -338,7 +355,8 @@
     NIMLocationObject *object = [[NIMLocationObject alloc]initWithLatitude:latitude longitude:longitude title:address];
     NIMMessage *message = [NIMMessage new];
     message.messageObject = object;
-    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+    
+    [self sendMessage:message];
 }
 
 //发送文件消息
@@ -349,11 +367,18 @@
     
     NIMMessage *message = [NIMMessage new];
     message.messageObject = object;
-    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session completion:^(NSError * _Nullable error) {
-        
-    }];
+    
+    [self sendMessage:message];
 }
 
+//发送消息
+-(void)sendMessage:(NIMMessage *)message{
+    NIMMessageSetting *setting = [NIMMessageSetting new];
+    setting.teamReceiptEnabled = YES;
+    setting.syncEnabled = YES;
+    message.setting = setting;
+    [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+}
 
 
 //文件下载
@@ -364,17 +389,91 @@
 }
 
 #pragma mark - NIMChatManagerDelegate
-//接收到消息
+//接收到消息 并设置已读
 -(void)onRecvMessages:(NSArray<NIMMessage *> *)messages{
     
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_queue_create(0, 0), ^{
-        NSArray *layouts = [self.chatData getLayoutsWithMessages:messages sessionId:self.session.sessionId];
-        [self.datas addObjectsFromArray:layouts];
+        NSArray *layouts = [weakSelf.chatData getLayoutsWithMessages:messages sessionId:weakSelf.session.sessionId];
+        [weakSelf.datas addObjectsFromArray:layouts];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self updateTableView:YES];
+            [weakSelf updateTableView:YES];
         });
     });
+    
+    [self sendMessageReceipt:messages];
+}
+
+//发送已读回执 只有在当前 Application 是激活的状态下才发送已读
+-(void)sendMessageReceipt:(NSArray *)messages{
+    
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateActive)
+    {
+        if (_session.sessionType == NIMSessionTypeP2P)
+        {
+            NIMMessage *message = messages.lastObject;
+            NIMMessageReceipt *receipt = [[NIMMessageReceipt alloc] initWithMessage:message];
+            [[[NIMSDK sharedSDK] chatManager] sendMessageReceipt:receipt completion:nil];
+        }
+        
+        if (_session.sessionType == NIMSessionTypeTeam)
+        {
+            NSMutableArray *receipts = [NSMutableArray new];
+            for(NIMMessage *msg in messages){
+                cout(@(msg.setting.teamReceiptEnabled));
+                cout(@(msg.isReceivedMsg));
+                if (msg.isReceivedMsg && msg.setting.teamReceiptEnabled)
+                {
+                    NIMMessageReceipt *receipt = [[NIMMessageReceipt alloc] initWithMessage:msg];
+                    [receipts addObject:receipt];
+                }
+            }
+            [[[NIMSDK sharedSDK] chatManager] sendTeamMessageReceipts:receipts completion:nil];
+        }
+    }
+}
+
+//已读回执
+-(void)onRecvMessageReceipts:(NSArray<NIMMessageReceipt *> *)receipts{
+    
+    if(_session.sessionType == NIMSessionTypeP2P){
+        [self.mTableView reloadData];
+    }else{
+        
+        cout(@"群消息未读已读回调");
+        [self.mTableView reloadData];
+    
+        NSMutableSet *messaegeIds = [[NSMutableSet alloc] init];
+        for(NIMMessageReceipt *receipt in receipts){
+            [messaegeIds addObject:receipt.messageId];
+        }
+
+        NSMutableArray *messages = [NSMutableArray new];
+        for(int i = 0;i<self.datas.count;++i){
+            SSChatMessagelLayout *layout = self.datas[i];
+            NIMMessage *message = layout.chatMessage.message;
+            if(messaegeIds && [messaegeIds containsObject:message.messageId]){
+                continue;
+            }
+            if(layout.chatMessage.messageFrom == SSChatMessageFromMe){
+                [messages addObject:message];
+            }
+        }
+
+        [[NIMSDK sharedSDK].chatManager refreshTeamMessageReceipts:messages];
+        [self.mTableView reloadData];
+    }
+}
+
+- (void)update:(NSIndexPath *)indexPath
+{
+    SSChatBaseCell *cell = (SSChatBaseCell *)[self.mTableView cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        [self.mTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        CGFloat scrollOffsetY = self.mTableView.contentOffset.y;
+        [self.mTableView setContentOffset:CGPointMake(self.mTableView.contentOffset.x, scrollOffsetY) animated:NO];
+    }
 }
 
 //消息即将发送 更新本地列表

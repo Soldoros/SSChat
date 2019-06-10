@@ -72,6 +72,7 @@
     self.mVideoImg.centerX = self.mImgView.width*0.5;
 
     [self setMessageReadStatus];
+    [self setNameWithTeam];
 }
 
 
