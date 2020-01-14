@@ -1,0 +1,26 @@
+PODS:
+  - IQKeyboardManager (6.2.1)
+  - MJRefresh (3.1.16)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
+
+DEPENDENCIES:
+  - IQKeyboardManager
+  - MJRefresh
+  - YYKit
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - IQKeyboardManager
+    - MJRefresh
+    - YYKit
+
+SPEC CHECKSUMS:
+  IQKeyboardManager: 964638372b4a61892cc74fdfa6fd26de8c9464a2
+  MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+
+PODFILE CHECKSUM: 6888c83646982c10cefcca86852bc73b9fb565bf
+
+COCOAPODS: 1.8.4
