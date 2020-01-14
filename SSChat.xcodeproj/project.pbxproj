@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -185,7 +185,6 @@
 		AF804CBA21A3DDED00225FCE /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CB921A3DDED00225FCE /* CoreMedia.framework */; };
 		AF804CBC21A3DDF400225FCE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CBB21A3DDF400225FCE /* CoreLocation.framework */; };
 		AF804CBE21A3DDFB00225FCE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF804CBD21A3DDFB00225FCE /* MapKit.framework */; };
-		AFAF79D22275397D0003E0C5 /* AliyunOSSiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAF79D12275397D0003E0C5 /* AliyunOSSiOS.framework */; };
 		AFD7368E225C2CE300A3328C /* SSAddImgView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73636225C2CE300A3328C /* SSAddImgView.m */; };
 		AFD7368F225C2CE300A3328C /* SSSMSView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73637225C2CE300A3328C /* SSSMSView.m */; };
 		AFD73690225C2CE300A3328C /* SSChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD73638225C2CE300A3328C /* SSChoiceView.m */; };
@@ -436,7 +435,6 @@
 		AF804CB921A3DDED00225FCE /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		AF804CBB21A3DDF400225FCE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AF804CBD21A3DDFB00225FCE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		AFAF79D12275397D0003E0C5 /* AliyunOSSiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliyunOSSiOS.framework; sourceTree = "<group>"; };
 		AFD73633225C2CE300A3328C /* SSKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKit.h; sourceTree = "<group>"; };
 		AFD73636225C2CE300A3328C /* SSAddImgView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSAddImgView.m; sourceTree = "<group>"; };
 		AFD73637225C2CE300A3328C /* SSSMSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSSMSView.m; sourceTree = "<group>"; };
@@ -535,7 +533,6 @@
 				AF804CBC21A3DDF400225FCE /* CoreLocation.framework in Frameworks */,
 				AF804CBA21A3DDED00225FCE /* CoreMedia.framework in Frameworks */,
 				AF804CB821A3DDE600225FCE /* AVFoundation.framework in Frameworks */,
-				AFAF79D22275397D0003E0C5 /* AliyunOSSiOS.framework in Frameworks */,
 				2550AD92C02D1C6DBA9DB14F /* Pods_SSChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -871,7 +868,6 @@
 		AF804CB621A3DDE600225FCE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AFAF79D12275397D0003E0C5 /* AliyunOSSiOS.framework */,
 				AF804CBD21A3DDFB00225FCE /* MapKit.framework */,
 				AF804CBB21A3DDF400225FCE /* CoreLocation.framework */,
 				AF804CB921A3DDED00225FCE /* CoreMedia.framework */,

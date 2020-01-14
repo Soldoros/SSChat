@@ -6,10 +6,19 @@
 //  Copyright © 2018年 soldoros. All rights reserved.
 //
 
+/*
+ 
+git remote add origin https://github.com/Soldoros/SSChat.git
+ 
+ 
+ git pull origin master
+ git push -u origin master
+ 
+ */
+
 #import "AppDelegate.h"
 #import "RootController.h"
 #import "SSChatIMEmotionModel.h"
-#import <AliyunOSSiOS/OSSService.h>
 
 @interface AppDelegate ()
 
@@ -36,30 +45,6 @@
     
     NSString *endpoint = @"----------";
     
-    UIImage *image = [UIImage imageNamed:@"hongbaoguan"];
-    NSData *imgData = UIImagePNGRepresentation(image);
- 
-    id<OSSCredentialProvider> credential = [[OSSPlainTextAKSKPairCredentialProvider alloc] initWithPlainTextAccessKey:@"" secretKey:@""];
-    
-    OSSClient *client = [[OSSClient alloc] initWithEndpoint:endpoint credentialProvider:credential];
-    
-    OSSPutObjectRequest * put = [OSSPutObjectRequest new];
-    put.bucketName = @"linjw-gobid";
-    put.objectKey = @"";
-    put.uploadingData = imgData;
-    
-    OSSTask *putTask = [client putObject:put];
-    [putTask continueWithBlock:^id(OSSTask *task) {
-        if(task.error){
-            cout(task.error);
-        }else{
-            cout(task.result);
-        }
-        return  nil;
-    }];
-    [put setUploadProgress:^(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
-        
-    }];
     
     
     RootController *vc = [[RootController alloc]init];
