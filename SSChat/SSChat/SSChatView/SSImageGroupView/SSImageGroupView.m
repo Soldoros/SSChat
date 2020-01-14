@@ -31,28 +31,16 @@
         self.frame = [UIScreen mainScreen].bounds;
         
         _item = item;
-        NIMImageObject *imgObject = _item.chatMessage.imageObject;
         
         _mImageView = [[UIImageView alloc]init];
+        _mImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mImageView];
         _mImageView.userInteractionEnabled = YES;
-        _mImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _mImageView.contentMode = _item.contentMode;
         
         //普通图片
         if(_item.imageType == SSImageGroupImage){
- 
-            NSData *data = [NSData dataWithContentsOfFile:imgObject.path];
-            UIImage *image = [UIImage imageWithData:data];
-            if(image){
-                _mImageView.image = image;
-            }else{
-                [[NIMSDK sharedSDK].resourceManager download:imgObject.url filepath:imgObject.path progress:nil completion:^(NSError *error) {
-                    if (!error) {
-                        UIImage *image = [UIImage imageWithContentsOfFile:imgObject.path];
-                        self.mImageView.image = image;
-                    }
-                }];
-            }
+            _mImageView.image = _item.fromImage;
         }
         //gif图
         else{
@@ -158,7 +146,7 @@
         
         _mScrollView.contentSize = CGSizeMake(_mScrollView.width * self.groupItems.count, _mScrollView.height);
         _mScrollView.contentOffset = CGPointMake(_mScrollView.width * _currentIndex, 0);
-        
+
         
         for(int i=0;i<_groupItems.count;++i){
             SSImageGroupItem *item = _groupItems[i];
@@ -205,9 +193,7 @@
                     _fristImgView = item.fromImgView;
                     videoView.videoViewFrame =  [_mScrollView convertRect:_fromImgView.frame fromView:_fromImgView.superview];
                     _fromImgView.hidden = YES;
-                    [videoView.mVideoImagelayer hiddenAllControl];
                 }else{
-                    [videoView.mVideoImagelayer showAllControl];
                     videoView.videoViewFrame = CGRectMake(i*_mScrollView.width, 0, _mScrollView.width, _mScrollView.height);
                 }
             }
@@ -258,7 +244,6 @@
     
     SSImageGroupCell *imageCell = _mScrollView.subviews[index-10];
    
-    __weak SSImageGroupCell *weakCell = imageCell;
     [UIView animateWithDuration:0.3 animations:^{
         self.backView.alpha = 0.01;
         if(fromRect1.origin.y!=0){
@@ -270,7 +255,7 @@
         
     } completion:^(BOOL finished) {
         self.fromImgView.hidden = NO;
-        self.dismissBlock(weakCell.item);
+        self.dismissBlock();
     }];
 }
 
@@ -282,7 +267,6 @@
     CGRect fromRect2 = [_mScrollView convertRect:_fristImgView.frame fromView:_fristImgView.superview];
     
     SSVideoView  *videoView = _mScrollView.subviews[item.itemTag-10];
-    [videoView.mVideoImagelayer hiddenAllControl];
     
     [UIView animateWithDuration:0.3 animations:^{
         self.backView.alpha = 0.01;
@@ -295,7 +279,7 @@
         
     } completion:^(BOOL finished) {
         self.fromImgView.hidden = NO;
-        self.dismissBlock(videoView.item);
+        self.dismissBlock();
     }];
 }
 

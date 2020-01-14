@@ -11,7 +11,7 @@
 @interface UIView (DEAdd)
 
 
--(UIViewController *)getViewController;
+-(BaseVirtualController *)getViewController;
 
 
 /**
@@ -29,9 +29,7 @@
 -(void)addActivityOnBtn:(UIColor *)color scale:(CGFloat)scale;
 -(void)closeActivityByBtn:(NSString *)title;
 
-//自定义提示弹窗
--(void)showTime:(NSString *)message;
--(void)showTimeBlack:(NSString *)string;
+
 
 
 

@@ -38,7 +38,7 @@
 -(void)sendNotifCation:(NSString *)key;
 
 //发送携带信息的通知
--(void)sendNotifCation:(NSString *)key data:(id)data;
+-(void)sendNotifCation:(NSString *)key data:(NSDictionary *)dic;
 
 //释放通知
 -(void)deleteNotifCation;

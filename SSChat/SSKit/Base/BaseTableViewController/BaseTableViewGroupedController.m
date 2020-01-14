@@ -24,7 +24,7 @@
         self.tableViewH = MainViewSub_Height;
     }
     
-    self.mTableView = [[UITableView alloc]initWithFrame:makeRect(0, SafeAreaTop_Height, SCREEN_Width, self.tableViewH) style:UITableViewStyleGrouped];
+    self.mTableView = [[UITableView alloc]initWithFrame:makeRect(0, 0, SCREEN_Width, self.tableViewH) style:UITableViewStyleGrouped];
     [self.view addSubview:self.mTableView];
     self.mTableView.delegate = self;
     self.mTableView.dataSource = self;
@@ -38,7 +38,7 @@
     self.mTableView.scrollIndicatorInsets = self.mTableView.contentInset;
     //self.mTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.view bringSubviewToFront:self.navtionBar];
+    
 }
 
 

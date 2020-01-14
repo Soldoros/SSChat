@@ -17,46 +17,34 @@
     self.mImgView = [UIImageView new];
     self.mImgView.layer.cornerRadius = 5;
     self.mImgView.layer.masksToBounds  = YES;
+    self.mImgView.contentMode = UIViewContentModeScaleAspectFill;
+    self.mImgView.backgroundColor = [UIColor whiteColor];
     [self.mBackImgButton addSubview:self.mImgView];
     
 }
 
 
-//发送方可以用本地路径展示大图
-//接收方先下载缩略图 点击展开用大图
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    UIImage *image = [[UIImage imageNamed:layout.chatMessage.backImgString] imageWithColor:CellLineColor];
+    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
     //普通图片
-    if(layout.chatMessage.messageType == SSChatMessageTypeImage){
+    if(layout.message.messageType == SSChatMessageTypeImage){
         self.mImgView.frame = self.mBackImgButton.bounds;
-        self.mImgView.contentMode = self.layout.chatMessage.contentMode;
-        
-        UIImage *image = [UIImage imageWithContentsOfFile:self.layout.chatMessage.imageObject.thumbPath];
-        if(image){
-            self.mImgView.image = image;
-        }else{
-            cout(@"222");
-            [[NIMSDK sharedSDK].resourceManager download:self.layout.chatMessage.imageObject.thumbUrl filepath:self.layout.chatMessage.imageObject.thumbPath progress:nil completion:^(NSError *error) {
-                if (!error) {
-                    UIImage *image = [UIImage imageWithContentsOfFile:self.layout.chatMessage.imageObject.thumbPath];
-                    self.mImgView.image = image;
-                }
-            }];
-        }
+        self.mImgView.image = self.layout.message.image;
+        self.mImgView.contentMode = self.layout.message.contentMode;
     }
     
     //gif图片
     else{
         self.mImgView.frame = self.mBackImgButton.bounds;
-        self.mImgView.contentMode = self.layout.chatMessage.contentMode;
-        self.mImgView.animationImages = self.layout.chatMessage.imageArr;
-        self.mImgView.animationDuration = self.layout.chatMessage.imageArr.count * 0.1;
+        self.mImgView.contentMode = self.layout.message.contentMode;
+        self.mImgView.animationImages = self.layout.message.imageArr;
+        self.mImgView.animationDuration = self.layout.message.imageArr.count * 0.1;
         [self.mImgView startAnimating];
     }
     
@@ -65,9 +53,6 @@
     btnImgView.frame = CGRectInset(self.mImgView.frame, 0.0f, 0.0f);
     self.mImgView.layer.mask = btnImgView.layer;
     
-    
-    [self setMessageReadStatus];
-    [self setNameWithTeam];
 }
 
 

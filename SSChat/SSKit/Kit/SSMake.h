@@ -13,17 +13,35 @@
 void cout(id _object);
 
 //登录状态
-void makeUserLoginYes(void);
-void makeUserLoginNo(void);
-void makeUserLogin(BOOL userLogin);
+void makeUserLoginYes();
+void makeUserLoginNo();
+
+
+//token_type
+void makeUserTokenType(NSString *tokenType);
+//access_token
+void makeUserAccessToken(NSString *accessToken);
+// 请求头 headerUrl=token_type+access_token
+void makeUserHeaderUrl(NSString *headerUrl);
+
 //操作用户
+
+void makeUserId(NSString *userId);
+
+void makeUserLogin(BOOL userLogin);
+
 void makeUserName(NSString *userName);
 void makeUserMobile(NSString *userMobile);
 void makeUserPassWord(NSString *userPassWord);
-void makeUserNickName(NSString *nikcName);
-void makeUserAddVerification(BOOL verification);
-//地址+经纬度+搜索
-void makeUserAddress(NSString *address);
+void makeUserSex(NSString *userSex);
+void makeUserImg(NSString *userImg);
+void makeUser(NSString *userName,NSString *userMobile,NSString *userPassWord);
+
+//地区
+void makeUserAddress(NSString *address); 
+
+//环信账号
+void makeUserHxPhone(NSString *hxPhone);
 
 
 // 返回字号
@@ -91,4 +109,5 @@ void setLabFont(UILabel *label,NSString *string,NSInteger sta,NSInteger len,doub
 void setLabFont2(UILabel *label,NSString *string,NSInteger sta,NSInteger len,UIFont *font);
 //设置字体颜色 大小
 void setLabFontColor(UILabel *label,NSString *string,NSInteger sta,NSInteger len,UIFont *font,UIColor *color);
+
 

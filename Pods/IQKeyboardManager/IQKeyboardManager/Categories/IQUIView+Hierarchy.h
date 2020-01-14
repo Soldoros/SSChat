@@ -57,13 +57,8 @@
 
 /**
  Returns the superView of provided class type.
-
- @param classType class type of the object which is to be search in above hierarchy and return
-
- @param belowView view object in upper hierarchy where method should stop searching and return nil
  */
--(nullable __kindof UIView*)superviewOfClassType:(nonnull Class)classType belowView:(nullable UIView*)belowView;
--(nullable __kindof UIView*)superviewOfClassType:(nonnull Class)classType;
+-(nullable UIView*)superviewOfClassType:(nonnull Class)classType;
 
 /**
  Returns all siblings of the receiver which canBecomeFirstResponder.

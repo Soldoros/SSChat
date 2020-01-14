@@ -13,15 +13,15 @@
 
 
 //根据响应链找到控制器（视图必须依附在一个控制器上）
--(UIViewController *)getViewController{
+-(BaseVirtualController *)getViewController{
     id next = [self nextResponder];
     int number = 0;
-    while(![next isKindOfClass:[UIViewController class]] && number < 2000){
+    while(![next isKindOfClass:[BaseVirtualController class]] && number < 2000){
         next = [next nextResponder];
         number ++;
     }
-    if ([next isKindOfClass:[UIViewController class]]){
-        return (UIViewController *)next;
+    if ([next isKindOfClass:[BaseVirtualController class]]){
+        return (BaseVirtualController *)next;
     }else{
         return nil;
     }
@@ -114,54 +114,6 @@
 
 
 
-//=========================================
-//显示部分
-//=========================================
 
-
-//默认选择了系统的 时间为1秒
--(void)showTime:(NSString *)message{
-    [self showTimeBlack:message];
-    
-}
-
-
-//显示黑色半透明提示
--(void)showTimeBlack:(NSString *)string{
-    
-    UIImageView *imgView = [UIImageView new];
-    imgView.bounds = makeRect(0, 0, SCREEN_Width*0.66, SCREEN_Width*0.66*0.3);
-    imgView.centerX = SCREEN_Width * 0.5;
-    imgView.bottom = self.height * 0.5;
-    imgView.image = [UIImage imageNamed:@"showtime"];
-    [self addSubview:imgView];
-    
-    UILabel *lab = [UILabel new];
-    lab.frame = imgView.bounds;
-    lab.width = imgView.width - 20;
-    lab.centerX = imgView.width*0.5;
-    [imgView addSubview:lab];
-    lab.font = makeFont(14);
-    lab.textAlignment = NSTextAlignmentCenter;
-    lab.textColor = [UIColor whiteColor];
-    lab.numberOfLines = 2;
-    lab.text = string;
-    
-    [UIView animateIn:imgView];
-    
-    
-    double time = 1.5;
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC));
-    
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.3 animations:^{
-            imgView.transform = CGAffineTransformMakeScale(0.01, 0.01);
-        } completion:^(BOOL finished) {
-            [imgView removeFromSuperview];
-        }];
-        
-    });
-    
-}
 
 @end

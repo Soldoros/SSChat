@@ -216,6 +216,7 @@
     }
 }
 
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     if (scrollView == self.collectionView) {
@@ -228,10 +229,10 @@
     }
 }
 
+
 #pragma SSChatKeyBordSymbolFooterDelegate
 //底部切换表情500+  发送200
 -(void)SSChatKeyBordSymbolFooterBtnClick:(UIButton *)sender{
-
     if(sender.tag==500){
         [self.collectionView setContentOffset:CGPointMake(0, self.collectionView.contentOffset.y) animated:YES];
         [self setSymbolValue1];
@@ -263,6 +264,7 @@
     _footer.mButton1.selected = NO;
     _footer.mButton2.selected = YES;
 }
+
 
 
 @end

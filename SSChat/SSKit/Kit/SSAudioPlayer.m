@@ -39,10 +39,6 @@
 }
 
 
-//播放系统音效
-+(void)PlaySystemSound{
-    AudioServicesPlaySystemSound(1007);
-}
 
 
 @end

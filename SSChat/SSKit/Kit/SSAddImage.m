@@ -9,12 +9,6 @@
 #import "SSAddImage.h"
 #import <Photos/Photos.h>
 
-#import <AVFoundation/AVFoundation.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <MobileCoreServices/MobileCoreServices.h>
-#import <AVKit/AVKit.h>
-#import "SSDocumentManager.h"
-
 
 @implementation SSAddImage
 
@@ -95,6 +89,8 @@
         return;
     }
     
+    
+    
     _imagePickerController = [[UIImagePickerController alloc] init];
     _imagePickerController.delegate = self;
     _imagePickerController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -157,7 +153,7 @@
         _imagePickerController.mediaTypes = [NSArray arrayWithObjects:@"public.image", nil ,nil];
         
     }else if(modelType == SSImagePickerModelVideo){
-        _imagePickerController.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*) kUTTypeMovie, (NSString*) kUTTypeVideo, nil];
+        _imagePickerController.mediaTypes = [NSArray arrayWithObjects:@"public.movie", nil ,nil];
     }else{
         _imagePickerController.mediaTypes = [NSArray arrayWithObjects:@"public.movie", nil ,nil];
     }
@@ -174,14 +170,13 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     
     NSString *mediaType = info[@"UIImagePickerControllerMediaType"];
+    NSURL *imgUrl = info[@"UIImagePickerControllerImageURL"];
+    NSString *imgString = [imgUrl absoluteString];
+    NSArray *arr = [imgString componentsSeparatedByString:@"."];
+    NSString *type = arr.lastObject;
     
     //获取到图片 判断是否裁剪
     if ([mediaType isEqualToString:( NSString *)kUTTypeImage]){
-        
-        NSURL *imgUrl = info[@"UIImagePickerControllerImageURL"];
-        NSString *imgString = [imgUrl absoluteString];
-        NSArray *arr = [imgString componentsSeparatedByString:@"."];
-        NSString *type = arr.lastObject;
         
          //获取到gif图
         if([type isEqualToString:@"gif"]){
@@ -192,74 +187,36 @@
         else{
             _modelType = SSImagePickerModelImage;
             
-            if(imgUrl && imgString){
-                _pickerBlock(_wayStyle,_modelType,[imgString substringFromIndex:7]);
+            if(_imagePickerController.editing == YES){
+                [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerEditedImage]];
             }else{
-                if(_imagePickerController.editing == YES){
-                    [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerEditedImage]];
-                }else{
-                    [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerOriginalImage]];
-                }
+                [self saveImageAndUpdataHeader:[info objectForKey:UIImagePickerControllerOriginalImage]];
             }
-        
         }
     }
     
     //获取到视频
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]){
-        
        _modelType = SSImagePickerModelVideo;
+        NSURL *url=[info objectForKey:UIImagePickerControllerMediaURL];
+        NSString *urlPath=[url path];
         
-        NSURL *videoURL = info[UIImagePickerControllerMediaURL];
-        NSURL *mp4 = [self convertVideoToFormatWithMP4:videoURL];
-        NSFileManager *fileman = [NSFileManager defaultManager];
-        if ([fileman fileExistsAtPath:videoURL.path]) {
-            NSError *error = nil;
-            [fileman removeItemAtURL:videoURL error:&error];
-            if (error) {
-                NSLog(@"failed to remove file, error:%@.", error);
+        //保存视频到相簿，注意也可以使用ALAssetsLibrary来保存
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(urlPath)) {
+            if(_modelType != SSImagePickerWayFormIpc && _modelType != SSImagePickerWayGallery){
+                UISaveVideoAtPathToSavedPhotosAlbum(urlPath,self,@selector(video:didFinishSavingWithError:contextInfo:),nil);
+            }else{
+                if(_pickerBlock){
+                    _pickerBlock(_wayStyle,_modelType,urlPath);
+                }else{
+                    _pickerBlock = nil;
+                }
             }
-        }
-        
-        if(_pickerBlock){
-            _pickerBlock(_wayStyle,_modelType,mp4.path);
-        }else{
-            _pickerBlock = nil;
         }
 
     }
  
     [picker  dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-
-//拍照或者选取照片后的保存和刷新操作
--(void)saveImageAndUpdataHeader:(UIImage *)image{
-    
-    NSData *imageData = UIImageJPEGRepresentation(image, 1);
-    NSString *fullPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:@"/image.jpg"];
-    BOOL success = [imageData writeToFile:fullPath atomically:NO];
-    if(success){
-        cout(@"保存成功");
-        if(_pickerBlock){
-            _pickerBlock(_wayStyle,_modelType,fullPath);
-        }else{
-            _pickerBlock = nil;
-        }
-    }else{
-        cout(@"保存失败");
-    }
-}
-
-+(void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(id)contextInfo{
-    
-    if(error){
-        cout(@"图片保存失败");
-    }else{
-        cout(@"图片保存成功");
-        cout(contextInfo);
-    }
 }
 
 //保存视频
@@ -283,61 +240,14 @@
 }
 
 
-//将视频转换成mp4格式
-- (NSURL *)convertVideoToFormatWithMP4:(NSURL *)movUrl
-{
-    NSURL *mp4Url = nil;
-    AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:movUrl options:nil];
-    NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
+//拍照或者选取照片后的保存和刷新操作
+-(void)saveImageAndUpdataHeader:(UIImage *)image{
     
-    if ([compatiblePresets containsObject:AVAssetExportPresetHighestQuality]) {
-        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]initWithAsset:avAsset presetName:AVAssetExportPresetHighestQuality];
-        NSString *mp4Path = [NSString stringWithFormat:@"%@/%d%d.mp4", [self getAudioOrVideoPath], (int)[[NSDate date] timeIntervalSince1970], arc4random() % 100000];
-        mp4Url = [NSURL fileURLWithPath:mp4Path];
-        exportSession.outputURL = mp4Url;
-        exportSession.shouldOptimizeForNetworkUse = YES;
-        exportSession.outputFileType = AVFileTypeMPEG4;
-        dispatch_semaphore_t wait = dispatch_semaphore_create(0l);
-        [exportSession exportAsynchronouslyWithCompletionHandler:^{
-            switch ([exportSession status]) {
-                case AVAssetExportSessionStatusFailed: {
-                    NSLog(@"failed, error:%@.", exportSession.error);
-                } break;
-                case AVAssetExportSessionStatusCancelled: {
-                    NSLog(@"cancelled.");
-                } break;
-                case AVAssetExportSessionStatusCompleted: {
-                    NSLog(@"completed.");
-                } break;
-                default: {
-                    NSLog(@"others.");
-                } break;
-            }
-            dispatch_semaphore_signal(wait);
-        }];
-        long timeout = dispatch_semaphore_wait(wait, DISPATCH_TIME_FOREVER);
-        if (timeout) {
-            NSLog(@"timeout.");
-        }
-        
-        if (wait) {
-            //dispatch_release(wait);
-            wait = nil;
-        }
+    if(_pickerBlock){
+        _pickerBlock(_wayStyle,_modelType,image);
+    }else{
+        _pickerBlock = nil;
     }
-    
-    return mp4Url;
-}
-
-- (NSString *)getAudioOrVideoPath
-{
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-    path = [path stringByAppendingPathComponent:@"EMDemoRecord"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    
-    return path;
 }
 
 //判断设备是否有摄像头

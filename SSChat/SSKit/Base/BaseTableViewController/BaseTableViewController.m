@@ -30,6 +30,7 @@
         default:
             break;
     }
+    return self;
 }
 
 

@@ -15,8 +15,6 @@
         self.backgroundColor =  SSChatCellColor;
         self.frame = CGRectMake(0, SCREEN_Height-SSChatKeyBoardInputViewH-SafeAreaBottom_Height, SCREEN_Width, SSChatKeyBoardInputViewH);
         
-        [[NIMSDK sharedSDK].mediaManager addDelegate:self];
-        
         _keyBoardStatus = SSChatKeyBoardStatusDefault;
         _keyBoardHieght = 0;
         _changeTime = 0.25;
@@ -66,7 +64,7 @@
         [_mSymbolBtn addTarget:self action:@selector(btnPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         // 语音按钮   输入框
-        _mTextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _mTextBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         _mTextBtn.bounds = CGRectMake(0, 0, SSChatTextWidth, SSChatTextHeight);
         _mTextBtn.left = _mLeftBtn.right+SSChatBtnDistence;
         _mTextBtn.bottom = self.height - SSChatTBottomDistence;
@@ -81,9 +79,10 @@
         [_mTextBtn setTitleColor:makeColorRgb(100, 100, 100) forState:UIControlStateNormal];
         [_mTextBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
         [_mTextBtn setTitle:@"松开 结束" forState:UIControlStateHighlighted];
-        _mTextBtn.exclusiveTouch = YES;
         [_mTextBtn addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
+        
         [_mTextBtn addTarget:self action:@selector(endRecordVoice:) forControlEvents:UIControlEventTouchUpInside];
+        
         [_mTextBtn addTarget:self action:@selector(cancelRecordVoice:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
         [_mTextBtn addTarget:self action:@selector(RemindDragExit:) forControlEvents:UIControlEventTouchDragExit];
         [_mTextBtn addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
@@ -91,7 +90,7 @@
         
         _mTextView = [[UITextView alloc]init];
         _mTextView.frame = _mTextBtn.bounds;
-        _mTextView.textContainerInset = UIEdgeInsetsMake(10, 5, 5, 5);
+        _mTextView.textContainerInset = UIEdgeInsetsMake(7.5, 5, 5, 5);
         _mTextView.delegate = self;
         [_mTextBtn addSubview:_mTextView];
         _mTextView.backgroundColor = [UIColor whiteColor];
@@ -101,7 +100,6 @@
         _mTextView.showsVerticalScrollIndicator = NO;
         _mTextView.enablesReturnKeyAutomatically = YES;
         _mTextView.scrollEnabled = NO;
-        
         
         
         _mKeyBordView = [[SSChatKeyBordView alloc]initWithFrame:CGRectMake(0, self.height, SCREEN_Width, SSChatKeyBordHeight)];
@@ -160,9 +158,7 @@
         return hitView;
     }
     else{
-        
-        UIView *view =  [super hitTest:point withEvent:event];
-        return view;
+        return [super hitTest:point withEvent:event];
     }
 }
 
@@ -197,13 +193,12 @@
     _keyBoardHieght = keyBoardHieght;
     [self setNewSizeWithController];
 
-    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:_changeTime animations:^{
-        if(weakSelf.keyBoardStatus == SSChatKeyBoardStatusDefault ||
-           weakSelf.keyBoardStatus == SSChatKeyBoardStatusVoice){
-            weakSelf.bottom = SCREEN_Height-SafeAreaBottom_Height;
+        if(self.keyBoardStatus == SSChatKeyBoardStatusDefault ||
+           self.keyBoardStatus == SSChatKeyBoardStatusVoice){
+            self.bottom = SCREEN_Height-SafeAreaBottom_Height;
         }else{
-            weakSelf.bottom = SCREEN_Height-weakSelf.keyBoardHieght;
+            self.bottom = SCREEN_Height-self.keyBoardHieght;
         }
     } completion:nil];
     
@@ -235,6 +230,8 @@
 //语音10  表情11  其他功能12
 -(void)btnPressed:(UIButton *)sender{
    
+    [[UUAVAudioPlayer sharedInstance]stopSound];
+
     switch (self.keyBoardStatus) {
             
             //默认在底部状态
@@ -432,28 +429,27 @@
    
     [self setNewSizeWithController];
     
-    __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.25 animations:^{
-        weakSelf.mTextView.height = height;
-        weakSelf.height = SSChatTBottomDistence + SSChatTBottomDistence + weakSelf.mTextView.height;
+        self.mTextView.height = height;
+        self.height = 8 + 8 + self.mTextView.height;
         
-        weakSelf.mTextBtn.height = weakSelf.mTextView.height;
-        weakSelf.mTextBtn.bottom = weakSelf.height-SSChatTBottomDistence;
-        weakSelf.mTextView.top = 0;
-        weakSelf.mLeftBtn.bottom = weakSelf.height-SSChatBBottomDistence;
-        weakSelf.mAddBtn.bottom = weakSelf.height-SSChatBBottomDistence;
-        weakSelf.mSymbolBtn.bottom = weakSelf.height-SSChatBBottomDistence;
-        weakSelf.mKeyBordView.top = weakSelf.height;
+        self.mTextBtn.height = self.mTextView.height;
+        self.mTextBtn.bottom = self.height-SSChatTBottomDistence;
+        self.mTextView.top = 0;
+        self.mLeftBtn.bottom = self.height-SSChatBBottomDistence;
+        self.mAddBtn.bottom = self.height-SSChatBBottomDistence;
+        self.mSymbolBtn.bottom = self.height-SSChatBBottomDistence;
+        self.mKeyBordView.top = self.height;
         
-        if(weakSelf.keyBoardStatus == SSChatKeyBoardStatusDefault ||
-           weakSelf.keyBoardStatus == SSChatKeyBoardStatusVoice){
-            weakSelf.bottom = SCREEN_Height-SafeAreaBottom_Height;
+        if(self.keyBoardStatus == SSChatKeyBoardStatusDefault ||
+           self.keyBoardStatus == SSChatKeyBoardStatusVoice){
+            self.bottom = SCREEN_Height-SafeAreaBottom_Height;
         }else{
-            weakSelf.bottom = SCREEN_Height-self.keyBoardHieght;
+            self.bottom = SCREEN_Height-self.keyBoardHieght;
         }
         
     } completion:^(BOOL finished) {
-        [weakSelf.mTextView.superview layoutIfNeeded];
+        [self.mTextView.superview layoutIfNeeded];
     }];
 }
 
@@ -574,89 +570,125 @@
 
 #pragma mark - 录音touch事件
 - (void)beginRecordVoice:(UIButton *)button{
-    if(!_audioIndicator){
-        _audioIndicator  = [[SSChatAudioIndicator alloc]init];
+    
+    _audioSession = [AVAudioSession sharedInstance];
+    [_audioSession setCategory :AVAudioSessionCategoryPlayAndRecord error:nil];
+    [_audioSession setActive:YES error:nil];
+
+    NSDictionary *recordSetting = @{AVEncoderAudioQualityKey : [NSNumber numberWithInt:AVAudioQualityMin],
+                                    AVEncoderBitRateKey : [NSNumber numberWithInt:16],
+                                    AVFormatIDKey : [NSNumber numberWithInt:kAudioFormatLinearPCM],
+                                    AVNumberOfChannelsKey : @2,
+                                    AVLinearPCMBitDepthKey : @8
+                                    };
+    NSError *error = nil;
+    NSString *docments = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    _docmentFilePath = [NSString stringWithFormat:@"%@/%@",docments,@"123"];
+    
+    NSURL *pathURL = [NSURL fileURLWithPath:_docmentFilePath];
+    _recorder = [[AVAudioRecorder alloc] initWithURL:pathURL settings:recordSetting error:&error];
+    if (error || !_recorder) {
+        NSLog(@"recorder: %@ %zd %@", [error domain], [error code], [[error userInfo] description]);
+        return;
     }
-    [[NIMSDK sharedSDK].mediaManager record:NIMAudioTypeAAC
-                                   duration:60];
+    _recorder.delegate = self;
+    [_recorder prepareToRecord];
+    _recorder.meteringEnabled = YES;
+    
+    if (!_audioSession.isInputAvailable) {
+        return;
+    }
+    
+    [_recorder record];
+    _playTime = 0;
+    _playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+    [UUProgressHUD show];
 }
 
+//录音结束
 - (void)endRecordVoice:(UIButton *)button{
-    cout(@"end");
-    [[NIMSDK sharedSDK].mediaManager stopRecord];
+    [_recorder stop];
+    [_playTimer invalidate];
+    _playTimer = nil;
 }
 
-- (void)RemindDragExit:(UIButton *)button{
-    cout(@"exit");
-    _audioIndicator.status = AudioIndicatorExit;
+- (void)cancelRecordVoice:(UIButton *)button
+{
+    if (_playTimer) {
+        [_recorder stop];
+        [_recorder deleteRecording];
+        [_playTimer invalidate];
+        _playTimer = nil;
+    }
+    [UUProgressHUD dismissWithError:@"Cancel"];
 }
 
-- (void)RemindDragEnter:(UIButton *)button{
-    cout(@"enter");
-    _audioIndicator.status = AudioIndicatorRecording;
+- (void)RemindDragExit:(UIButton *)button
+{
+    [UUProgressHUD changeSubTitle:@"Release to cancel"];
 }
 
-- (void)cancelRecordVoice:(UIButton *)button{
-    cout(@"cancel");
-    [[NIMSDK sharedSDK].mediaManager cancelRecord];
+- (void)RemindDragEnter:(UIButton *)button
+{
+    [UUProgressHUD changeSubTitle:@"Slide up to cancel"];
 }
 
-#pragma mark - NIMMediaManagerDelegate
--(void)recordAudioProgress:(NSTimeInterval)currentTime{
-    NSInteger seconds = (NSInteger)currentTime % 60;
-    _audioIndicator.recordTime = currentTime;
-    if (seconds>=60) {
+
+- (void)countVoiceTime
+{
+    _playTime ++;
+    if (_playTime>=59) {
         [self endRecordVoice:nil];
     }
 }
 
--(void)recordAudio:(NSString *)filePath didBeganWithError:(NSError *)error{
-    if(error){
-        [[self getViewController].view showTimeBlack:error.description];
-    }
-}
 
-//录制结束
--(void)recordAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
-    
-    [_audioIndicator removeFromSuperview];
-    _audioIndicator = nil;
-    
-    if(error){
-        [[self getViewController].view showTimeBlack:error.description];
-    }
-    else{
-        
-        if(![self recordFileCanBeSend:filePath]){
-            [[self getViewController].view showTimeBlack:@"录音时间太短"];
-        }else{
-            cout(@"录音成功了 发送");
-            if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBoardInputViewBtnClick:voicePath:time:)]){
-                [self.delegate SSChatKeyBoardInputViewBtnClick:self voicePath:filePath time:0];
-            }
-        }
-    }
-}
+#pragma mark - Mp3RecorderDelegate
 
-//录音被打断
-- (void)recordAudioInterruptionBegin {
-    [[NIMSDK sharedSDK].mediaManager cancelRecord];
-}
-
-//录音取消
--(void)recordAudioDidCancelled{
-    _audioIndicator.status = AudioIndicatorCancel;
-    [_audioIndicator removeFromSuperview];
-    _audioIndicator = nil;
-}
-
-- (BOOL)recordFileCanBeSend:(NSString *)filepath
+//回调录音资料
+- (void)endConvertWithData:(NSData *)voiceData
 {
-    NSURL    *URL = [NSURL fileURLWithPath:filepath];
-    AVURLAsset *urlAsset = [[AVURLAsset alloc]initWithURL:URL options:nil];
-    CMTime time = urlAsset.duration;
-    CGFloat mediaLength = CMTimeGetSeconds(time);
-    return mediaLength > 1;
+    if(_delegate && [_delegate respondsToSelector:@selector(SSChatKeyBoardInputViewBtnClick:sendVoice:time:)]){
+        [self.delegate SSChatKeyBoardInputViewBtnClick:self sendVoice:voiceData time:_playTime+1];
+    }
+    [UUProgressHUD dismissWithSuccess:@"Success"];
+    
+    //缓冲消失时间 (最好有block回调消失完成)
+    self.btnVoiceRecord.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.btnVoiceRecord.enabled = YES;
+    });
 }
+
+- (void)failRecord
+{
+//    [UUProgressHUD dismissWithSuccess:@"Too short"];
+    
+    //缓冲消失时间 (最好有block回调消失完成)
+    self.btnVoiceRecord.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.btnVoiceRecord.enabled = YES;
+    });
+}
+
+
+
+#pragma mark - AVAudioRecorderDelegate 关闭活动 避免影响其他媒体
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
+    
+    [_audioSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    
+    NSURL *url = [NSURL fileURLWithPath:_docmentFilePath];
+    NSError *err = nil;
+    NSData *audioData = [NSData dataWithContentsOfFile:[url path] options:0 error:&err];
+    if (audioData) {
+        [self endConvertWithData:audioData];
+    }
+}
+
+- (void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder *)recorder error:(NSError *)error{
+    [_audioSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+}
+
 
 @end

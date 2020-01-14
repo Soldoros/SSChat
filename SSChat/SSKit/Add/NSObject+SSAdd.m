@@ -75,12 +75,19 @@
 
 //发送不带参数的通知
 -(void)sendNotifCation:(NSString *)key{
-    [[NSNotificationCenter defaultCenter] postNotificationName:key object:nil];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    NSNotification *noti =
+    [NSNotification notificationWithName:key object:self];
+    [nc postNotification:noti];
 }
 
 //发送带参数的通知
--(void)sendNotifCation:(NSString *)key data:(id)data{
-    [[NSNotificationCenter defaultCenter] postNotificationName:key object:data];
+-(void)sendNotifCation:(NSString *)key data:(NSDictionary *)dic{
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    NSNotification *noti =
+    [NSNotification notificationWithName:key object:dic];
+    [nc postNotification:noti];
 }
 
 //移除通知

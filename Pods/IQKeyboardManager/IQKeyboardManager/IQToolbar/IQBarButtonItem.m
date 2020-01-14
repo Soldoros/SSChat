@@ -92,6 +92,7 @@
 -(void)dealloc
 {
     self.target = nil;
+    self.invocation.target = nil;
     self.invocation = nil;
 }
 

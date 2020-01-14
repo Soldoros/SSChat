@@ -19,6 +19,9 @@
 //登录信息
 @property(nonatomic,strong)NSDictionary *userDic;
 
+//家人关系
+@property(nonatomic,strong)NSDictionary *owner_relationship;
+
 //主题色
 @property(nonatomic, strong)UIColor   *titleColor;
 @property(nonatomic, strong)UIColor   *tabBarColor;
@@ -33,6 +36,15 @@
 @property(nonatomic, strong)NSString   *msgNumber;
 
 @property(nonatomic, strong)UIImage   *userImage;
+
+//强制更新 非强制更新的状态
+@property(nonatomic,assign)BOOL   mustUpdate;
+@property(nonatomic,assign)BOOL   notMustUpdate;
+
+//售后申请弹出红色提示条
+@property(nonatomic,assign)BOOL       showChance;
+//售后详情弹出红色提示条
+@property(nonatomic,strong)NSMutableDictionary   *showRedDict;
 
 
 

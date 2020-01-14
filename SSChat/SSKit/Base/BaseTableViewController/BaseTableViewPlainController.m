@@ -36,7 +36,6 @@
     self.mTableView.scrollIndicatorInsets = self.mTableView.contentInset;
     self.mTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self.view bringSubviewToFront:self.navtionBar];
     
 }
 

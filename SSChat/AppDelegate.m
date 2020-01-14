@@ -6,33 +6,14 @@
 //  Copyright © 2018年 soldoros. All rights reserved.
 //
 
-/*
- 
- UIEdgeInsets safeArea = UIEdgeInsetsZero;
- if (@available(iOS 11.0, *))
- {
- safeArea = self.superview.safeAreaInsets;
- }
- 
- Git  add .
- Git commit –m “版本”
-
- 
- git pull origin master
- git push -u origin master
- 
- com.netease.NIM.demo
- 
- com.soldoros.SSChat
- 2018年7月12  2019-06-04
- */
-
-
 #import "AppDelegate.h"
-#import "SSRootManager.h"
-#import "SSApplicationHelper.h"
+#import "RootController.h"
+#import "SSChatIMEmotionModel.h"
+#import <AliyunOSSiOS/OSSService.h>
 
 @interface AppDelegate ()
+
+@property(nonatomic,strong)SSChartEmotionImages *emotion;
 
 @end
 
@@ -41,55 +22,80 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [SSApplicationHelper applicationRegister];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        self.emotion = [SSChartEmotionImages ShareSSChartEmotionImages];
+        [self.emotion initEmotionImages];
+        [self.emotion initSystemEmotionImages];
+        
+    });
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //                domain: http://linjw-gobid.oss-cn-beijing.aliyuncs.com/
+    //                backname: linjw-gobid
+    //                endpoint: http://oss-cn-beijing.aliyuncs.com
+    
+    NSString *endpoint = @"----------";
+    
+    UIImage *image = [UIImage imageNamed:@"hongbaoguan"];
+    NSData *imgData = UIImagePNGRepresentation(image);
+ 
+    id<OSSCredentialProvider> credential = [[OSSPlainTextAKSKPairCredentialProvider alloc] initWithPlainTextAccessKey:@"" secretKey:@""];
+    
+    OSSClient *client = [[OSSClient alloc] initWithEndpoint:endpoint credentialProvider:credential];
+    
+    OSSPutObjectRequest * put = [OSSPutObjectRequest new];
+    put.bucketName = @"linjw-gobid";
+    put.objectKey = @"";
+    put.uploadingData = imgData;
+    
+    OSSTask *putTask = [client putObject:put];
+    [putTask continueWithBlock:^id(OSSTask *task) {
+        if(task.error){
+            cout(task.error);
+        }else{
+            cout(task.result);
+        }
+        return  nil;
+    }];
+    [put setUploadProgress:^(int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
+        
+    }];
+    
+    
+    RootController *vc = [[RootController alloc]init];
+    self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:vc];
     [self.window makeKeyAndVisible];
-    [SSRootManager shareRootManager];
+    return YES;
     
-    return [[SSApplicationHelper shareApplicationHelper] application:application didFinishLaunchingWithOptions:launchOptions];
-}
-
-// APP进入后台
-- (void)applicationDidEnterBackground:(UIApplication *)application{
-    NSInteger count = [[[NIMSDK sharedSDK] conversationManager] allUnreadCount] + [NIMSDK sharedSDK].systemNotificationManager.allUnreadCount;
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
-}
-
-// APP将要从后台返回
-- (void)applicationWillEnterForeground:(UIApplication *)application{
-   
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+}
+
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+}
+
+
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    
-}
-
-- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    [[NIMSDK sharedSDK] updateApnsToken:deviceToken];
-    cout(deviceToken);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-    cout(userInfo);
-}
-
-
-
-- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
-    cout(error);
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 

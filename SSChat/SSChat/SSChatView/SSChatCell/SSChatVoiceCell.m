@@ -8,24 +8,19 @@
 
 #import "SSChatVoiceCell.h"
 
-#define NotiCloseAllMedia  @"NotiCloseAllMedia"
-
 @implementation SSChatVoiceCell
 
--(void)dealloc{
-    [[NIMSDK sharedSDK].mediaManager removeDelegate:self];
-}
 
 -(void)initSSChatCellUserInterface{
     
     [super initSSChatCellUserInterface];
     
-    _retryCount = 3;
     
     _voiceBackView = [[UIView alloc]init];
     [self.mBackImgButton addSubview:self.voiceBackView];
     _voiceBackView.userInteractionEnabled = YES;
     _voiceBackView.backgroundColor = [UIColor clearColor];
+    
     
     _mTimeLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 70, 30)];
     _mTimeLab.textAlignment = NSTextAlignmentCenter;
@@ -40,120 +35,96 @@
     _mVoiceImg.animationRepeatCount = 0;
     _mVoiceImg.backgroundColor = [UIColor clearColor];
     
+    
+    _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.indicator.center=CGPointMake(80, 15);
+    
+    
+    [_voiceBackView addSubview:_indicator];
     [_voiceBackView addSubview:_mVoiceImg];
     [_voiceBackView addSubview:_mTimeLab];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(audioPlayerDidFinishPlay) name:NotiCloseAllMedia object:nil];
     
-    [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:UIDeviceProximityStateDidChangeNotification object:nil];
-}
-
-//红外线感应监听
--(void)sensorStateChange:(NSNotificationCenter *)notification{
-    if ([UIDevice currentDevice].proximityState == YES) { NSLog(@"靠近了设备屏幕,屏幕会自动锁住");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-        [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceReceiver];
-    }
-    else {
-        NSLog(@"远离了设备屏幕,屏幕会自动解锁");
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
-        [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceSpeaker];
-    }
-}
-
-//关闭所有媒体
--(void)audioPlayerDidFinishPlay{
-    [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:NO];
-    [[NIMSDK sharedSDK].mediaManager stopPlay];
-    [_mVoiceImg stopAnimating];
+    //整个列表只能有一个语音处于播放状态 通知其他正在播放的语音停止
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(UUAVAudioPlayerDidFinishPlay) name:@"VoicePlayHasInterrupt" object:nil];
+    
+    //红外线感应监听
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sensorStateChange:)
+                                                 name:UIDeviceProximityStateDidChangeNotification
+                                               object:nil];
 }
 
 
 -(void)setLayout:(SSChatMessagelLayout *)layout{
     [super setLayout:layout];
     
-    [[NIMSDK sharedSDK].mediaManager addDelegate:self];
-    
-    UIImage *image = [UIImage imageNamed:layout.chatMessage.backImgString];
+    UIImage *image = [UIImage imageNamed:layout.message.backImgString];
     image = [image resizableImageWithCapInsets:layout.imageInsets resizingMode:UIImageResizingModeStretch];
     
     self.mBackImgButton.frame = layout.backImgButtonRect;
     [self.mBackImgButton setBackgroundImage:image forState:UIControlStateNormal];
     
-    _mVoiceImg.image = layout.chatMessage.voiceImg;
-    _mVoiceImg.animationImages = layout.chatMessage.voiceImgs;
+    
+    _mVoiceImg.image = layout.message.voiceImg;
+    _mVoiceImg.animationImages = layout.message.voiceImgs;
     _mVoiceImg.frame = layout.voiceImgRect;
     
-    NSString *time = makeStrWithInt(layout.chatMessage.audioObject.duration/1000);
-    _mTimeLab.text = makeString(time, @"\"");
+    
+    _mTimeLab.text = layout.message.voiceTime;
     _mTimeLab.frame = layout.voiceTimeLabRect;
     
-    [self setMessageReadStatus];
-    [self setNameWithTeam];
 }
+
 
 //播放音频 暂停音频
 -(void)buttonPressed:(UIButton *)sender{
-    if ([self.layout.chatMessage.message attachmentDownloadState]== NIMMessageAttachmentDownloadStateFailed
-        || [self.layout.chatMessage.message attachmentDownloadState] == NIMMessageAttachmentDownloadStateNeedDownload) {
-        [[[NIMSDK sharedSDK] chatManager] fetchMessageAttachment:self.layout.chatMessage.message error:nil];
-        return;
-    }
-    
-    if ([self.layout.chatMessage.message attachmentDownloadState] == NIMMessageAttachmentDownloadStateDownloaded) {
-    
-        if (![[NIMSDK sharedSDK].mediaManager isPlaying]) {
-            
-            [[NIMSDK sharedSDK].mediaManager setNeedProximityMonitor:NO];
-            
-            [[NIMSDK sharedSDK].mediaManager switchAudioOutputDevice:NIMAudioOutputDeviceSpeaker];
-            self.pendingAudioMessages = [self findRemainAudioMessages:self.layout.chatMessage.message];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:NotiCloseAllMedia object:nil];
-            
-            [self.mVoiceImg startAnimating];
-            self.layout.chatMessage.message.isPlayed = YES;
-            [[NIMSDK sharedSDK].mediaManager play:self.layout.chatMessage.audioObject.path];
-            
-        } else {
-            self.pendingAudioMessages = nil;
-            [[NIMSDK sharedSDK].mediaManager stopPlay];
-        }
-    }
-}
-
-
-#pragma -mark  NIMMediaManagerDelegate
--(void)playAudio:(NSString *)filePath didBeganWithError:(NSError *)error{
-    //播放失败的话连续尝试播放3次
-    if(error){
-        if (_retryCount > 0){
-            _retryCount--;
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[NIMSDK sharedSDK].mediaManager play:filePath];
-            });
-        }else{
-            _retryCount = 3;
-        }
+    if(!_contentVoiceIsPlaying){
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"VoicePlayHasInterrupt" object:nil];
+        _contentVoiceIsPlaying = YES;
+        [_mVoiceImg startAnimating];
+        _audio = [UUAVAudioPlayer sharedInstance];
+        _audio.delegate = self;
+        [_audio playSongWithData:self.layout.message.voice];
     }else{
-        _retryCount = 3;
-        
+        [self UUAVAudioPlayerDidFinishPlay];
     }
 }
 
--(void)playAudio:(NSString *)filePath didCompletedWithError:(NSError *)error{
-    [self.mVoiceImg stopAnimating];
+//播放显示开始加载
+- (void)UUAVAudioPlayerBeiginLoadVoice{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.indicator startAnimating];
+    });
 }
 
-//音频数组 如果这条音频消息被播放过了 或者这条消息是属于自己的消息，则不进行轮播
-- (NSMutableArray *)findRemainAudioMessages:(NIMMessage *)message
-{
-    if (message.isPlayed || [message.from isEqualToString:[NIMSDK sharedSDK].loginManager.currentAccount]) {
-        return nil;
-    }
-    NSMutableArray *messages = [[NSMutableArray alloc] init];
-    return messages;
+//开启红外线感应
+- (void)UUAVAudioPlayerBeiginPlay{
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [self.indicator stopAnimating];
+    
 }
+
+//关闭红外线感应
+- (void)UUAVAudioPlayerDidFinishPlay{
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    _contentVoiceIsPlaying = NO;
+    [_mVoiceImg stopAnimating];
+    [[UUAVAudioPlayer sharedInstance]stopSound];
+}
+
+//处理监听触发事件
+-(void)sensorStateChange:(NSNotificationCenter *)notification{
+    if ([[UIDevice currentDevice] proximityState] == YES){
+        NSLog(@"Device is close to user");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    }
+    else{
+        NSLog(@"Device is not close to user");
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    }
+}
+
+
 
 @end

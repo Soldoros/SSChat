@@ -20,8 +20,6 @@
 #import "SSAttributeDefault.h"
 #import "SSMake.h"
 #import "SSChoiceView.h"
-#import "SSAlert.h"
-#import "SSAudioPlayer.h"
 
 #import "NSObject+SSAdd.h"
 #import "UIImage+SSAdd.h"
@@ -29,6 +27,7 @@
 #import "NSObject+SSAdd.h"
 #import "NSString+SSAdd.h"
 #import "NSTimer+SSAdd.h"
+#import "UIAlertView+SSAdd.h"
 #import "UIColor+SSAdd.h"
 #import "UITableView+SSAdd.h"
 #import "UIView+SSAdd.h"
@@ -36,6 +35,9 @@
 #import "UIButton+SSAdd.h"
 #import "UISearchBar+SSAdd.h"
 #import "UITextField+SSAdd.h"
+
+
+
 
 
 

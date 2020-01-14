@@ -12,55 +12,101 @@ void cout(id _object){
     NSLog(@"%@",_object);
 }
 
-//登录
-void makeUserLoginYes(){
-    makeUserLogin(YES);
+
+//token_type
+void makeUserTokenType(NSString *tokenType){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:tokenType forKey:USER_TokenType];
+}
+//access_token
+void makeUserAccessToken(NSString *accessToken){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:accessToken forKey:USER_AccessToken];
+}
+// 请求头 headerUrl=token_type+access_token
+void makeUserHeaderUrl(NSString *headerUrl){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:headerUrl forKey:USER_HeaderUrl];
 }
 
-//退出登录
-void makeUserLoginNo(){
-    makeUserLogin(NO);
-    makeUserMobile(@"");
-    makeUserName(@"");
-    makeUserNickName(@"");
-    makeUserPassWord(@"");
-    makeUserAddVerification(YES);
+//设置用户id
+void makeUserId(NSString *userId){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setBool:userId forKey:USER_Id];
 }
 
+//操作用户
 void makeUserLogin(BOOL userLogin){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setBool:userLogin forKey:USER_Login];
 }
 
-//操作用户
 void makeUserName(NSString *userName){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:userName forKey:USER_Name];
 }
-
 void makeUserMobile(NSString *userMobile){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:userMobile forKey:USER_Mobile];
 }
-
 void makeUserPassWord(NSString *userPassWord){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:userPassWord forKey:USER_Password];
 }
-
-void makeUserNickName(NSString *nikcName){
+void makeUserSex(NSString *userSex){
+    cout(userSex);
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    [user setValue:nikcName forKey:USER_Nickname];
+    [user setValue:userSex forKey:USER_Sex];
+    SSUserDefault *udf = [SSUserDefault shareCKUserDefault];
+    udf.sex = userSex.integerValue;
 }
 
-void makeUserAddVerification(BOOL verification){
+void makeUserImg(NSString *userImg){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    [user setBool:verification forKey:USER_AddVerification];
+    [user setValue:userImg forKey:USER_Img];
 }
 
+void makeUser(NSString *userName,NSString *userMobile,NSString *userPassWord){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:userName forKey:USER_Name];
+    [user setValue:userMobile forKey:USER_Mobile];
+    [user setValue:userPassWord forKey:USER_Password];
+}
+
+
+//地区
 void makeUserAddress(NSString *address){
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setValue:address forKey:USER_Address];
+}
+
+//环信账号
+void makeUserHxPhone(NSString *hxPhone){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setValue:hxPhone forKey:USER_Img];
+}
+
+//登录
+void makeUserLoginYes(){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setBool:YES forKey:USER_Login];
+}
+
+//退出登录
+void makeUserLoginNo(){
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setBool:NO forKey:USER_Login];
+    
+    makeUserMobile(@"");
+    makeUserName(@"");
+    makeUserPassWord(@"");
+    makeUserImg(@"");
+    makeUserHxPhone(@"");
+    makeUserTokenType(@"");
+    makeUserAccessToken(@"");
+    makeUserHeaderUrl(@"");
+    makeUserAddress(@"");
+    makeUserSex(@"");
 }
 
 

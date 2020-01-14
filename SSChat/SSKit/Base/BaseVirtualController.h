@@ -230,6 +230,25 @@ typedef void (^ActionBtnClick)(NSInteger index);
 
 
 
+/**
+ 系统提示框按钮点击回调代码块
+
+ @param action 点击的action
+ */
+typedef void (^AlertBlock)(UIAlertAction * action);
+
+/**
+ 系统自带提示框
+ 
+ @param title 提示框标题
+ @param msg 详细信息
+ @param ok 确认按钮
+ @param cancel 返回按钮
+ */
+-(void)systemAlert:(NSString *)title msg:(NSString *)msg okButton:(NSString *)ok cancelButton:(NSString *)cancel  alertBlock:(AlertBlock)alertBlock;
+
+
+
 
 
 

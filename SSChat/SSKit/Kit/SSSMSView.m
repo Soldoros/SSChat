@@ -12,12 +12,30 @@
 
 @implementation SSSMSView
 
-- (instancetype)initWithFrame:(CGRect)frame{
-    
+
+//默认注册功能 通过手机号获取验证码
+-(instancetype)initWithFrame:(CGRect)frame{
+    return [self initWithFrame:frame type:SMSGetCodeTypePhone style:SMSGetCodeRegister];
+}
+
+//默认是手机号获取验证码
+-(instancetype)initWithFrame:(CGRect)frame style:(SMSViewGetCodeStyle)style{
+    return [self initWithFrame:frame type:SMSGetCodeTypePhone style:style];
+}
+
+//默认注册功能
+-(instancetype)initWithFrame:(CGRect)frame type:(SMSViewGetCodeType)type{
+    return [self initWithFrame:frame type:type style:SMSGetCodeRegister];
+}
+
+//开放式注册
+-(instancetype)initWithFrame:(CGRect)frame type:(SMSViewGetCodeType)type style:(SMSViewGetCodeStyle)style{
     if(self = [super initWithFrame:frame]){
         self.backgroundColor = [UIColor whiteColor];
         
         _time = TIMER;
+        _type = type;
+        _style = style;
         
         self.clipsToBounds = YES;
         self.layer.cornerRadius = self.height*0.5;
@@ -38,20 +56,32 @@
     return self;
 }
 
-//验证邮箱和手机号 发送验证码
--(void)confirmPEBlock:(SMSConfirmPEBlock)peBlock sendBlock:(SMSConfirmSendBlock)sendBlock{
-    _peBlock = peBlock;
-    _sendBlock = sendBlock;
+//获取手机号
+-(void)getPEStringWithBlock:(SSStringBlock)stringBlock smsBlock:(SSSMSBlock)smsBlock{
+    _stringBlock = stringBlock;
+    _smsBlock = smsBlock;
 }
 
 
 //开始获取验证码
 -(void)buttonPressed:(UIButton *)sender{
     
-    _peConfirm = self.peBlock();
-    if(_peConfirm == YES){
-        [self smsBeginTimer];
-        _sendBlock();
+    _peString = _stringBlock();
+    
+    if(_type == SMSGetCodeTypePhone){
+        if([_peString isEqualToString:@""]){
+            [(BaseVirtualController *)[self getViewController] showTime:@"请输入手机号!"];
+        }
+        else if(![NSString shoujihao:_peString]){
+            [(BaseVirtualController *)[self getViewController] showTime:@"请输入正确的手机号!"];
+        }
+        else{
+            [self smsBeginTimer];
+            [self getCodeNetWorking];
+        }
+    }
+    else{
+        
     }
 }
 
@@ -70,7 +100,8 @@
     [self performSelector:@selector(addTimer) withObject:nil afterDelay:1];
     
     if (!_timer){
-        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(addTimer) userInfo:nil repeats:YES];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                  target:self selector:@selector(addTimer) userInfo:nil repeats:YES];
     }
 }
 
@@ -95,6 +126,14 @@
     _mGetPassBtn.enabled = YES;
     [_mGetPassBtn setTitleColor:TitleColor forState:UIControlStateNormal];
     [_mGetPassBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
+}
+
+
+
+//获取短信验证码
+-(void)getCodeNetWorking{
+    
+    
 }
 
 

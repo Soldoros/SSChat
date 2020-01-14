@@ -6,11 +6,11 @@
 //  Copyright © 2018年 soldoros. All rights reserved.
 //
 
-#import "BaseController.h"
+#import <UIKit/UIKit.h>
 
 
 
-@interface SSChatMapController : BaseController
+@interface SSChatMapController : UIViewController
 
 // 纬度 经度 
 @property(nonatomic,assign)CGFloat latitude;

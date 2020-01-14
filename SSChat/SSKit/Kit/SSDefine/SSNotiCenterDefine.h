@@ -12,29 +12,27 @@
 
 
 //登录状态发生变化
-#define NotiLoginStatusChange         @"NotiLoginStatusChange"
+#define NotiLoginChange               @"NotiLoginChange"
 
-//收到有人添加我为好友
-#define NotiGetAddContacts            @"NotiGetAddContacts"
-//好友添加删除后的变化
-#define NotiContactChange             @"NotiContactChange"
 
-//接收消息列表
-#define NotiReceiveMessages           @"NotiReceiveMessages"
-//消息发生变化
-#define NotiMessageChange             @"NotiMessageChange"
+//个人信息状变化后的通知
+#define NotiMyMsgChange               @"NotiMyMsgChange"
 
-//个人信息发生变化
-#define NotiMinePersonalChange        @"NotiMinePersonalChange"
+//通知控制器显示提示信息
+#define NotiShowMessage           @"NotiShowMessage"
+//微信支付
+#define NotiWXPay                 @"NotiWXPay"
+//微信支付结果
+#define NotiWXPayOver             @"NotiWXPayOver"
+//支付宝支付
+#define NotiALiPay                @"NotiALiPay"
+//支付支付结果
+#define NotiALiPayOver            @"NotiALiPayOver"
 
-//消息未读通知
-#define NotiUnreadCount               @"NotiUnreadCount"
-//数据归档后通知
-#define NotiDataPersistence           @"NotiDataPersistence"
 
-//消息已读回执通知
-#define NotiMessageReadBack           @"NotiMessageReadBack"
 
+//订单列表刷新
+#define NotiOrderListChange            @"NotiOrderListChange"
 
 
 

@@ -15,7 +15,7 @@
 @protocol SSChatBaseCellDelegate <NSObject>
 
 //点击头像
--(void)SSChatHeaderImgCellClick:(SSChatMessagelLayout *)layout indexPath:(NSIndexPath *)indexPath;
+-(void)SSChatHeaderImgCellClick:(NSInteger)index indexPath:(NSIndexPath *)indexPath;
 
 //点击文本cell
 -(void)SSChatTextCellClick:(NSIndexPath*)indexPath index:(NSInteger)index layout:(SSChatMessagelLayout *)layout;
@@ -25,9 +25,6 @@
 
 //点击定位cell
 -(void)SSChatMapCellClick:(NSIndexPath*)indexPath layout:(SSChatMessagelLayout *)layout;
-
-//点击文件cell
--(void)SSChatFileCellClick:(NSIndexPath*)indexPath layout:(SSChatMessagelLayout *)layout;
 
 
 @end
@@ -46,19 +43,9 @@
 @property(nonatomic, strong) UIMenuController *menu;
 
 //头像  时间  背景按钮
-@property(nonatomic, strong) UIButton  *mHeaderImgBtn;
-@property(nonatomic, strong) UILabel   *mMessageTimeLab;
+@property(nonatomic, strong) UIButton *mHeaderImgBtn;
+@property(nonatomic, strong) UILabel  *mMessageTimeLab;
 @property(nonatomic, strong) UIButton  *mBackImgButton;
-
-//联系人
-@property(nonatomic, strong) UILabel   *mFriendLab;
-
-//已读未读
-@property(nonatomic,strong) UILabel    *mReadLab;
--(void)setMessageReadStatus;
-
-//显示姓名
--(void)setNameWithTeam;
 
 //消息按钮
 -(void)buttonPressed:(UIButton *)sender;

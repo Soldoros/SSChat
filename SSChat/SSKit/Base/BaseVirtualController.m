@@ -572,9 +572,42 @@
     
 }
 
+
 //显示黑色半透明提示
 -(void)showTimeBlack:(NSString *)string{
-    [self.view showTimeBlack:string];
+    
+    UIImageView *imgView = [UIImageView new];
+    imgView.bounds = makeRect(0, 0, SCREEN_Width*0.66, SCREEN_Width*0.66*0.3);
+    imgView.centerX = SCREEN_Width * 0.5;
+    imgView.bottom = self.view.height * 0.5;
+    imgView.image = [UIImage imageNamed:@"showtime"];
+    [self.view addSubview:imgView];
+    
+    UILabel *lab = [UILabel new];
+    lab.frame = imgView.bounds;
+    lab.width = imgView.width - 20;
+    lab.centerX = imgView.width*0.5;
+    [imgView addSubview:lab];
+    lab.font = makeFont(14);
+    lab.textAlignment = NSTextAlignmentCenter;
+    lab.textColor = [UIColor whiteColor];
+    lab.numberOfLines = 2;
+    lab.text = string;
+    
+    [UIView animateIn:imgView];
+    
+    double time = 1.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.3 animations:^{
+            imgView.transform = CGAffineTransformMakeScale(0.01, 0.01);
+        } completion:^(BOOL finished) {
+            [imgView removeFromSuperview];
+        }];
+        
+    });
+    
 }
 
 
@@ -605,6 +638,32 @@
         }];
     }];
 }
+
+
+
+//系统提示弹窗
+-(void)systemAlert:(NSString *)title msg:(NSString *)msg okButton:(NSString *)ok cancelButton:(NSString *)cancel  alertBlock:(AlertBlock)alertBlock{
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:ok style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        alertBlock(action);
+        
+    }];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+        alertBlock(action);
+    }];
+    
+    [defaultAction setValue:TitleColor forKey:@"_titleTextColor"];
+    [cancelAction setValue:TitleColor forKey:@"_titleTextColor"];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+
 
 
 

@@ -48,13 +48,6 @@
     self.mj_y = - self.mj_h - self.ignoredScrollViewContentInsetTop;
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow {
-    
-    if (!newWindow && self.isRefreshing) {
-        [self endRefreshing];
-    }
-}
-
 - (void)scrollViewContentOffsetDidChange:(NSDictionary *)change
 {
     [super scrollViewContentOffsetDidChange:change];

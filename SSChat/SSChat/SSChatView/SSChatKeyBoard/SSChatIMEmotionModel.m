@@ -82,12 +82,9 @@ static SSChartEmotionImages *emotion = nil;
 
 -(NSMutableArray *)dealWithArray:(NSMutableArray *)arr1 arr2:(NSMutableArray *)arr2{
     NSMutableArray *arr = [NSMutableArray new];
-    if(arr1.count>0){
-        [arr addObjectsFromArray:arr1];
-    }
-    if(arr2.count>0){
-        [arr addObjectsFromArray:arr2];
-    }
+    [arr addObjectsFromArray:arr1];
+    [arr addObjectsFromArray:arr2];
+
     
     NSInteger k = 1;
     NSInteger number = SSChatEmojiRow * SSChatEmojiLine;
@@ -165,7 +162,7 @@ static SSChartEmotionImages *emotion = nil;
                 
                 NSMutableAttributedString *mstr = [[NSMutableAttributedString alloc]initWithAttributedString:imageStr];
 //                mstr.backgroundColor = [UIColor clearColor];
-                [mstr addAttribute:NSBaselineOffsetAttributeName value:@(-3.6) range:NSMakeRange(0, mstr.length)];
+                [mstr addAttribute:NSBaselineOffsetAttributeName value:@(-6) range:NSMakeRange(0, mstr.length)];
                 
                 NSMutableParagraphStyle *paragraphString = [[NSMutableParagraphStyle alloc] init];
                 [paragraphString setLineSpacing:5];

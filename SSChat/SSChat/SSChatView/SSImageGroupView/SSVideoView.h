@@ -7,11 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Photos/Photos.h>
 #import <AVFoundation/AVFoundation.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-#import <MobileCoreServices/MobileCoreServices.h>
-#import <AVKit/AVKit.h>
 #import "SSImageGroupData.h"
 
 
@@ -64,14 +60,6 @@ typedef NS_ENUM(NSInteger, SSVideoLayerStatus) {
 
 //根据屏幕旋转刷新控件的位置
 -(void)setNewFrameWithDeviceoRientation;
-
-//控件的显示和隐藏
--(void)hiddenAllControl;
--(void)showAllControl;
-@property(nonatomic,assign)BOOL allHidden;
-
-//图片
-@property(nonatomic,strong)UIImage *mBackImage;
 
 //展示单位
 @property(nonatomic,strong)SSImageGroupItem *item;

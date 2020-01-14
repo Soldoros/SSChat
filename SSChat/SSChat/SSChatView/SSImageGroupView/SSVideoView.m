@@ -18,26 +18,10 @@
         self.frame = [UIScreen mainScreen].bounds;
         self.backgroundColor = [UIColor clearColor];
         self.userInteractionEnabled = YES;
-        self.contentMode = UIViewContentModeScaleAspectFit;
         
         _item = item;
-        _currentTime = 0.0;
-        _totalTime = 0.0;
-        _allHidden = NO;
-        
-        NIMVideoObject *videoObject = _item.chatMessage.videoObject;
-        
-        UIImage *videoImage = [UIImage imageWithContentsOfFile:videoObject.coverPath];
-        if(videoImage){
-            _mBackImage = videoImage;
-            self.image = _mBackImage;
-        }else{
-            NSURL *url = [NSURL URLWithString:videoObject.coverUrl];
-            __weak SSVideoImageLayer *weakSelf = self;
-            [self setImageWithURL:url placeholder:[UIImage imageFromColor:CellLineColor] options:YYWebImageOptionAllowBackgroundTask completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-                weakSelf.mBackImage = image;
-            }];
-        }
+        _currentTime = 0;
+        _totalTime = 0;
         
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(GestureRecognizerPressed:)];
         gesture.numberOfTapsRequired = 1;
@@ -108,27 +92,6 @@
     return self;
 }
 
--(void)showAllControl{
-    
-    _allHidden = NO;
-    _mBackButton.hidden = NO;
-    _playCenterButton.hidden = NO;
-    _playLeftButton.hidden = NO;
-    _playSlider.hidden = NO;
-    _currenTimeLab.hidden = NO;
-    _totalTimeLab.hidden = NO;
-}
-
--(void)hiddenAllControl{
-    
-    _allHidden = YES;
-    _mBackButton.hidden = YES;
-    _playCenterButton.hidden = YES;
-    _playLeftButton.hidden = YES;
-    _playSlider.hidden = YES;
-    _currenTimeLab.hidden = YES;
-    _totalTimeLab.hidden = YES;
-}
 
 //刷新控件的位置
 -(void)setNewFrameWithDeviceoRientation{
@@ -183,8 +146,7 @@
 
 //点击图层
 -(void)GestureRecognizerPressed:(UITapGestureRecognizer *)gesture{
-    if(_allHidden == NO) [self hiddenAllControl];
-    else [self showAllControl];
+    
 }
 
 //返回100  中间播放暂停50  左下角播放暂停10
@@ -283,17 +245,27 @@
     if(self = [super init]){
         self.frame = [UIScreen mainScreen].bounds;
         _item = item;
+        
+        NSLog(@"本地视频地址%@",_item.videoPath);
+    
+        
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:[NSURL fileURLWithPath:_item.videoPath]];
+        _player = [AVPlayer playerWithPlayerItem:playerItem];
 
         _playerLayer = [AVPlayerLayer new];
         _playerLayer.frame = CGRectMake(0, 0, SCREEN_Width, SCREEN_Height);
         [self.layer addSublayer:_playerLayer];
-        
+        _playerLayer.player = _player;
+
         //播放完成通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
         
         _mVideoImagelayer = [[SSVideoImageLayer alloc]initWithItem:_item];
+        _mVideoImagelayer.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_mVideoImagelayer];
+        _mVideoImagelayer.image = _item.fromImage;
         _mVideoImagelayer.delegate = self;
+        _mVideoImagelayer.image = nil;
         
     }
     return self;
@@ -321,8 +293,9 @@
             break;
             //放大展示
         case SSImageShowValue2:{
-            cout(@"开始播放");
-            [self playWithVideoLocalPath];
+            [_player play];
+            [self addPeriodicTime];
+            self.mVideoImagelayer.status = SSVideoLayerValue3;
         }
             break;
             //滚动展示
@@ -341,79 +314,16 @@
     }
 }
 
--(void)playWithVideoLocalPath{
-    
-    NSString *url = _item.chatMessage.videoObject.url;
-    NSString *path = _item.chatMessage.videoObject.path;
-    
-    if([[NSFileManager defaultManager] fileExistsAtPath:path]){
-        cout(@"视频已经下载，直接播放");
-        _mVideoImagelayer.image = nil;
-        [self voidePlay];
-        return;
-    }
-    
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    indicator.size = CGSizeMake(80, 80);
-    indicator.center = CGPointMake(self.width / 2, self.height / 2);
-    indicator.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.670];
-    indicator.clipsToBounds = YES;
-    indicator.layer.cornerRadius = 6;
-    [indicator startAnimating];
-    [self addSubview:indicator];
-    
-    self.userInteractionEnabled = NO;
-    [_mVideoImagelayer hiddenAllControl];
-    
-    [[NIMSDK sharedSDK].resourceManager download:url filepath:path progress:^(float progress) {
-        cout(@(progress));
-    } completion:^(NSError *error) {
-        [indicator removeFromSuperview];
-        [self.mVideoImagelayer showAllControl];
-        self.userInteractionEnabled = YES;
-        if(error){
-            [self showTimeBlack:@"视频下载失败 请检查网络"];
-        }else{
-            self.mVideoImagelayer.image = nil;
-            [self voidePlay];
-        }
-    }];
-   
-}
-
--(void)voidePlay{
-    
-    if(_player == nil){
-        
-        NSString *path = _item.chatMessage.videoObject.path;
-        NSURL *playUrl = [NSURL fileURLWithPath:path];
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:playUrl];
-        [playerItem addObserver:self forKeyPath:@"loadedTimeRanges" options:NSKeyValueObservingOptionNew context:nil];
-        [playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
-        _player = [AVPlayer playerWithPlayerItem:playerItem];
-        _playerLayer.player = _player;
-    }
-    
-    [_player play];
-    self.mVideoImagelayer.status = SSVideoLayerValue3;
-    [self addPeriodicTime];
-}
-
-
-//获取播放的时间 开始播放
+//获取播放的时间
 -(void)addPeriodicTime{
-    
     
     __block SSVideoView *weakSelf = self;
     [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         
-        cout(@(CMTimeGetSeconds(weakSelf.player.currentItem.asset.duration)));
-        weakSelf.mVideoImagelayer.currentTime = (NSTimeInterval)CMTimeGetSeconds(time);
-        weakSelf.mVideoImagelayer.totalTime = (NSTimeInterval)CMTimeGetSeconds(weakSelf.player.currentItem.asset.duration);
+        weakSelf.mVideoImagelayer.currentTime = CMTimeGetSeconds(time);
+        weakSelf.mVideoImagelayer.totalTime = CMTimeGetSeconds(weakSelf.player.currentItem.duration);
         [weakSelf.mVideoImagelayer setPeriodicTimeAndProgress];
-        
     }];
-    
 }
 
 //播放完成
@@ -429,19 +339,13 @@
 -(void)SSVideoImageLayerButtonClick:(UIButton *)sender item:(SSImageGroupItem *)item{
 
     if(sender.tag==100){
-        if(_player){
-            [_player seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
-                [self.player pause];
-                self.mVideoImagelayer.status = SSVideoLayerValue7;
-                if(self.videoViewDelegate && [self.videoViewDelegate respondsToSelector:@selector(SSVideoViewImageButtonClick:item:)]){
-                    [self.videoViewDelegate SSVideoViewImageButtonClick:sender item:item];
-                }
-            }];
-        }else{
+        [_player seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
+            [self.player pause];
+            self.mVideoImagelayer.status = SSVideoLayerValue7;
             if(self.videoViewDelegate && [self.videoViewDelegate respondsToSelector:@selector(SSVideoViewImageButtonClick:item:)]){
                 [self.videoViewDelegate SSVideoViewImageButtonClick:sender item:item];
             }
-        }
+        }];
     }
     else{
         
@@ -449,8 +353,8 @@
             if(sender.selected==NO){
                 [_player pause];
             }else{
-                
-                [self playWithVideoLocalPath];
+                [_player play];
+                [self addPeriodicTime];
             }
         }
         
@@ -461,52 +365,13 @@
 //进度条拖动回调
 -(void)SSVideoImageLayerSliderEventValueChanged:(UISlider *)slider item:(SSImageGroupItem *)item{
 
-    if (_player.status == AVPlayerStatusReadyToPlay){
-        NSTimeInterval duration = CMTimeGetSeconds(_player.currentItem.duration);
-         CMTime seekTime = CMTimeMake(duration, 1);
-        [_player seekToTime:seekTime completionHandler:^(BOOL finished) {
-           
-            
-        }];
-        
-        _mVideoImagelayer.currentTime = slider.value*0.1*duration;
-        [_mVideoImagelayer setPeriodicTimeAndProgress];
-        
-//        [_player seekToTime:CMTimeMake(slider.value*0.1*duration,1)];
-    }
+    CGFloat seconds = CMTimeGetSeconds(_player.currentItem.duration);
     
+    _mVideoImagelayer.currentTime = slider.value*0.1*seconds;
+    [_mVideoImagelayer setPeriodicTimeAndProgress];
     
-}
-
-
-
-//监听回调 加载 状态
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    AVPlayerItem *playerItem = (AVPlayerItem *)object;
+    [_player seekToTime:CMTimeMake(slider.value*0.1*seconds,1)];
     
-    if ([keyPath isEqualToString:@"loadedTimeRanges"]){
-        NSTimeInterval loadedTime = [self availableDurationWithplayerItem:playerItem];
-        NSTimeInterval totalTime = CMTimeGetSeconds(playerItem.duration);
-        
-        cout(@(loadedTime));
-        cout(@(totalTime));
-        
-    }else if ([keyPath isEqualToString:@"status"]){
-        
-    }
-}
-
-
-// 计算缓冲总进度
-- (NSTimeInterval)availableDurationWithplayerItem:(AVPlayerItem *)playerItem{
-    
-    NSArray *loadedTimeRanges = [playerItem loadedTimeRanges];
-    CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue];
-    NSTimeInterval startSeconds = CMTimeGetSeconds(timeRange.start);
-    NSTimeInterval durationSeconds = CMTimeGetSeconds(timeRange.duration);
-    NSTimeInterval result = startSeconds + durationSeconds;
-    return result;
 }
 
 

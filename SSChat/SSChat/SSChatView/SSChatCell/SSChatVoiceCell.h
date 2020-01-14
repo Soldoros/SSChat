@@ -7,17 +7,23 @@
 //
 
 #import "SSChatBaseCell.h"
+#import "UUAVAudioPlayer.h"
 
-@interface SSChatVoiceCell : SSChatBaseCell<NIMMediaManagerDelegate>
+@interface SSChatVoiceCell : SSChatBaseCell<UUAVAudioPlayerDelegate>
 
 @property (nonatomic, strong) UIView *voiceBackView;
 @property (nonatomic, strong) UILabel *mTimeLab;
 @property (nonatomic, strong) UIImageView *mVoiceImg;
+@property (nonatomic, strong) UIActivityIndicatorView *indicator;
 
-//轮播音频数组
-@property (nonatomic, strong) NSArray *pendingAudioMessages;
-//设备陈旧卡顿导致播放失败的时候连续尝试播放
-@property (nonatomic, assign) NSInteger retryCount;
+//是否在播放
+@property (nonatomic, assign)BOOL contentVoiceIsPlaying;
+
+//音频路径 音频文件 播放控制
+@property(nonatomic, strong)NSString *voiceURL;
+@property(nonatomic, strong)NSData *songData;
+@property(nonatomic, strong)UUAVAudioPlayer *audio;
+
 @end
 
 

@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "SSDeviceDefault.h"
 #import <AVFoundation/AVFoundation.h>
-#import "SSChatAudioIndicator.h"
+#import "UUProgressHUD.h"
+#import "UUAVAudioPlayer.h"
 #import "SSChatKeyBoardDatas.h"
 #import "SSChatKeyBordView.h"
+
 
 
 /**
@@ -31,11 +33,11 @@
 #define SSChatLeftDistence      5            //左边间隙
 #define SSChatRightDistence     5            //左边间隙
 #define SSChatBtnDistence       10           //控件之间的间隙
-#define SSChatTextHeight        38           //输入框的高度
+#define SSChatTextHeight        33           //输入框的高度
 #define SSChatTextMaxHeight     83           //输入框的最大高度
 #define SSChatTextWidth      SCREEN_Width - (3*SSChatBtnSize + 5* SSChatBtnDistence)                       //输入框的宽度
 
-#define SSChatTBottomDistence   5.5            //输入框上下间隙
+#define SSChatTBottomDistence   8            //输入框上下间隙
 #define SSChatBBottomDistence   8.5          //按钮上下间隙
 
 
@@ -51,7 +53,7 @@
 -(void)SSChatKeyBoardInputViewBtnClick:(NSString *)string;
 
 //发送语音消息
-- (void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view voicePath:(NSString *)voicePath time:(int)second;
+- (void)SSChatKeyBoardInputViewBtnClick:(SSChatKeyBoardInputView *)view sendVoice:(NSData *)voice time:(NSInteger)second;
 
 //多功能视图按钮点击回调
 -(void)SSChatKeyBoardInputViewBtnClickFunction:(NSInteger)index;
@@ -59,9 +61,9 @@
 @end
 
 
-@interface SSChatKeyBoardInputView : UIView<UITextViewDelegate,AVAudioRecorderDelegate,SSChatKeyBordViewDelegate,NIMMediaManagerDelegate> 
+@interface SSChatKeyBoardInputView : UIView<UITextViewDelegate,AVAudioRecorderDelegate,SSChatKeyBordViewDelegate> 
 
-@property(nonatomic,weak)id<SSChatKeyBoardInputViewDelegate>delegate;
+@property(nonatomic,assign)id<SSChatKeyBoardInputViewDelegate>delegate;
 
 //当前的编辑状态（默认 语音 编辑文本 发送表情 其他功能）
 @property(nonatomic,assign)SSChatKeyBoardStatus keyBoardStatus;
@@ -87,13 +89,25 @@
 @property(nonatomic,strong) UITextView   *mTextView;
 @property(nonatomic,strong) NSString     *textString;
 //输入框的高度
-@property(nonatomic,assign) CGFloat          textH;
+@property(nonatomic,assign) CGFloat   textH;
 
 //添加表情
-@property(nonatomic,strong) NSObject         *emojiText;
+@property(nonatomic,strong) NSObject       *emojiText;
 
 //录音相关
-@property(nonatomic, strong) SSChatAudioIndicator *audioIndicator;
+@property(nonatomic,assign) BOOL      isbeginVoiceRecord;
+@property(nonatomic,assign) NSInteger playTime;
+@property(nonatomic,strong) NSString  *docmentFilePath;
+
+@property (nonatomic, strong) NSTimer         *playTimer;
+@property (nonatomic, strong) UILabel         *placeHold;
+@property (nonatomic, strong) AVAudioRecorder *recorder;
+@property (nonatomic, strong) AVAudioSession  *audioSession;
+
+@property (nonatomic, strong) UIButton  *btnSendMessage;
+@property (nonatomic, strong) UIButton  *btnChangeVoiceState;
+@property (nonatomic, strong) UIButton  *btnVoiceRecord;
+
 
 //键盘归位
 -(void)SetSSChatKeyBoardInputViewEndEditing;
