@@ -55,7 +55,6 @@
         _mSymbolBtn.bounds = CGRectMake(0, 0, SSChatBtnSize, SSChatBtnSize);
         _mSymbolBtn.right = _mAddBtn.left - SSChatBtnDistence;
         _mSymbolBtn.bottom  = self.height - SSChatBBottomDistence;
-        _mSymbolBtn.backgroundColor = [UIColor whiteColor];
         _mSymbolBtn.tag  = 11;
         [self addSubview:_mSymbolBtn];
         [_mSymbolBtn setBackgroundImage:[UIImage imageNamed:@"icon_biaoqing"] forState:UIControlStateNormal];
@@ -69,14 +68,12 @@
         _mTextBtn.left = _mLeftBtn.right+SSChatBtnDistence;
         _mTextBtn.bottom = self.height - SSChatTBottomDistence;
         _mTextBtn.backgroundColor = [UIColor whiteColor];
-        _mTextBtn.layer.borderWidth = 0.5;
-        _mTextBtn.layer.borderColor = CellLineColor.CGColor;
         _mTextBtn.clipsToBounds = YES;
         _mTextBtn.layer.cornerRadius = 3;
         [self addSubview:_mTextBtn];
         _mTextBtn.userInteractionEnabled = YES;
         _mTextBtn.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-        [_mTextBtn setTitleColor:makeColorRgb(100, 100, 100) forState:UIControlStateNormal];
+        [_mTextBtn setTitleColor:makeColorHex(@"#111111") forState:UIControlStateNormal];
         [_mTextBtn setTitle:@"按住 说话" forState:UIControlStateNormal];
         [_mTextBtn setTitle:@"松开 结束" forState:UIControlStateHighlighted];
         [_mTextBtn addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
@@ -90,7 +87,7 @@
         
         _mTextView = [[UITextView alloc]init];
         _mTextView.frame = _mTextBtn.bounds;
-        _mTextView.textContainerInset = UIEdgeInsetsMake(7.5, 5, 5, 5);
+        _mTextView.textContainerInset = UIEdgeInsetsMake(10, 5, 10, 5);
         _mTextView.delegate = self;
         [_mTextBtn addSubview:_mTextView];
         _mTextView.backgroundColor = [UIColor whiteColor];
@@ -99,6 +96,7 @@
         _mTextView.showsHorizontalScrollIndicator = NO;
         _mTextView.showsVerticalScrollIndicator = NO;
         _mTextView.enablesReturnKeyAutomatically = YES;
+        _mTextView.layoutManager.allowsNonContiguousLayout = NO;
         _mTextView.scrollEnabled = NO;
         
         
@@ -431,7 +429,7 @@
     
     [UIView animateWithDuration:0.25 animations:^{
         self.mTextView.height = height;
-        self.height = 8 + 8 + self.mTextView.height;
+        self.height = SSChatTBottomDistence + SSChatTBottomDistence + self.mTextView.height;
         
         self.mTextBtn.height = self.mTextView.height;
         self.mTextBtn.bottom = self.height-SSChatTBottomDistence;
@@ -544,7 +542,7 @@
         [self setNewSizeWithBootm:height];
     }
     else{
-        [textView scrollRangeToVisible:NSMakeRange(textView.text.length, 2)];
+        [textView scrollRangeToVisible:NSMakeRange(textView.text.length,1)];
     }
 }
 

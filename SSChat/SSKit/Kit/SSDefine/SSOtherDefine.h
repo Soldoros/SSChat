@@ -40,7 +40,7 @@
 
 
 //聊天界面的颜色
-#define SSChatCellColor  makeColorRgb(250, 250, 250)
+#define SSChatCellColor  makeColorRgb(245, 245, 245)
 
 
 #define RoundViewColor  makeColorHex(@"FF6262")
@@ -66,7 +66,7 @@
 
 
 //cell线条颜色
-#define CellLineColor  makeColorRgb(200, 200, 200)
+#define CellLineColor  makeColorRgb(220, 220, 220)
 //按钮颜色
 #define ButtonColor  makeColorRgb(251, 188, 54)
 

@@ -62,7 +62,6 @@
         _mTableView.estimatedSectionHeaderHeight = 0;
         _mTableView.estimatedSectionFooterHeight = 0;
     }
-    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

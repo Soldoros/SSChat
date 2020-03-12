@@ -20,7 +20,7 @@
  聊天界面底部的输入框视图
  */
 
-#define SSChatKeyBoardInputViewH      49     //输入部分的高度
+#define SSChatKeyBoardInputViewH      55     //输入部分的高度
 #define SSChatKeyBordBottomHeight     220    //底部视图的高度
 
 //键盘总高度
@@ -28,17 +28,20 @@
 
 
 #define SSChatLineHeight        0.5          //线条高度
-#define SSChatBotomTop          SCREEN_Height-SSChatBotomHeight-SafeAreaBottom_Height                    //底部视图的顶部
+#define SSChatBotomTop          SCREEN_Height-SSChatBotomHeight-SafeAreaBottom_Height
+
+//底部视图的顶部
 #define SSChatBtnSize           30           //按钮的大小
 #define SSChatLeftDistence      5            //左边间隙
 #define SSChatRightDistence     5            //左边间隙
 #define SSChatBtnDistence       10           //控件之间的间隙
-#define SSChatTextHeight        33           //输入框的高度
-#define SSChatTextMaxHeight     83           //输入框的最大高度
+#define SSChatTextHeight        40           //输入框的高度
+#define SSChatTextMaxHeight     100           //输入框的最大高度
 #define SSChatTextWidth      SCREEN_Width - (3*SSChatBtnSize + 5* SSChatBtnDistence)                       //输入框的宽度
 
-#define SSChatTBottomDistence   8            //输入框上下间隙
-#define SSChatBBottomDistence   8.5          //按钮上下间隙
+
+#define SSChatTBottomDistence   7.5            //输入框上下间隙
+#define SSChatBBottomDistence   12.5          //按钮上下间隙
 
 
 @class SSChatKeyBoardInputView;

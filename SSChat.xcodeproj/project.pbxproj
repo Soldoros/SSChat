@@ -641,18 +641,18 @@
 		AF804B4721A3DCE000225FCE /* SSChatCell */ = {
 			isa = PBXGroup;
 			children = (
-				AF804B4821A3DCE000225FCE /* SSChatMapCell.h */,
-				AF804B4921A3DCE000225FCE /* SSChatBaseCell.m */,
-				AF804B4A21A3DCE000225FCE /* SSChatImageCell.m */,
-				AF804B4B21A3DCE000225FCE /* SSChatVoiceCell.h */,
-				AF804B4C21A3DCE000225FCE /* SSChatVideoCell.h */,
-				AF804B4D21A3DCE000225FCE /* SSChatTextCell.m */,
-				AF804B4E21A3DCE000225FCE /* SSChatMapCell.m */,
 				AF804B4F21A3DCE000225FCE /* SSChatBaseCell.h */,
-				AF804B5021A3DCE000225FCE /* SSChatVoiceCell.m */,
+				AF804B4921A3DCE000225FCE /* SSChatBaseCell.m */,
 				AF804B5121A3DCE000225FCE /* SSChatImageCell.h */,
+				AF804B4A21A3DCE000225FCE /* SSChatImageCell.m */,
+				AF804B4821A3DCE000225FCE /* SSChatMapCell.h */,
+				AF804B4E21A3DCE000225FCE /* SSChatMapCell.m */,
 				AF804B5221A3DCE000225FCE /* SSChatTextCell.h */,
+				AF804B4D21A3DCE000225FCE /* SSChatTextCell.m */,
+				AF804B4C21A3DCE000225FCE /* SSChatVideoCell.h */,
 				AF804B5321A3DCE000225FCE /* SSChatVideoCell.m */,
+				AF804B4B21A3DCE000225FCE /* SSChatVoiceCell.h */,
+				AF804B5021A3DCE000225FCE /* SSChatVoiceCell.m */,
 			);
 			path = SSChatCell;
 			sourceTree = "<group>";
@@ -844,13 +844,13 @@
 		AF804BFA21A3DCE100225FCE /* SSImageGroupView */ = {
 			isa = PBXGroup;
 			children = (
+				AF804C0121A3DCE100225FCE /* icon */,
 				AF804BFB21A3DCE100225FCE /* SSImageGroupData.h */,
-				AF804BFC21A3DCE100225FCE /* SSImageGroupView.h */,
-				AF804BFD21A3DCE100225FCE /* SSVideoView.m */,
 				AF804BFE21A3DCE100225FCE /* SSImageGroupData.m */,
+				AF804BFC21A3DCE100225FCE /* SSImageGroupView.h */,
 				AF804BFF21A3DCE100225FCE /* SSImageGroupView.m */,
 				AF804C0021A3DCE100225FCE /* SSVideoView.h */,
-				AF804C0121A3DCE100225FCE /* icon */,
+				AF804BFD21A3DCE100225FCE /* SSVideoView.m */,
 			);
 			path = SSImageGroupView;
 			sourceTree = "<group>";

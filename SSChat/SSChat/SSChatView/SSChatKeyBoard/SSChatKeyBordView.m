@@ -64,7 +64,6 @@
 
 
 
-
 #pragma SSChatKeyBordSymbolViewDelegate 发送200
 -(void)SSChatKeyBordSymbolViewBtnClick:(NSInteger)index{
     [self SSChatKeyBordButtonPressed:index];
