@@ -1,0 +1,41 @@
+//
+//  DEProject.pch
+//  Project
+//
+//  Created by soldoros on 16/6/27.
+//  Copyright © 2016年 soldoros. All rights reserved.
+
+
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+//#import <TencentOpenAPI/TencentOAuth.h>
+//#import <TencentOpenAPI/QQApiInterface.h>
+//#import "WXApi.h"
+//#import "WeiboSDK.h"
+//
+//#import <ShareSDK/ShareSDK.h>
+//#import <ShareSDKConnector/ShareSDKConnector.h>
+//#import <IQKeyboardManager/IQKeyboardManager.h>
+
+#import "YYKit.h" 
+#import "MJRefresh.h"
+
+#import "SSKit.h"
+#import "SSRootAccount.h"
+#import "SSRootAgreement.h"
+#import "PBViews.h"
+
+#import "SSChatDefine.h"
+
+
+
+//控制台打印日志不全的问题
+//#ifdef DEBUG
+//#define NSLog(FORMAT, ...) fprintf(stderr, "%s:%zd\t%s\n", [[[NSString stringWithUTF8String: __FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat: FORMAT, ## __VA_ARGS__] UTF8String]);
+//#else
+//#define NSLog(FORMAT, ...) nil
+//#endif
+
+
