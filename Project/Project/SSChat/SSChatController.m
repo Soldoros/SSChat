@@ -8,6 +8,7 @@
 #import "SSChatController.h"
 #import "SSInputController.h"
 #import "SSChatMessageController.h"
+#import "SSChatMessage.h"
 
 @interface SSChatController ()<SSInputControllerDelegate>
 
@@ -33,7 +34,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setNavgaionTitle:@"哈哈"];
+    [self setNavgaionTitle:@"我爱罗"];
     //录音底部按钮左右响应时间不一致 需要做这个处理
     self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan=NO;
     
@@ -70,7 +71,6 @@
         CGRect msgFrame = wself.mMessageController.view.frame;
         msgFrame.size.height = wself.view.height - SafeAreaTop_Height - height;
         wself.mMessageController.viewFrame = msgFrame;
-        [wself.mMessageController.mTableView scrollToBottomAnimated:NO];
         
         CGRect inputFrame = wself.mInputController.view.frame;
         inputFrame.origin.y = msgFrame.origin.y + msgFrame.size.height;
@@ -78,6 +78,13 @@
         wself.mInputController.view.frame = inputFrame;
         
     } completion:nil];
+}
+
+
+//发送消息回调
+-(void)inputController:(SSInputController *)inputController didSendMessage:(SSChatMessage *)message{
+    
+    [_mMessageController sendMessage:message];
 }
 
 

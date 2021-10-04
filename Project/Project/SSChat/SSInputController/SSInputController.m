@@ -59,8 +59,12 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
-    if(_mStatus == SSInputStatusFace) [self hideFaceAnimation];
-    if(_mStatus == SSInputStatusMore) [self hideMoreAnimation];
+    if(_mStatus == SSInputStatusFace) {
+        [self hideFaceAnimation];
+    }
+    if(_mStatus == SSInputStatusMore) {
+        [self hideMoreAnimation];
+    }
     _mStatus = SSInputStatusInput;
 }
 
@@ -129,8 +133,12 @@
 //点击输入框
 -(void)inputViewDidTouchKeyboard:(SSInputView *)textView{
     
-    if(_mStatus == SSInputStatusFace)[self hideFaceAnimation];
-    if(_mStatus == SSInputStatusMore)[self hideMoreAnimation];
+    if(_mStatus == SSInputStatusFace){
+        [self hideFaceAnimation];
+    }
+    if(_mStatus == SSInputStatusMore){
+        [self hideMoreAnimation];
+    }
     _mStatus = SSInputStatusInput;
     [_mInpuView.mTextView becomeFirstResponder];
 }
@@ -227,7 +235,7 @@
     
     //发送
     if(sender.tag == 50){
-        [self inputView:_mInpuView didSendText:sender.titleLabel.text];
+        [self inputView:_mInpuView didSendText:_mInpuView.mTextView.text];
     }
     
     //表情
@@ -244,13 +252,25 @@
 //发送文本
 -(void)inputView:(SSInputView *)textView didSendText:(NSString *)text{
     
-    if([text isEqualToString:@""]){
-        return;
-    }
+    if([text isEqualToString:@""])return;
     
+    NSDictionary *dic = @{@"body":text,
+                          @"type":@(SSChatMessageTypeText),
+                          @"from":@(SSChatMessageFromMe),
+                          @"name":@"神经萝卜"
+    };
+    NSDictionary *dic2 = @{@"body":text,
+                          @"type":@(SSChatMessageTypeText),
+                          @"from":@(SSChatMessageFromOther),
+                           @"name":@"我爱罗"
+    };
+    SSChatMessage *message = [[SSChatMessage alloc] initWithDic:dic];
+    SSChatMessage *message2 = [[SSChatMessage alloc] initWithDic:dic2];
     [_mInpuView clearInput];
+    
     if(_delegate && [_delegate  respondsToSelector:@selector(inputController:didSendMessage:)]){
-        [_delegate inputController:self didSendMessage:@{}];
+        [_delegate inputController:self didSendMessage:message];
+        [_delegate inputController:self didSendMessage:message2];
     }
 }
 

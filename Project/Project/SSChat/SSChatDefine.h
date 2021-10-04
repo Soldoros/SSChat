@@ -20,6 +20,5 @@
 #define SSInputTextHeight             38
 //输入框最大高度
 #define SSInputTextMaxHeight          100
-
 //更多弹窗每行的数量
 #define SSInputMoreRowCount           4

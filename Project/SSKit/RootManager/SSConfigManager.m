@@ -108,9 +108,9 @@ static SSConfigManager *config = nil;
             self.tabBarColor  = [UIColor whiteColor];
             self.navTintColor = [UIColor blackColor];
             self.navLineColor    = makeColorHex(@"#E2E2E2");
-            self.backGroundColor        = makeColorRgb(246, 246, 246);
+            self.backGroundColor        = makeColorRgb(240, 240, 240);
             self.tabBarTintDefaultColor = makeColorHex(@"#555555");
-            self.tabBarTintSelectColor  = makeColorRgb(70, 150, 255);
+            self.tabBarTintSelectColor  = makeColorRgb(20, 164, 252);
             self.barStyle = UIStatusBarStyleDefault;
             self.leftBtnImg = @"return";
         }

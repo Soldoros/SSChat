@@ -40,7 +40,7 @@
     self.window.backgroundColor = _config.backGroundColor;
     [self.window makeKeyAndVisible];
     _config = [SSConfigManager shareManager];
-    [SSRootManager shareRootManager:ManagerTypePart].needIndexs = @[];
+    [SSRootManager shareRootManager];
     
     return YES;
 }

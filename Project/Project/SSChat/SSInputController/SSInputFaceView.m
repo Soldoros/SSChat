@@ -54,7 +54,6 @@
         [_mPageControl setCurrentPageIndicatorTintColor:[UIColor grayColor]];
         [_mPageControl setPageIndicatorTintColor:makeColorRgb(200, 200, 200)];
         
-        
     }
     return self;
 }
@@ -148,7 +147,6 @@
         [_mButton setTitle:_faceString forState:UIControlStateNormal];
         
     }
-
 }
 
 @end

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5A00AC15FDE43FE286C2C448 /* Pods_Project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E81407020320945AA36D9A40 /* Pods_Project.framework */; };
 		AF218EF82701BBB500279EAF /* SSFaceConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AF218EF72701BBB500279EAF /* SSFaceConfig.m */; };
+		AF38DB2A27043708006D914C /* SSChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = AF38DB2927043708006D914C /* SSChatMessage.m */; };
+		AF38DB3127043C52006D914C /* SSChatTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF38DB3027043C52006D914C /* SSChatTextCell.m */; };
+		AF38DB3427043DCA006D914C /* SSChatBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF38DB3327043DCA006D914C /* SSChatBaseCell.m */; };
 		AF503D4E26E4C56400FF12B0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AF503D4D26E4C56400FF12B0 /* AppDelegate.m */; };
 		AF503D5726E4C56400FF12B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF503D5526E4C56400FF12B0 /* Main.storyboard */; };
 		AF503D5926E4C56600FF12B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF503D5826E4C56600FF12B0 /* Assets.xcassets */; };
@@ -133,6 +136,12 @@
 /* Begin PBXFileReference section */
 		AF218EF62701BBB500279EAF /* SSFaceConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSFaceConfig.h; sourceTree = "<group>"; };
 		AF218EF72701BBB500279EAF /* SSFaceConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSFaceConfig.m; sourceTree = "<group>"; };
+		AF38DB2827043708006D914C /* SSChatMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatMessage.h; sourceTree = "<group>"; };
+		AF38DB2927043708006D914C /* SSChatMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatMessage.m; sourceTree = "<group>"; };
+		AF38DB2F27043C52006D914C /* SSChatTextCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatTextCell.h; sourceTree = "<group>"; };
+		AF38DB3027043C52006D914C /* SSChatTextCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatTextCell.m; sourceTree = "<group>"; };
+		AF38DB3227043DCA006D914C /* SSChatBaseCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SSChatBaseCell.h; sourceTree = "<group>"; };
+		AF38DB3327043DCA006D914C /* SSChatBaseCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSChatBaseCell.m; sourceTree = "<group>"; };
 		AF503D4926E4C56400FF12B0 /* Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF503D4C26E4C56400FF12B0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AF503D4D26E4C56400FF12B0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -395,6 +404,17 @@
 				AF218EF72701BBB500279EAF /* SSFaceConfig.m */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		AF38DB2E27043C2B006D914C /* SSChatCell */ = {
+			isa = PBXGroup;
+			children = (
+				AF38DB3227043DCA006D914C /* SSChatBaseCell.h */,
+				AF38DB3327043DCA006D914C /* SSChatBaseCell.m */,
+				AF38DB2F27043C52006D914C /* SSChatTextCell.h */,
+				AF38DB3027043C52006D914C /* SSChatTextCell.m */,
+			);
+			path = SSChatCell;
 			sourceTree = "<group>";
 		};
 		AF503D4026E4C56400FF12B0 = {
@@ -793,32 +813,19 @@
 		AF5F7FEE26E4D3C300075B69 /* SSChat */ = {
 			isa = PBXGroup;
 			children = (
+				AF38DB2E27043C2B006D914C /* SSChatCell */,
 				AF218EF52701BB7900279EAF /* Config */,
 				AFFD55F626F8BC760083873B /* Media */,
-				AF5F7FEF26E4D3C300075B69 /* resources */,
-				AF5F7FF026E4D3C300075B69 /* SSChatCell */,
 				AF5F7FF126E4D3C300075B69 /* SSInputController */,
 				AF5F7FF226E4D3DE00075B69 /* SSChatController.h */,
 				AF5F7FF326E4D3DE00075B69 /* SSChatController.m */,
 				AF76D49426E4FED5007E0323 /* SSChatMessageController.h */,
 				AF76D49526E4FED5007E0323 /* SSChatMessageController.m */,
+				AF38DB2827043708006D914C /* SSChatMessage.h */,
+				AF38DB2927043708006D914C /* SSChatMessage.m */,
 				AF76D49326E4F915007E0323 /* SSChatDefine.h */,
 			);
 			path = SSChat;
-			sourceTree = "<group>";
-		};
-		AF5F7FEF26E4D3C300075B69 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = resources;
-			sourceTree = "<group>";
-		};
-		AF5F7FF026E4D3C300075B69 /* SSChatCell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SSChatCell;
 			sourceTree = "<group>";
 		};
 		AF5F7FF126E4D3C300075B69 /* SSInputController */ = {
@@ -1007,6 +1014,7 @@
 				AF503F5B26E4C66000FF12B0 /* AccountLoginController.m in Sources */,
 				AF503F7726E4C66000FF12B0 /* PBPayController.m in Sources */,
 				AF503F5826E4C66000FF12B0 /* AccountView.m in Sources */,
+				AF38DB2A27043708006D914C /* SSChatMessage.m in Sources */,
 				AF50406326E4C66000FF12B0 /* BaseCollectionViewController.m in Sources */,
 				AF218EF82701BBB500279EAF /* SSFaceConfig.m in Sources */,
 				AF50404326E4C66000FF12B0 /* MineScanningController.m in Sources */,
@@ -1069,6 +1077,7 @@
 				AF50402226E4C66000FF12B0 /* SSTextView.m in Sources */,
 				AF50403426E4C66000FF12B0 /* SSRequestStatus.m in Sources */,
 				AF50403326E4C66000FF12B0 /* SSRequestLoadingStatus.m in Sources */,
+				AF38DB3427043DCA006D914C /* SSChatBaseCell.m in Sources */,
 				AF50402626E4C66000FF12B0 /* SSAudioPlayer.m in Sources */,
 				AF50404F26E4C66000FF12B0 /* UIColor+SSAdd.m in Sources */,
 				AF503F5C26E4C66000FF12B0 /* AccountMoblieLoginController.m in Sources */,
@@ -1088,6 +1097,7 @@
 				AF50406026E4C66000FF12B0 /* BaseTableViewController.m in Sources */,
 				AF50403126E4C66000FF12B0 /* SSAFRequest.m in Sources */,
 				AF5F7FF726E4D43300075B69 /* SSInputController.m in Sources */,
+				AF38DB3127043C52006D914C /* SSChatTextCell.m in Sources */,
 				AF50403E26E4C66000FF12B0 /* SSGuideController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,6 +9,8 @@
 #import "SSInputView.h"
 #import "SSInputMoreView.h"
 #import "SSInputFaceView.h"
+#import "SSChatMessage.h"
+
 @class SSInputController;
 
 
@@ -31,7 +33,7 @@ typedef NS_ENUM(NSUInteger, SSInputStatus) {
 - (void)inputController:(SSInputController *)inputController didSelect:(NSDictionary *)dic;
 
 //发送消息回调
-- (void)inputController:(SSInputController *)inputController didSendMessage:(NSDictionary *)message;
+- (void)inputController:(SSInputController *)inputController didSendMessage:(SSChatMessage *)message;
 
 //有 @ 字符输入回调
 - (void)inputControllerDidInputAt:(SSInputController *)inputController;
